@@ -24,7 +24,11 @@ config.ssh_domains = {
   },
 }
 
-config.default_prog = {'/opt/homebrew/bin/fish'}
+if string.find(io.popen('uname'):read('*a'), 'Darwin') then
+    config.default_prog = {'/opt/homebrew/bin/fish'}
+elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
+    config.default_prog = {'/usr/bin/fish'}
+end
 config.automatically_reload_config = true
 config.front_end = "WebGpu"
 config.term = "screen-256color"
