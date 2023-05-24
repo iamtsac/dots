@@ -1,0 +1,313 @@
+* Startup Performance
+
+** No littering
+
+   #+begin_src emacs-lisp
+     (use-package no-littering
+       :straight t
+       :config
+       (when (fboundp 'startup-redirect-eln-cache)
+         (startup-redirect-eln-cache
+          (convert-standard-filename
+           (expand-file-name  "var/eln-cache/" user-emacs-directory))))
+       :init
+       (setq custom-file (expand-file-name "custom.el" user-emacs-directory)))
+   #+end_src
+
+** Garabage collector
+
+   #+begin_src emacs-lisp
+     (use-package gcmh
+       :straight t
+       :config
+       (gcmh-mode 1))
+     ;; Setting garbage collection threshold
+     (setq gc-cons-threshold 402653184
+           gc-cons-percentage 0.6)
+
+     ;; Profile emacs startup
+     (add-hook 'emacs-startup-hook
+               (lambda ()
+                 (message "*** Emacs loaded in %s with %d garbage collections."
+                          (format "%.2f seconds"
+                                  (float-time
+                                   (time-subtract after-init-time before-init-time)))
+                          gcs-done)))
+     (setq gc-cons-threshold (* 2 1000 1000))
+   #+end_src
+
+** Native Compilation
+
+   #+begin_src emacs-lisp
+     (if (boundp 'comp-deferred-compilation)
+         (setq comp-deferred-compilation nil)
+       (setq native-comp-deferred-compilation nil))
+     ;; In noninteractive sessions, prioritize non-byte-compiled source files to
+     ;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+     ;; to skip the mtime checks on every *.elc file.
+     (setq load-prefer-newer noninteractive)
+   #+end_src
+
+
+* Keybinds
+
+** Evil Mode
+
+   #+begin_src emacs-lisp
+     (use-package evil
+       :straight (evil :type git :host github :repo "emacs-evil/evil")
+       :init
+       (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+       (setq evil-want-keybinding nil)
+       (setq evil-vsplit-window-right t)
+       (setq evil-split-window-below t)
+       (setq evil-want-C-u-scroll t)
+       (setq evil-want-fine-undo t)
+       (setq evil-undo-system 'undo-redo)
+       (evil-mode))
+   #+end_src
+
+** Evil Collection
+
+   #+begin_src emacs-lisp
+     (use-package evil-collection
+       :after (evil)
+       :straight (evil-collection :host github :repo "emacs-evil/evil-collection")
+       :config
+       (eval-after-load "evil-maps"
+         (define-key evil-motion-state-map "\C-b" nil))
+
+       (setq evil-collection-mode-list '(neotree dashboard dired ibuffer custom (pdf pdf-view)))
+       (evil-collection-init))
+   #+end_src
+
+** Evil-Org
+
+   #+begin_src emacs-lisp
+     (use-package evil-org
+       :straight t
+       :after org
+       :init
+       (add-hook 'org-mode-hook 'evil-org-mode)
+       :config
+       (require 'evil-org-agenda)
+       (evil-org-agenda-set-keys))
+   #+end_src
+
+** General
+
+   #+begin_src emacs-lisp
+     (use-package general
+       :straight (general :host github :repo "noctuid/general.el")
+       :config
+       (general-evil-setup t))
+   #+end_src
+
+** Which Key
+
+   #+begin_src emacs-lisp
+     (use-package which-key
+       :straight (wich-key :host github :repo "justbur/emacs-which-key")
+       :init
+       (which-key-mode))
+   #+end_src
+
+
+* Completion
+
+** Vertico
+
+   #+begin_src emacs-lisp
+     (use-package vertico
+       :straight (vertico :host github :repo "minad/vertico")
+       :init
+       (vertico-mode))
+
+     (use-package savehist
+       :straight t
+       :init
+       (savehist-mode))
+
+     (use-package orderless
+       :straight t
+       :init
+       ;; Configure a custom style dispatcher (see the Consult wiki)
+       ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+       ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+       (setq completion-styles '(orderless basic)
+             completion-category-defaults nil
+             completion-category-overrides '((file (styles partial-completion)))))
+   #+end_src
+
+
+* File and Project Managment
+
+
+   
+* Development
+
+** Tree-Sitter
+
+   #+begin_src emacs-lisp
+     (use-package tree-sitter
+       :straight t
+       :config
+       (global-tree-sitter-mode)
+       (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+     (use-package tree-sitter-langs
+       :straight t)
+   #+end_src
+
+
+* Terminal
+
+** VTerm
+
+   #+begin_src emacs-lisp
+     (use-package vterm
+       :straight t
+       :init
+       (add-hook 'vterm-mode-hook '(lambda ()
+                                     (setq-local line-spacing nil)
+                                     (display-line-numbers-mode 0)))
+       :config
+       (setq vterm-time-delay 0.01)
+       (setq vterm-shell "/opt/homebrew/bin/fish")
+       (setq vterm-use-vterm-prompt-detection-method t))
+
+   #+end_src
+
+
+* Customizations
+
+** Theme
+
+   #+begin_src emacs-lisp
+     (use-package ef-themes
+       :straight (ef-themes :host github :repo "protesilaos/ef-themes"))
+
+     (load-theme 'ef-autumn t)
+   #+end_src
+
+** Font
+
+   #+begin_src emacs-lisp
+     (set-face-attribute 'default nil :font "IosevkaTerm Nerd Font" :height 170 :weight 'semibold)
+   #+end_src
+
+** Window apperance
+
+   #+begin_src emacs-lisp
+     (menu-bar-mode -1)
+     (tool-bar-mode -1)
+     (scroll-bar-mode -1)
+     (global-display-line-numbers-mode 1)
+     (hl-line-mode 1)
+     (setq inhibit-startup-message t)
+     (when (string= system-type "darwin")
+       (add-hook 'window-setup-hook 'toggle-frame-maximized t))
+   #+end_src
+
+** Org Bullets
+
+   #+begin_src emacs-lisp
+     (use-package org-bullets
+       :straight t
+       :init
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+   #+end_src
+
+
+* Settings
+
+** Misc
+
+   #+begin_src emacs-lisp
+     (setq-default electric-indent-inhibit t)
+     (setq initial-major-mode 'org-mode)
+     (setq-default indent-tabs-mode nil)
+     (setq-default tab-width 4)
+     (setq indent-line-function 'insert-tab) 
+     (setq backward-delete-char-untabify-method 'hungry)
+     (setq make-backup-files nil)
+     (setq backup-inhibited t)
+     (setq auto-save-default nil)
+     (setq visible-bell nil)
+     (global-auto-revert-mode 1)
+     ;; Also auto refresh dired, but be quiet about it
+     (setq global-auto-revert-non-file-buffers t)
+     (setq auto-revert-verbose nil)
+     (blink-cursor-mode -1)
+   #+end_src
+
+   
+* SSH
+** TRAMP
+ #+begin_src emacs-lisp
+    (use-package tramp :straight t)
+ #+end_src
+
+ 
+* Utils
+
+** Hungry Delete
+
+   #+begin_src emacs-lisp
+     (use-package hungry-delete :straight (hungry-delete :host github :repo "nflath/hungry-delete") :init (hungry-delete-mode 1))
+   #+end_src
+
+** ORG 
+
+   #+begin_src emacs-lisp
+     (use-package org
+       :straight t
+       :mode (("\\.org\\'" . org-mode))
+       :config
+       (progn (setq org-adapt-indentation "headline-data")))
+     (use-package eww :straight t)
+   #+end_src
+
+** PDF
+
+   #+begin_src emacs-lisp
+     (use-package pdf-tools
+       :straight (pdf-tools :host github :repo "vedang/pdf-tools")
+       :config
+       (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo")
+       :config
+       ;; initialise
+       (pdf-tools-install)
+       ;; open pdfs scaled to fit page
+       (setq-default pdf-view-display-size 'fit-page)
+       ;; automatically annotate highlights
+       (setq pdf-annot-activate-created-annotations t)
+       ;; use normal isearch
+       (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+       ;; turn off cua so copy works
+       (add-hook 'pdf-view-mode-hook (lambda () (cua-mode 0)
+                                       (display-line-numbers-mode 0)))
+       ;; more fine-grained zooming
+       (setq pdf-view-resize-factor 1.1))
+   #+end_src
+
+   
+* Mappings
+
+** Genral mappings
+
+   #+begin_src emacs-lisp
+     (nvmap :keymaps 'override :prefix "SPC"
+       "."  '(find-file :which-key "Find file")
+       "f e" '(treemacs :which-key "Open File Explorer" )
+       "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload Config"))
+   #+end_src
+
+** Vterm mappings
+
+   #+begin_src emacs-lisp
+     (evil-set-initial-state 'vterm-mode 'emacs)
+     (define-key vterm-mode-map (kbd "C-[") 'vterm-send-escape)
+     (define-key vterm-mode-map (kbd "C-c") #'vterm--self-insert)
+   #+end_src
+     
