@@ -24,19 +24,14 @@ config.ssh_domains = {
   },
 }
 
-if string.find(io.popen('uname'):read('*a'), 'Darwin') then
-    config.default_prog = {'/opt/homebrew/bin/fish'}
-elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
-    config.default_prog = {'/usr/bin/fish'}
-end
 config.automatically_reload_config = true
 config.front_end = "WebGpu"
-config.term = "screen-256color"
+config.term = "xterm-256color"
 local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/wezterm/colors.lua')
 
 -- Window
+
 config.font = wezterm.font {family = 'IosevkaTerm Nerd Font', weight = 'Medium'}
-config.font_size = 17
 config.freetype_load_target = "Light"
 config.colors = color_conf
 config.cursor_blink_rate = 0
@@ -55,7 +50,6 @@ config.show_new_tab_button_in_tab_bar = false
 
 -- Frame
 config.window_frame = window_conf
-config.window_decorations = "RESIZE"
 config.check_for_updates = false
 config.window_background_opacity = 1.0
 config.text_background_opacity = 1.0
@@ -71,4 +65,14 @@ end)
 
 -- local m = require "lua.mappings"
 -- config = mappings(config)
+if string.find(io.popen('uname'):read('*a'), 'Darwin') then
+    config.default_prog = {'/opt/homebrew/bin/fish'}
+    config.font_size = 14
+elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
+    config.default_prog = {'/usr/bin/fish'}
+    config.font_size = 15
+    config.window_decorations = "RESIZE"
+end
+
 return config
+
