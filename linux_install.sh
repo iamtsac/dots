@@ -9,7 +9,7 @@ sudo pacman -S --needed base-devel
 
 
 echo "Installing Essentials"
-sudo pacman -Sy neovim rustup fish tmux
+sudo pacman -Sy neovim rustup fish tmux wezterm
 
 echo "Setting up Rust"
 rustup default stable
