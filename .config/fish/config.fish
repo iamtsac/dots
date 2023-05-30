@@ -10,6 +10,7 @@ switch (uname)
     case Linux
         set PATH /usr/local/bin $PATH
         set CPPFLAGS -I/usr/include/:-I/usr/local/include $CPPFLAGS
+        set CPPFLAGS -I/opt/NOSALRO/include/ $CPPFLAGS
         set LDFLAGS -L/usr/lib/:-L/usr/local/lib/ $LDFLAGS
     case Darwin
         set PATH /opt/homebrew/bin $PATH
