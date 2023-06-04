@@ -1,8 +1,17 @@
-vim.g.indent_blankline_char = '│'
-vim.g.indent_blankline_context_char = '│'
+vim.opt.list = true
+vim.opt.listchars:append "space: , trail: , tab:   "
 
 require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    show_current_context = false,
+    char = '│',
+    show_end_of_line = false,
     show_current_context_start = false,
+    show_current_context_start_on_current_line = false,
+    -- space_char_blankline = '┃',
+    indent_level = 10,
+    show_first_indent_level=true,
+    show_current_context_start_on_current_line = false,
+    use_treesitter = false,
+    -- char_list = {'┃', '┃', '┃', '┃'},
+    -- char_list_blankline = {'┃', '┃', '┃', '┃'}
+    -- char_highlight_list = {'Error', 'Function'}
 }
