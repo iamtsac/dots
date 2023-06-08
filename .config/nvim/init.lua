@@ -23,7 +23,6 @@ vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.cmdheight = 0
-vim.opt.laststatus = 0
 
 -- window-local options
 vim.wo.number = true
@@ -53,3 +52,4 @@ vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
 require("custom")
 vim.cmd [[ colorscheme carbonfox ]]
+vim.opt.laststatus = 0
