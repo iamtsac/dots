@@ -52,4 +52,4 @@ vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
 require("custom")
 vim.cmd [[ colorscheme carbonfox ]]
-vim.opt.laststatus = 0
+-- vim.opt.laststatus =

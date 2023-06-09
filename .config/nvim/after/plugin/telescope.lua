@@ -1,6 +1,6 @@
 local previewers = require("telescope.previewers")
 
-require('telescope').setup{
+require('telescope').setup {
     defaults = {
         -- Default configuration for telescope goes here:
         -- config_key = value,
@@ -17,32 +17,38 @@ require('telescope').setup{
     pickers = {
         -- Default configuration for builtin pickers goes here:
         -- picker_name = {
-            --   picker_config_key = value,
-            --   ...
-            -- }
-            find_files = {
-                theme = "ivy",
-            },
-            buffers= {
-                theme = "ivy",
-            },
-            git_commits = {
-                theme = "ivy",
-            },
-            git_bcommits = {
-                theme = "ivy",
-            },
-            git_status = {
-                theme = "ivy",
-            },
-            -- Now the picker_config_key will be applied every time you call this
-            -- builtin picker
+        --   picker_config_key = value,
+        --   ...
+        -- }
+        find_files = {
+            theme = "ivy",
+            hidden = true,
+            no_ignore = true,
+            no_ignore_parents = true,
         },
-        extensions = {
-            -- Your extension configuration goes here:
-            -- extension_name = {
-                --   extension_config_key = value,
-                -- }
-                -- please take a look at the readme of the extension you want to configure
-            }
-        }
+        buffers = {
+            theme = "ivy",
+            ignore_current_buffer = true,
+            sort_lastused = true,
+            previewer = false
+        },
+        git_commits = {
+            theme = "ivy",
+        },
+        git_bcommits = {
+            theme = "ivy",
+        },
+        git_status = {
+            theme = "ivy",
+        },
+        -- Now the picker_config_key will be applied every time you call this
+        -- builtin picker
+    },
+    extensions = {
+        -- Your extension configuration goes here:
+        -- extension_name = {
+        --   extension_config_key = value,
+        -- }
+        -- please take a look at the readme of the extension you want to configure
+    }
+}

@@ -26,6 +26,9 @@ wk.register({
 { prefix = "<leader>" }
 )
 
+-- Generic
+vim.keymap.set({'i', 'n'}, '<Esc>', '<Esc>:nohls<CR>', { silent = true })
+
 --Files specific
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = "Find file" })
 vim.keymap.set('n', '<leader>.', builtin.find_files, { desc = "Find file" })
@@ -36,14 +39,24 @@ vim.keymap.set('n', '<leader>fe', "<cmd>NvimTreeFindFileToggle<cr>", { desc = "T
 vim.keymap.set('n', '<C-w>f', "<cmd>NvimTreeFocus<cr>", { desc = "Focus File Tree" })
 
 -- Buffers
-vim.keymap.set('n', '<leader>bs', builtin.buffers, { desc = "Buffer switch" })
-vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = "Buffer switch" })
+vim.keymap.set('n', '<leader>bs', builtin.buffers, { desc = "Buffer Switch" })
+vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = "Buffer Switch" })
+vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>', { silent = true , desc = "Buffer Next"})
+vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { silent = true, desc = "Buffer Previous" })
+vim.keymap.set('n', '<leader>bk', '<cmd>bd<CR>', { silent = true, desc = "Buffer Kill" })
+
+-- Buffers
+vim.keymap.set('n', '<leader>t', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
+vim.keymap.set('n', '<leader>tn', '<cmd>tabnext<CR>', { silent = true , desc = "Tab Next"})
+vim.keymap.set('n', '<leader>tp', '<cmd>tabprevious<CR>', { silent = true, desc = "Tab Previous" })
+vim.keymap.set('n', '<leader>tk', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
 vim.keymap.set('n', '<leader>hl', builtin.help_tags, { desc = "Help entries" })
 vim.keymap.set('n', '<leader>ht', builtin.colorscheme, { desc = "Change colorscheme" })
 vim.keymap.set('n', '<leader>hk', builtin.keymaps, { desc = "Show keybindings" })
 vim.keymap.set('n', '<leader>hm', builtin.man_pages, { desc = "Show Manpages" })
+vim.keymap.set('n', '<leader>hrr', '<cmd>so $HOME/.config/nvim/init.lua<cr>', { desc = "Reload Config" })
 
 -- Git
 vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = "Find file in repo"})

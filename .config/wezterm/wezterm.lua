@@ -67,8 +67,8 @@ end)
 -- config = mappings(config)
 if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     config.default_prog = {'/opt/homebrew/bin/fish'}
-    config.font_size = 14
-    config.window_decorations = "RESIZE"
+    config.font_size = 15.0
+    -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
     config.font_size = 15
