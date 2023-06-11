@@ -33,6 +33,7 @@ vim.keymap.set({'i', 'n'}, '<Esc>', '<Esc>:nohls<CR>', { silent = true })
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = "Find file" })
 vim.keymap.set('n', '<leader>.', builtin.find_files, { desc = "Find file" })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = "Grep in file" })
+vim.keymap.set('n', '<leader>fb', ":Telescope file_browser<cr>", { desc = "File Browser", noremap = true })
 
 -- File Tree
 vim.keymap.set('n', '<leader>fe', "<cmd>NvimTreeFindFileToggle<cr>", { desc = "Toggle File Tree" })
@@ -57,6 +58,7 @@ vim.keymap.set('n', '<leader>ht', builtin.colorscheme, { desc = "Change colorsch
 vim.keymap.set('n', '<leader>hk', builtin.keymaps, { desc = "Show keybindings" })
 vim.keymap.set('n', '<leader>hm', builtin.man_pages, { desc = "Show Manpages" })
 vim.keymap.set('n', '<leader>hrr', '<cmd>so $HOME/.config/nvim/init.lua<cr>', { desc = "Reload Config" })
+vim.keymap.set('n', '<leader>hp', '<cmd>Lazy<cr>', { desc = "Plugin Manager" })
 
 -- Git
 vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = "Find file in repo"})
