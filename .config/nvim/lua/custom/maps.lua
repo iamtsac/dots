@@ -47,7 +47,7 @@ vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { silent = true, desc = 
 vim.keymap.set('n', '<leader>bk', '<cmd>bd<CR>', { silent = true, desc = "Buffer Kill" })
 
 -- Buffers
-vim.keymap.set('n', '<leader>t', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
+vim.keymap.set('n', '<leader>tc', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
 vim.keymap.set('n', '<leader>tn', '<cmd>tabnext<CR>', { silent = true , desc = "Tab Next"})
 vim.keymap.set('n', '<leader>tp', '<cmd>tabprevious<CR>', { silent = true, desc = "Tab Previous" })
 vim.keymap.set('n', '<leader>tk', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
