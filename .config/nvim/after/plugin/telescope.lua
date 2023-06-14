@@ -23,8 +23,8 @@ require('telescope').setup {
 		find_files = {
 			theme = "ivy",
 			hidden = true,
-			no_ignore = true,
-			no_ignore_parents = true,
+			no_ignore = false,
+			no_ignore_parents = false,
 		},
 		buffers = {
 			theme = "ivy",
