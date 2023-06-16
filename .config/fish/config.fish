@@ -4,8 +4,6 @@ function fish_user_key_bindings
 end
 
 # Exports
-set PATH $HOME/.cargo/bin $PATH
-set PATH $HOME/.local/bin $PATH
 switch (uname)
     case Linux
         set PATH /usr/local/bin $PATH
@@ -17,6 +15,8 @@ switch (uname)
         set CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
         set LDFLAGS -L/opt/homebrew/lib $LDFLAGS
 end
+set PATH $HOME/.cargo/bin $PATH
+set PATH $HOME/.local/bin $PATH
 export PATH
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
