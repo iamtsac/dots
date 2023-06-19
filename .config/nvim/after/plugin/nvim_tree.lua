@@ -100,6 +100,7 @@ end
 require("nvim-tree").setup({
     on_attach = on_attach,
     hijack_cursor = true,
+    hijack_unnamed_buffer_when_opening = true,
     prefer_startup_root = true,
     sync_root_with_cwd = true,
 
