@@ -72,4 +72,7 @@ require("lazy").setup({
 	{
 		"nvim-lualine/lualine.nvim",
 	},
+        {
+            "shortcuts/no-neck-pain.nvim"
+        },
 })

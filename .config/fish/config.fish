@@ -8,8 +8,9 @@ switch (uname)
     case Linux
         set PATH /usr/local/bin $PATH
         set CPPFLAGS -I/usr/include/:-I/usr/local/include $CPPFLAGS
-        set CPPFLAGS -I/opt/NOSALRO/include/ $CPPFLAGS
-        set LDFLAGS -L/usr/lib/:-L/usr/local/lib/ $LDFLAGS
+        set CPPFLAGS -I/opt/NOSALRO/include/:-I/opt/include/ $CPPFLAGS
+        set LDFLAGS -L/usr/lib/:-L/usr/local/lib/:-L/opt/lib/ $LDFLAGS
+        set LD_LIBRARY_PATH /usr/lib/:/usr/local/lib/:/opt/lib/ $LD_LIBRARY_PATH
     case Darwin
         set PATH /opt/homebrew/bin $PATH
         set CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
@@ -18,6 +19,9 @@ end
 set PATH $HOME/.cargo/bin $PATH
 set PATH $HOME/.local/bin $PATH
 export PATH
+export LDFLAGS
+export CPPFLAGS
+export LD_LIBRARY_PATH
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 

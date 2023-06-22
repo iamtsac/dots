@@ -73,6 +73,8 @@ vim.keymap.set('n', '<leader>ml', builtin.marks, { desc = "Mark list" })
 -- later..
 vim.keymap.set('n', '<leader>z=', builtin.spell_suggest, { desc = "Spell suggestions" })
 
+-- Toggle
+
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, { desc = "Diagnostic floating" })
