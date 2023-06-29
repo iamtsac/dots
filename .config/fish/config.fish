@@ -43,4 +43,12 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 end
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+if test -f /home/tsak/.conda/bin/conda
+    eval /home/tsak/.conda/bin/conda "shell.fish" "hook" $argv | source
+end
+# <<< conda initialize <<<
+
 starship init fish | source
+

@@ -1,1 +1,5 @@
 *lazy-lock*
+.emacs.d/**
+!.emacs.d/custom.el
+!.emacs.d/config.org
+!.emacs.d/early-init.el
