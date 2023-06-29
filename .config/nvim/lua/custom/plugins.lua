@@ -70,7 +70,8 @@ require("lazy").setup({
 		"rcarriga/nvim-dap-ui"
 	},
 	{
-		"nvim-lualine/lualine.nvim",
+		-- "nvim-lualine/lualine.nvim",
+		-- "rebelot/heirline.nvim",
 	},
         {
             "shortcuts/no-neck-pain.nvim"

@@ -22,6 +22,7 @@ wk.register({
     g = { name = "Git" },
     h = { name = "Help/Misc" },
     m = { name = "Marks" },
+    TAB = { name = "Tabs" },
 },
 { prefix = "<leader>" }
 )
@@ -47,10 +48,10 @@ vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { silent = true, desc = 
 vim.keymap.set('n', '<leader>bk', '<cmd>bd<CR>', { silent = true, desc = "Buffer Kill" })
 
 -- Buffers
-vim.keymap.set('n', '<leader>tc', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
-vim.keymap.set('n', '<leader>tn', '<cmd>tabnext<CR>', { silent = true , desc = "Tab Next"})
-vim.keymap.set('n', '<leader>tp', '<cmd>tabprevious<CR>', { silent = true, desc = "Tab Previous" })
-vim.keymap.set('n', '<leader>tk', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
+vim.keymap.set('n', '<leader><TAB>c', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
+vim.keymap.set('n', '<leader><TAB>n', '<cmd>tabnext<CR>', { silent = true , desc = "Tab Next"})
+vim.keymap.set('n', '<leader><TAB>p', '<cmd>tabprevious<CR>', { silent = true, desc = "Tab Previous" })
+vim.keymap.set('n', '<leader><TAB>k', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
 vim.keymap.set('n', '<leader>hl', builtin.help_tags, { desc = "Help entries" })
