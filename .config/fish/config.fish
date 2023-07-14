@@ -8,9 +8,10 @@ switch (uname)
     case Linux
         set PATH /usr/local/bin $PATH
         set CPPFLAGS -I/usr/include/:-I/usr/local/include $CPPFLAGS
-        set CPPFLAGS -I/opt/NOSALRO/include/:-I/opt/include/ $CPPFLAGS
+        set CPPFLAGS -I/opt/include/ $CPPFLAGS
         set LDFLAGS -L/usr/lib/:-L/usr/local/lib/:-L/opt/lib/ $LDFLAGS
         set LD_LIBRARY_PATH /usr/lib/:/usr/local/lib/:/opt/lib/ $LD_LIBRARY_PATH
+        # set PYTHONPATH /opt/lib/python3.11/site-packages $PYTHONPATH
     case Darwin
         set PATH /opt/homebrew/bin $PATH
         set CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
@@ -19,6 +20,7 @@ end
 set PATH $HOME/.cargo/bin $PATH
 set PATH $HOME/.local/bin $PATH
 export PATH
+export PYTHONPATH
 export LDFLAGS
 export CPPFLAGS
 export LD_LIBRARY_PATH
@@ -43,12 +45,7 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 end
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f /home/tsak/.conda/bin/conda
-    eval /home/tsak/.conda/bin/conda "shell.fish" "hook" $argv | source
-end
-# <<< conda initialize <<<
+source $HOME/.config/fish/conf.d/local_conf.fish
 
 starship init fish | source
 
