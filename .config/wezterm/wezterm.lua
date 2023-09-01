@@ -31,7 +31,7 @@ local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/we
 
 -- Window
 
-config.font = wezterm.font {family = 'JetBrainsMono Nerd Font', weight = 'Regular'}
+config.font = wezterm.font {family = 'Iosevka Nerd Font', weight = 'Regular'}
 config.freetype_load_target = "Light"
 config.colors = color_conf
 config.cursor_blink_rate = 0

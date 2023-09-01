@@ -74,6 +74,6 @@ require("lazy").setup({
 		-- "rebelot/heirline.nvim",
 	},
         {
-            "shortcuts/no-neck-pain.nvim"
+            -- "shortcuts/no-neck-pain.nvim"
         },
 })
