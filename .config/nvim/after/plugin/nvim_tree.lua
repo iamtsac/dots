@@ -5,9 +5,6 @@ local function on_attach(bufnr)
 	return { desc = 'NvimTree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end
 
-
-    -- Default mappings. Feel free to modify or remove as you wish.
-    --
     -- BEGIN_DEFAULT_ON_ATTACH
     vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node,          opts('CD'))
     vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer,     opts('Open: In Place'))
@@ -81,10 +78,10 @@ local function on_attach(bufnr)
     vim.keymap.set('n', 'E', '', { buffer = bufnr })
     vim.keymap.del('n', 'E', { buffer = bufnr })
 
-
-    -- Mappings migrated from view.mappings.list
-    --
-    -- You will need to insert "your code goes here" for any mappings with a custom action_cb
+--
+--     -- Mappings migrated from view.mappings.list
+--     --
+--     -- You will need to insert "your code goes here" for any mappings with a custom action_cb
     vim.keymap.set('n', 'A', api.tree.expand_all, opts('Expand All'))
     vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
     vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts('CD'))
@@ -94,9 +91,9 @@ local function on_attach(bufnr)
     end, opts('Print Node Path'))
 
     vim.keymap.set('n', 'Z', api.node.run.system, opts('Run System'))
-
+--
 end
-
+--
 require("nvim-tree").setup({
     on_attach = on_attach,
     hijack_cursor = true,
@@ -115,12 +112,6 @@ require("nvim-tree").setup({
 	number = false,
 	relativenumber = false,
 	signcolumn = "yes",
-	mappings = {
-	    custom_only = false,
-	    list = {
-		-- user mappings go here
-	    },
-	},
 	float = {
 	    enable = false,
 	    quit_on_focus_loss = true,

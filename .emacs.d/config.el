@@ -104,23 +104,23 @@
 (use-package tree-sitter-langs
   :straight t)
 
-(use-package vterm
-  :straight t
-  :init
-  (add-hook 'vterm-mode-hook '(lambda ()
-                                (setq-local line-spacing nil)
-                                (display-line-numbers-mode 0)))
-  :config
-  (setq vterm-time-delay 0.01)
-  (setq vterm-shell "/opt/homebrew/bin/fish")
-  (setq vterm-use-vterm-prompt-detection-method t))
+;; (use-package vterm
+  ;; :straight t
+  ;; :init
+  ;; (add-hook 'vterm-mode-hook '(lambda ()
+                                ;; (setq-local line-spacing nil)
+                                ;; (display-line-numbers-mode 0)))
+  ;; :config
+  ;; (setq vterm-time-delay 0.01)
+  ;; (setq vterm-shell "/opt/homebrew/bin/fish")
+  ;; (setq vterm-use-vterm-prompt-detection-method t))
 
 (use-package ef-themes
   :straight (ef-themes :host github :repo "protesilaos/ef-themes"))
 
 (load-theme 'ef-autumn t)
 
-(set-face-attribute 'default nil :font "IosevkaTerm Nerd Font" :height 170 :weight 'semibold)
+(set-face-attribute 'default nil :font "Iosevka Nerd Font" :height 170 :weight 'semibold)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -152,12 +152,11 @@
 (setq auto-revert-verbose nil)
 (blink-cursor-mode -1)
 
-(use-package tramp :straight t)
+;;(use-package tramp :straight t)
 
 (use-package hungry-delete :straight (hungry-delete :host github :repo "nflath/hungry-delete") :init (hungry-delete-mode 1))
 
 (use-package org
-  :straight t
   :mode (("\\.org\\'" . org-mode))
   :config
   (progn (setq org-adapt-indentation "headline-data")))
@@ -187,6 +186,6 @@
   "f e" '(treemacs :which-key "Open File Explorer" )
   "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload Config"))
 
-(evil-set-initial-state 'vterm-mode 'emacs)
-(define-key vterm-mode-map (kbd "C-[") 'vterm-send-escape)
-(define-key vterm-mode-map (kbd "C-c") #'vterm--self-insert)
+;; (evil-set-initial-state 'vterm-mode 'emacs)
+;; (define-key vterm-mode-map (kbd "C-[") 'vterm-send-escape)
+;; (define-key vterm-mode-map (kbd "C-c") #'vterm--self-insert)
