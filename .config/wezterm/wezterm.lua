@@ -31,7 +31,7 @@ local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/we
 
 -- Window
 
-config.font = wezterm.font {family = 'JetBrainsMono Nerd Font', weight = 'Regular'}
+config.font = wezterm.font {family = 'Iosevka Nerd Font', weight = 'Regular'}
 config.freetype_load_target = "Light"
 config.colors = color_conf
 config.cursor_blink_rate = 0
@@ -71,7 +71,11 @@ if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
+<<<<<<< HEAD
     config.font_size = 13
+=======
+    config.font_size = 14
+>>>>>>> ba4a42c225bd2674e3416d5477a055725cbfad10
     config.window_decorations = "NONE"
 end
 

@@ -54,7 +54,7 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 end
 
-source $HOME/.config/fish/conf.d/local_conf.fish
+# source $HOME/.config/fish/conf.d/local_conf.fish
 
 starship init fish | source
 
