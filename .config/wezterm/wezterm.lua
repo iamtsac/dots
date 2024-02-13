@@ -71,7 +71,7 @@ if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
-    config.font_size = 15
+    config.font_size = 13
     config.window_decorations = "NONE"
 end
 

@@ -35,30 +35,30 @@ require("lazy").setup({
 		"nvim-tree/nvim-web-devicons"
 	},
 	{
-		"nvim-tree/nvim-tree.lua"
+		-- "nvim-tree/nvim-tree.lua"
 	},
 	{
 		"numToStr/Comment.nvim"
 	},
 	{
-		"lukas-reineke/indent-blankline.nvim"
+		-- "lukas-reineke/indent-blankline.nvim"
 	},
 	{
 		"EdenEast/nightfox.nvim"
 	},
 	{
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"neovim/nvim-lspconfig",
+		-- "williamboman/mason.nvim",
+		-- "williamboman/mason-lspconfig.nvim",
+		-- "neovim/nvim-lspconfig",
 	},
 	{
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-		"hrsh7th/nvim-cmp",
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
+		-- "hrsh7th/cmp-nvim-lsp",
+		-- "hrsh7th/cmp-buffer",
+		-- "hrsh7th/cmp-path",
+		-- "hrsh7th/cmp-cmdline",
+		-- "hrsh7th/nvim-cmp",
+		-- "L3MON4D3/LuaSnip",
+		-- "saadparwaiz1/cmp_luasnip",
 	},
 	{
 		"luukvbaal/statuscol.nvim",
@@ -66,8 +66,8 @@ require("lazy").setup({
 		"lewis6991/gitsigns.nvim",
 	},
 	{
-		"mfussenegger/nvim-dap",
-		"rcarriga/nvim-dap-ui"
+		-- "mfussenegger/nvim-dap",
+		-- "rcarriga/nvim-dap-ui"
 	},
 	{
 		-- "nvim-lualine/lualine.nvim",
