@@ -7,10 +7,19 @@ end
 switch (uname)
     case Linux
         set PATH /usr/local/bin $PATH
-        set CPPFLAGS -I/usr/include/:-I/usr/local/include $CPPFLAGS
+        set CPPFLAGS -I/usr/include/ $CPPFLAGS
+        set CPPFLAGS -I/usr/local/include $CPPFLAGS
         set CPPFLAGS -I/opt/include/ $CPPFLAGS
-        set LDFLAGS -L/usr/lib/:-L/usr/local/lib/:-L/opt/lib/ $LDFLAGS
-        set LD_LIBRARY_PATH /usr/lib/:/usr/local/lib/:/opt/lib/ $LD_LIBRARY_PATH
+        set LDFLAGS -L/usr/lib/ $LDFLAGS
+        set LDFLAGS -L/usr/local/lib/ $LDFLAGS
+        set LDFLAGS -L/opt/lib/ $LDFLAGS
+        set LD_LIBRARY_PATH /usr/lib/ $LD_LIBRARY_PATH
+        set LD_LIBRARY_PATH /usr/local/lib/ $LD_LIBRARY_PATH
+        set LD_LIBRARY_PATH /opt/lib/ $LD_LIBRARY_PATH
+        set LD_LIBRARY_PATH /opt/libtorch/lib/ $LD_LIBRARY_PATH
+        set PATH /usr/local/cuda-11.7/bin $PATH
+        set LD_LIBRARY_PATH /usr/local/cuda-11.7/lib64 $LD_LIBRARY_PATH
+        set CUDA_HOME /usr/local/cuda
         # set PYTHONPATH /opt/lib/python3.11/site-packages $PYTHONPATH
     case Darwin
         set PATH /opt/homebrew/bin $PATH

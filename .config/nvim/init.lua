@@ -1,5 +1,5 @@
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1init
+-- vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 vim.opt.encoding = "utf-8"
 vim.opt.mouse = "a"
@@ -23,11 +23,13 @@ vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.cmdheight = 0
+vim.opt.laststatus = 2
 
 -- window-local options
 vim.wo.number = true
 vim.wo.numberwidth = 1
 vim.wo.signcolumn = "yes:1"
+vim.wo.wrap = false
 
 -- buffer-local options
 vim.bo.ai = true
@@ -50,6 +52,13 @@ vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
-require("custom")
-vim.cmd [[ colorscheme carbonfox ]]
--- vim.opt.laststatus =
+require "core/plugins"
+require "configs/treesitter"
+require "configs/telescope"
+
+vim.opt.background = "light"
+vim.cmd([[colorscheme modus_vivendi]])
+
+require "configs/highlights"
+require "core/keymaps"
+

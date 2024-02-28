@@ -16,6 +16,7 @@ rustup default stable
 export PATH=$HOME/.cargo/bin:$PATH
 
 echo "Install Rust apps"
-cargo install bat starship ripgrep exa paru
+cargo install bat starship ripgrep paru
+cargo install --git https://github.com/ogham/exa.git
 
 rm -rf $HOME/pkg/
