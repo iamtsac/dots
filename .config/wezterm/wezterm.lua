@@ -31,9 +31,10 @@ local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/we
 
 -- Window
 
-config.font = wezterm.font {family = 'Iosevka Nerd Font', weight = 'Regular'}
+config.font = wezterm.font {family = 'Iosevka Nerd Font', weight = 'Light'}
 config.freetype_load_target = "Light"
-config.colors = color_conf
+-- config.colors = color_conf
+config.color_scheme = 'Modus-Vivendi-Deuteranopia'
 config.cursor_blink_rate = 0
 
 -- Tab Bar
@@ -71,9 +72,11 @@ if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
-    config.font_size = 14
-    config.window_decorations = "NONE"
+    config.font_size = 13
+    config.window_decorations = "RESIZE"
 end
+
+
 
 return config
 
