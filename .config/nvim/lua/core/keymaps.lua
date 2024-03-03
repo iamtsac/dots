@@ -4,10 +4,10 @@ local ts_builtin = require('telescope.builtin')
 local function cat_table(x1, x2)
     local tmp = {}
     for k,v in pairs(x1) do
-	tmp[k] = v
+        tmp[k] = v
     end
     for k,v in pairs(x2) do
-	tmp[k] = v
+        tmp[k] = v
     end
     return tmp
 end
@@ -35,7 +35,7 @@ vim.keymap.set('n', '<leader>fg', ts_builtin.live_grep, { desc = "Grep in file" 
 -- vim.keymap.set('n', '<leader>fb', ":Telescope file_browser<cr>", { desc = "File Browser", noremap = true })
 
 -- Buffers
-vim.keymap.set('n', '<leader>\\', ts_builtin.buffers, { desc = "Buffer Switch" })
+vim.keymap.set('n', '<leader>,', ts_builtin.buffers, { desc = "Buffer Switch" })
 vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>', { silent = true , desc = "Buffer Next"})
 vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { silent = true, desc = "Buffer Previous" })
 vim.keymap.set('n', '<leader>bk', '<cmd>bd<CR>', { silent = true, desc = "Buffer Kill" })
