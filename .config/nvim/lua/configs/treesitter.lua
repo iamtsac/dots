@@ -1,5 +1,3 @@
-local actions = require "telescope.actions"
-
 require'nvim-treesitter.configs'.setup {
     ensure_installed = {"c", "cpp", "python", "lua", "markdown"},
     auto_install = true,
@@ -23,14 +21,5 @@ require'nvim-treesitter.configs'.setup {
     },
     indent = {
         enable = true
-    },
-    pickers = {
-        buffers = {
-            mappings = {
-                i = {
-                    ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
-                }
-            }
-        }
     },
 }
