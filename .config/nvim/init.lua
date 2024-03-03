@@ -7,8 +7,6 @@ vim.opt.backspace = "indent,eol,start"
 vim.opt.updatetime = 1000
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-vim.opt.smarttab = true
-vim.opt.shiftwidth = 4
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -24,6 +22,11 @@ vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.cmdheight = 0
 vim.opt.laststatus = 2
+vim.opt.tabstop = 8
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.smartindent = true
 
 -- window-local options
 vim.wo.number = true
@@ -34,10 +37,6 @@ vim.wo.wrap = false
 -- buffer-local options
 vim.bo.ai = true
 vim.bo.si = true
-vim.bo.expandtab = true
-vim.bo.tabstop = 8
-vim.bo.softtabstop = 4
-vim.bo.cindent = true
 vim.bo.swapfile = false
 vim.bo.textwidth = 80
 vim.bo.swapfile = false
