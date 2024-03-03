@@ -1,3 +1,4 @@
 linux_install.sh
 .config/kitty
 .git
+.gitignore
