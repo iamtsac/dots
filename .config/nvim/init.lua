@@ -59,5 +59,6 @@ vim.opt.background = "light"
 vim.cmd([[colorscheme modus_vivendi]])
 
 require "configs/highlights"
+require "configs/gitsigns"
 require "core/keymaps"
 
