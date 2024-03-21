@@ -67,5 +67,6 @@ vim.cmd([[colorscheme modus_vivendi]])
 require "configs/highlights"
 require "configs/gitsigns"
 require "configs/comment"
+require "configs/formatter"
 require "core/keymaps"
 

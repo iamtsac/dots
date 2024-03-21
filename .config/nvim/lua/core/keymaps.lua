@@ -1,6 +1,7 @@
 local wk = require("which-key")
 local ts_builtin = require('telescope.builtin')
 local gs = require('gitsigns')
+local conf = require('conform')
 
 local function cat_table(x1, x2)
     local tmp = {}
@@ -47,6 +48,7 @@ vim.keymap.set({'i', 'n'}, '<Esc>', '<Esc>:nohls<CR>', { silent = true })
 --Files specific
 vim.keymap.set('n', '<leader>ff', ts_builtin.fd, { desc = "Find file" })
 vim.keymap.set('n', '<leader>fg', ts_builtin.live_grep, { desc = "Grep in file" })
+vim.keymap.set('n', '=', conf.format, { desc = "Format file" })
 -- vim.keymap.set('n', '<leader>fb', ":Telescope file_browser<cr>", { desc = "File Browser", noremap = true })
 
 -- Buffers
@@ -76,7 +78,7 @@ vim.keymap.set('n', '<leader>gs', ts_builtin.git_status, { desc = "Status" })
 vim.keymap.set('n', '<leader>gcr', ts_builtin.git_commits, { desc = "Commit history" })
 vim.keymap.set('n', '<leader>gcb', ts_builtin.git_bcommits, { desc = "File's commit history" })
 vim.keymap.set('n', '<leader>gd', custom_diff, { desc = "Diff file" })
-vim.keymap.set('n', '<leader>gb', function() gs.blame_line{full=true} end, { desc = "Diff file" })
+vim.keymap.set('n', '<leader>gb', function() gs.blame_line{full=true} end, { desc = "Line blame" })
 
 -- Marks
 vim.keymap.set('n', '<leader>ml', ts_builtin.marks, { desc = "Mark list" })
