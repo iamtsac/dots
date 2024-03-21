@@ -51,6 +51,12 @@ vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
+
 require "core/plugins"
 require "configs/treesitter"
 require "configs/telescope"
