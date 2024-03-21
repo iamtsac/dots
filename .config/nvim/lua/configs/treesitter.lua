@@ -1,6 +1,8 @@
 require'nvim-treesitter.configs'.setup {
-    ensure_installed = {"c", "cpp", "python", "lua", "markdown"},
-    auto_install = true,
+    ensure_installed = {"cpp", "python", "lua"},
+    auto_install = false,
+    sync_install = true,
+    ignore_install = {"tmux"},
     highlight = {
         enable = true,
         disable = {},

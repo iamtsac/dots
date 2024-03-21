@@ -4,12 +4,9 @@ local function get_color(group, attr)
     return fn.synIDattr(fn.synIDtrans(fn.hlID(group)), attr)
 end
 
-vim.api.nvim_set_hl(0, "LineNr", { bg = nil, ctermbg = nil, default = true })
+-- vim.api.nvim_set_hl(0, "LineNr", { guibg = nil, ctermbg = nil})
+-- vim.api.nvim_set_hl(0, "WhichKey", { bg = nil, ctermbg = nil, default = true })
 
--- local bg = get_color("@constructor", "fg#")
--- local fg = get_color("TroubleCount", "bg#")
--- 
--- vim.api.nvim_set_hl(0, "TelescopeNormal", { fg = fg, bg = bg  })
--- vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = fg, bg = bg })
--- vim.api.nvim_set_hl(0, "TelescopePreview", { fg  = fg, bg = bg })
--- vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = fg, bg = bg })
+vim.cmd([[hi! LineNr guibg=none ctermbg=none]])
+vim.cmd([[hi! NormalFloat guibg=none ctermbg=none]])
+vim.cmd([[hi! WhichKeyFloat guibg=none ctermbg=none]])

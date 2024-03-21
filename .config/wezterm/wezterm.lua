@@ -26,7 +26,7 @@ config.ssh_domains = {
 
 config.automatically_reload_config = true
 config.front_end = "WebGpu"
-config.term = "xterm-256color"
+config.term = "screen-256color"
 local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/wezterm/colors.lua')
 
 -- Window

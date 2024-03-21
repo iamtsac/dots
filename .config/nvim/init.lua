@@ -17,7 +17,7 @@ vim.opt.errorbells = false
 vim.opt.visualbell = false
 vim.opt.autoread = true
 vim.opt.backup = false
-vim.opt.timeoutlen = 500
+vim.opt.timeoutlen = 0
 vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
 vim.opt.cmdheight = 0
@@ -26,7 +26,7 @@ vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = true
+vim.opt.smartindent = false
 
 -- window-local options
 vim.wo.number = true
@@ -42,7 +42,6 @@ vim.bo.textwidth = 80
 vim.bo.swapfile = false
 
 -- global variables
-vim.g.mapleader = " " -- g -> let g:...
 vim.opt.list = true
 vim.g.netrw_liststyle = 0
 vim.g.netrw_banner = 0
@@ -61,10 +60,11 @@ require "core/plugins"
 require "configs/treesitter"
 require "configs/telescope"
 
-vim.opt.background = "light"
+vim.opt.background = "dark"
 vim.cmd([[colorscheme modus_vivendi]])
 
 require "configs/highlights"
 require "configs/gitsigns"
+require "configs/comment"
 require "core/keymaps"
 
