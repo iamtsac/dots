@@ -30,7 +30,8 @@ vim.opt.smartindent = false
 
 -- window-local options
 vim.wo.number = true
-vim.wo.numberwidth = 1
+vim.wo.relativenumber = true
+vim.wo.numberwidth = 4
 vim.wo.signcolumn = "yes:1"
 vim.wo.wrap = false
 

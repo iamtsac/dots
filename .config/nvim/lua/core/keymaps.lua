@@ -1,5 +1,6 @@
 local wk = require("which-key")
 local ts_builtin = require('telescope.builtin')
+local gs = require('gitsigns')
 
 local function cat_table(x1, x2)
     local tmp = {}
@@ -10,6 +11,21 @@ local function cat_table(x1, x2)
         tmp[k] = v
     end
     return tmp
+end
+
+local custom_diff = function()
+    if vim.wo.diff then
+        local buffers = vim.api.nvim_list_bufs()
+        for _, bufnr in ipairs(buffers) do
+            -- Check if the buffer name starts with 'gitsigns:/'
+            local bufname = vim.api.nvim_buf_get_name(bufnr)
+            if bufname:match('^gitsigns:/') then
+                vim.api.nvim_buf_delete(bufnr, { force = true })
+            end
+        end
+    else
+        gs.diffthis()
+    end
 end
 
 vim.g.mapleader = " "
@@ -39,11 +55,11 @@ vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>', { silent = true , desc = "Bu
 vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { silent = true, desc = "Buffer Previous" })
 vim.keymap.set('n', '<leader>bk', '<cmd>bd<CR>', { silent = true, desc = "Buffer Kill" })
 
--- Buffers
-vim.keymap.set('n', '<leader><TAB>c', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
+-- Tabs
+vim.keymap.set('n', '<leader><TAB>+', '<cmd>tabnew<CR>', { silent = true, desc = "Tab New" })
 vim.keymap.set('n', '<leader><TAB>n', '<cmd>tabnext<CR>', { silent = true , desc = "Tab Next"})
 vim.keymap.set('n', '<leader><TAB>p', '<cmd>tabprevious<CR>', { silent = true, desc = "Tab Previous" })
-vim.keymap.set('n', '<leader><TAB>k', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
+vim.keymap.set('n', '<leader><TAB>c', '<cmd>tabclose<CR>', { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
 vim.keymap.set('n', '<leader>hl', ts_builtin.help_tags, { desc = "Help entries" })
@@ -55,10 +71,12 @@ vim.keymap.set('n', '<leader>hp', '<cmd>Lazy<cr>', { desc = "Plugin Manager" })
 
 -- Git
 vim.keymap.set('n', '<leader>gf', ts_builtin.git_files, { desc = "Find file in repo"})
-vim.keymap.set('n', '<leader>gb', ts_builtin.git_branches, { desc = "Branches" })
+vim.keymap.set('n', '<leader>gB', ts_builtin.git_branches, { desc = "Branches" })
 vim.keymap.set('n', '<leader>gs', ts_builtin.git_status, { desc = "Status" })
 vim.keymap.set('n', '<leader>gcr', ts_builtin.git_commits, { desc = "Commit history" })
 vim.keymap.set('n', '<leader>gcb', ts_builtin.git_bcommits, { desc = "File's commit history" })
+vim.keymap.set('n', '<leader>gd', custom_diff, { desc = "Diff file" })
+vim.keymap.set('n', '<leader>gb', function() gs.blame_line{full=true} end, { desc = "Diff file" })
 
 -- Marks
 vim.keymap.set('n', '<leader>ml', ts_builtin.marks, { desc = "Mark list" })
