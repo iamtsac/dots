@@ -15,22 +15,21 @@ end
 vim.g.mapleader = " "
 
 -- Regster categories in which_key
--- wk.register({
---     f = { name = "File" },
---     b = { name = "Buffer" },
---     g = { name = "Git" },
---     h = { name = "Help/Misc" },
---     m = { name = "Marks" },
---     TAB = { name = "Tabs" },
--- },
---     { prefix = "<leader>" }
--- )
+wk.register({
+    f = { name = "File" },
+    b = { name = "Buffer" },
+    g = { name = "Git" },
+    h = { name = "Help/Misc" },
+    m = { name = "Marks" },
+    TAB = { name = "Tabs" },
+},
+    { prefix = "<leader>" })
 
 -- Generic
 vim.keymap.set({'i', 'n'}, '<Esc>', '<Esc>:nohls<CR>', { silent = true })
 
 --Files specific
-vim.keymap.set('n', '<leader>.', ts_builtin.fd, { desc = "Find file" })
+vim.keymap.set('n', '<leader>ff', ts_builtin.fd, { desc = "Find file" })
 vim.keymap.set('n', '<leader>fg', ts_builtin.live_grep, { desc = "Grep in file" })
 -- vim.keymap.set('n', '<leader>fb', ":Telescope file_browser<cr>", { desc = "File Browser", noremap = true })
 
