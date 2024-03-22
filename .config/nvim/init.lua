@@ -68,5 +68,6 @@ require "configs/highlights"
 require "configs/gitsigns"
 require "configs/comment"
 require "configs/formatter"
+require "configs/harpoon"
 require "core/keymaps"
 
