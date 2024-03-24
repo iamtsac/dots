@@ -15,13 +15,14 @@ require'nvim-treesitter.configs'.setup {
         -- end,
         additional_vim_regex_highlighting = false,
     },
-    incremental_selection = { 
-        enable = true 
+    incremental_selection = {
+        enable = true
     },
-    textobjects = { 
-        enable = true 
+    textobjects = {
+        enable = true
     },
     indent = {
-        enable = true
+        enable = true,
+        disable = { "cpp" }
     },
 }

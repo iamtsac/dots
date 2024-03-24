@@ -1,8 +1,8 @@
 local wk = require("which-key")
 local ts_builtin = require('telescope.builtin')
 local gs = require('gitsigns')
-local conf = require('conform')
 local harpoon = require("harpoon")
+local conform = require("conform")
 
 local function cat_table(x1, x2)
     local tmp = {}
@@ -49,8 +49,7 @@ vim.keymap.set({'i', 'n'}, '<Esc>', '<Esc>:nohls<CR>', { silent = true })
 --Files specific
 vim.keymap.set('n', '<leader>ff', ts_builtin.fd, { desc = "Find file" })
 vim.keymap.set('n', '<leader>fg', ts_builtin.live_grep, { desc = "Grep in file" })
-vim.keymap.set('n', '=', conf.format, { desc = "Format file" })
--- vim.keymap.set('n', '<leader>fb', ":Telescope file_browser<cr>", { desc = "File Browser", noremap = true })
+vim.keymap.set({ 'n', 'v' }, '=', function() conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 }) end, { desc = "Format file" })
 
 -- Buffers
 vim.keymap.set('n', '<leader>,', ts_builtin.buffers, { desc = "Buffer Switch" })
@@ -100,6 +99,12 @@ vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end, { desc
 -- vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
 -- vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 
+--[[ vim.api.nvim_create_autocmd('FileType', {
+    pattern = {'cpp', 'h', 'hpp', 'cc', 'c'},
+    callback = function()
+        vim.keymap.set("n", "=", ":w<CR>:silent !clang-format -i --style=file %<CR>", { silent = true, desc = "Format file" , buffer = true})
+    end
+}) ]]
 
 -- Netwr
 vim.api.nvim_create_autocmd('FileType', {

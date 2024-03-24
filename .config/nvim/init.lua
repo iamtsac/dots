@@ -26,7 +26,6 @@ vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = false
 
 -- window-local options
 vim.wo.number = true
@@ -37,7 +36,7 @@ vim.wo.wrap = false
 
 -- buffer-local options
 vim.bo.ai = true
-vim.bo.si = true
+vim.bo.si = false
 vim.bo.swapfile = false
 vim.bo.textwidth = 80
 vim.bo.swapfile = false
@@ -51,11 +50,10 @@ vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*" },
-  command = [[%s/\s\+$//e]],
-})
-
+-- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+--   pattern = { "*" },
+--   command = [[%s/\s\+$//e]],
+-- })
 
 require "core/plugins"
 require "configs/treesitter"
@@ -67,7 +65,8 @@ vim.cmd([[colorscheme modus_vivendi]])
 require "configs/highlights"
 require "configs/gitsigns"
 require "configs/comment"
-require "configs/formatter"
 require "configs/harpoon"
+require "configs/mason"
+require "configs/conform"
 require "core/keymaps"
 
