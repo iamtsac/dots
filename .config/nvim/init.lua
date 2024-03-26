@@ -25,7 +25,7 @@ vim.opt.laststatus = 2
 vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+vim.opt.expandtab = false
 
 -- window-local options
 vim.wo.number = true

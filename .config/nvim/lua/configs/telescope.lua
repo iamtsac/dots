@@ -83,6 +83,7 @@ require('telescope').setup{
             theme = "ivy",
             ignore_current_buffer = true,
             sort_lastused = true,
+            sort_mru = true,
             previewer = false,
             mappings = {
                 i = {
