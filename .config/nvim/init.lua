@@ -68,5 +68,7 @@ require "configs/comment"
 require "configs/harpoon"
 require "configs/mason"
 require "configs/conform"
+require "configs/oil"
 require "core/keymaps"
+require "configs/lualine"
 
