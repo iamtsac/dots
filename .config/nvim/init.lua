@@ -25,7 +25,7 @@ vim.opt.laststatus = 2
 vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = false
+vim.opt.expandtab = true
 
 -- window-local options
 vim.wo.number = true
@@ -36,7 +36,7 @@ vim.wo.wrap = false
 
 -- buffer-local options
 vim.bo.ai = true
-vim.bo.si = false
+vim.bo.si = true
 vim.bo.swapfile = false
 vim.bo.textwidth = 80
 vim.bo.swapfile = false
