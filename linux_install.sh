@@ -19,6 +19,12 @@ sh autogen.sh
 sudo make install
 cd ..
 
+echo "Installing Ranger"
+git clone https://github.com/ranger/ranger
+cd ranger
+sudo python setup.py install --optimize=1 --record=install_log.txt --prefix=/usr/
+cd ..
+
 echo "Setting up Rust"
 rustup default stable
 export PATH=$HOME/.cargo/bin:$PATH
