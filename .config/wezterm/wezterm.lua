@@ -11,27 +11,16 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.ssh_domains = {
-  {
-    -- This name identifies the domain
-    name = 'ailab',
-    -- The hostname or address to connect to. Will be used to match settings
-    -- from your ssh config file
-    remote_address = '150.140.142.98',
-    -- The username to use on the remote host
-    username = 'tsak',
-    multiplexing = 'WezTerm',
-  },
-}
-
 config.automatically_reload_config = true
 config.front_end = "WebGpu"
 config.term = "screen-256color"
 local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/wezterm/colors.lua')
 
 -- Window
-
-config.font = wezterm.font {family = 'Iosevka Nerd Font', weight = 'Light'}
+config.font = wezterm.font_with_fallback {
+    { family = 'JetBrainsMono Nerd Font', weight = 'Medium' },
+    { family = 'Hack Nerd Font', weight = 'Bold' },
+    }
 config.freetype_load_target = "Light"
 -- config.colors = color_conf
 config.color_scheme = 'Modus-Vivendi-Deuteranopia'
@@ -68,7 +57,7 @@ end)
 -- config = mappings(config)
 if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     config.default_prog = {'/opt/homebrew/bin/fish'}
-    config.font_size = 14.0
+    config.font_size = 13.5
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
