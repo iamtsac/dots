@@ -29,7 +29,7 @@ vim.opt.expandtab = true
 
 -- window-local options
 vim.wo.number = true
-vim.wo.relativenumber = true
+vim.wo.relativenumber = false
 vim.wo.numberwidth = 1
 vim.wo.signcolumn = "yes:1"
 vim.wo.wrap = false
@@ -37,8 +37,7 @@ vim.wo.wrap = false
 -- buffer-local options
 vim.bo.ai = true
 vim.bo.si = true
-vim.bo.swapfile = false
-vim.bo.textwidth = 80
+vim.bo.textwidth = 0
 vim.bo.swapfile = false
 
 -- global variables
@@ -59,7 +58,7 @@ require "core/plugins"
 require "configs/treesitter"
 require "configs/telescope"
 
-vim.opt.background = "dark"
+-- vim.opt.background = "dark"
 vim.cmd([[colorscheme modus_vivendi]])
 
 require "configs/highlights"
