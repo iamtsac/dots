@@ -26,6 +26,7 @@ vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+vim.opt.cursorline = true
 
 -- window-local options
 vim.wo.number = true
@@ -58,8 +59,8 @@ require "core/plugins"
 require "configs/treesitter"
 require "configs/telescope"
 
--- vim.opt.background = "dark"
-vim.cmd([[colorscheme modus_vivendi]])
+vim.opt.background = "dark"
+vim.cmd([[colorscheme codedark]])
 
 require "configs/highlights"
 require "configs/gitsigns"
@@ -69,5 +70,5 @@ require "configs/mason"
 require "configs/conform"
 require "configs/oil"
 require "core/keymaps"
-require "configs/lualine"
+-- require "configs/lualine"
 

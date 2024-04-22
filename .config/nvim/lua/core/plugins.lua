@@ -26,6 +26,9 @@ require("lazy").setup({
 		lazy = false,
 		priority = 1000,
 	},
+        {
+            "tomasiser/vim-code-dark"
+        },
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.5",

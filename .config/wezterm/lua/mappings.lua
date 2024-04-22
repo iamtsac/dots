@@ -1,4 +1,17 @@
 local wezterm = require "wezterm"
+
+local wezterm = require 'wezterm'
+
+wezterm.on('toggle-colorscheme', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.color_scheme then
+    overrides.color_scheme = 'Builtin Solarized Light'
+  else
+    overrides.color_scheme = nil
+  end
+  window:set_config_overrides(overrides)
+end)
+
 function mappings(config)
     config.leader = { key = 'b', mods = 'CTRL', timeout_milliseconds = 1000 }
     config.keys = {
@@ -15,6 +28,11 @@ function mappings(config)
 	    mods = 'LEADER',
 	    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
 	},
+        {
+            key = 'e',
+            mods = 'LEADER',
+            action = wezterm.action.EmitEvent 'toggle-colorscheme',
+        },
 	{
 	    key = 'x',
 	    mods = 'LEADER',
