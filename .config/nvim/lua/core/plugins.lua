@@ -22,14 +22,6 @@ require("lazy").setup({
 		build = ":TSUpdate",
 	},
 	{
-		"miikanissi/modus-themes.nvim",
-		lazy = false,
-		priority = 1000,
-	},
-        {
-            "tomasiser/vim-code-dark"
-        },
-	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.5",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -64,5 +56,16 @@ require("lazy").setup({
 	'nvim-lualine/lualine.nvim',
 	dependencies = { 'nvim-tree/nvim-web-devicons' }
 	},
+	{
+		"miikanissi/modus-themes.nvim",
+		lazy = false,
+		priority = 1000,
+	},
+        {
+            "tomasiser/vim-code-dark"
+        },
+        {
+            "blazkowolf/gruber-darker.nvim"
+        },
 })
 

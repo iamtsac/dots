@@ -60,7 +60,7 @@ require "configs/treesitter"
 require "configs/telescope"
 
 vim.opt.background = "dark"
-vim.cmd([[colorscheme codedark]])
+vim.cmd([[colorscheme gruber-darker]])
 
 require "configs/highlights"
 require "configs/gitsigns"
