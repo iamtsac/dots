@@ -24,14 +24,14 @@ config.font = wezterm.font_with_fallback {
 config.freetype_load_target = "Light"
 -- config.colors = color_conf
 -- config.color_scheme = 'Modus-Vivendi-Deuteranopia'
-config.color_scheme = 'Vs Code Dark+ (Gogh)'
+config.color_scheme = 'Gruber (base16)'
 config.cursor_blink_rate = 10
 
 -- Tab Bar
 wezterm.on('update-right-status', function(window, pane)
   window:set_left_status ' '
 end)
-config.tab_bar_at_bottom = true
+config.tab_bar_at_bottom = false
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
 config.tab_max_width = 100
@@ -58,16 +58,19 @@ end)
 -- config = mappings(config)
 
 if string.find(io.popen('uname'):read('*a'), 'Darwin') then
+    local main_resolution = tonumber(io.popen('system_profiler SPDisplaysDataType | grep Resolution | awk \'{print $2}\' | head -n 1'):read('*a'))
     config.default_prog = {'/opt/homebrew/bin/fish'}
-    config.font_size = 13.5
+    if main_resolution > 3000 then 
+        config.font_size = 17.0
+    else
+        config.font_size = 13.0
+    end
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
     config.font_size = 13
     config.window_decorations = "RESIZE"
 end
-
-
 
 return config
 
