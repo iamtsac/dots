@@ -24,7 +24,7 @@ config.font = wezterm.font_with_fallback {
 config.freetype_load_target = "Light"
 -- config.colors = color_conf
 -- config.color_scheme = 'Modus-Vivendi-Deuteranopia'
-config.color_scheme = 'Gruber (base16)'
+config.color_scheme = 'Moonfly (Gogh)'
 config.cursor_blink_rate = 10
 
 -- Tab Bar

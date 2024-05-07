@@ -11,15 +11,15 @@ end
 local colors = {
 	bg = get_color("Normal", "bg"),
 	fg = get_color("Normal", "fg"),
-	yellow = get_color("healthWarning", "fg"),
-	cyan = get_color("Label", "fg"),
-	darkblue = get_color("String", "fg"),
-	green = get_color("healthSuccess", "fg"),
-	orange = "#FF8800",
-	violet = get_color("Statement", "fg"),
-	magenta = get_color("Statement", "fg"),
-	blue = get_color("Directory", "fg"),
-	red = get_color("healthError", "fg"),
+	yellow = get_color("DiagnosticWarn", "fg"),
+	cyan = get_color("Identifier", "fg"),
+	darkblue = get_color("Structure", "fg"),
+	green = get_color("String", "fg"),
+	orange = get_color("Constant", "fg"),
+	violet = get_color("Character", "fg"),
+	magenta = get_color("qFileName", "fg"),
+	blue = get_color("Function", "fg"),
+	red = get_color("Boolean", "fg"),
 }
 
 local conditions = {
@@ -99,9 +99,9 @@ ins_left({
 		local mode_color = {
 			n = colors.red,
 			i = colors.green,
-			v = colors.blue,
-			[""] = colors.blue,
-			V = colors.blue,
+			v = colors.yellow,
+			[""] = colors.yellow,
+			V = colors.yellow,
 			c = colors.magenta,
 			no = colors.red,
 			s = colors.orange,
@@ -132,7 +132,7 @@ ins_left({
 ins_left({
 	"filename",
 	cond = conditions.buffer_not_empty,
-	color = { fg = colors.magenta, gui = "bold" },
+	color = { fg = colors.blue, gui = "bold" },
 })
 
 ins_left({ "location" })

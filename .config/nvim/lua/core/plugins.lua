@@ -62,10 +62,10 @@ require("lazy").setup({
 		priority = 1000,
 	},
         {
-            "tomasiser/vim-code-dark"
+            "blazkowolf/gruber-darker.nvim"
         },
         {
-            "blazkowolf/gruber-darker.nvim"
+            "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000
         },
 })
 

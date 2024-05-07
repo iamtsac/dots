@@ -20,7 +20,7 @@ vim.opt.backup = false
 vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 0
 vim.opt.writebackup = false
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
 vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
@@ -60,7 +60,7 @@ require "configs/treesitter"
 require "configs/telescope"
 
 vim.opt.background = "dark"
-vim.cmd([[colorscheme gruber-darker]])
+vim.cmd.colorscheme "moonfly"
 
 require "configs/highlights"
 require "configs/gitsigns"
@@ -70,5 +70,4 @@ require "configs/mason"
 require "configs/conform"
 require "configs/oil"
 require "core/keymaps"
--- require "configs/lualine"
-
+require "configs/lualine"
