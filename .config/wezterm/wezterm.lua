@@ -13,7 +13,7 @@ end
 
 config.automatically_reload_config = true
 config.front_end = "WebGpu"
-config.term = "screen-256color"
+config.term = "xterm-256color"
 local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/wezterm/colors.lua')
 
 -- Window
