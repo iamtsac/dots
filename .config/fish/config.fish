@@ -16,11 +16,9 @@ switch (uname)
         set LD_LIBRARY_PATH /usr/lib/ $LD_LIBRARY_PATH
         set LD_LIBRARY_PATH /usr/local/lib/ $LD_LIBRARY_PATH
         set LD_LIBRARY_PATH /opt/lib/ $LD_LIBRARY_PATH
-        set LD_LIBRARY_PATH /opt/libtorch/lib/ $LD_LIBRARY_PATH
-        set PATH /usr/local/cuda-11.7/bin $PATH
-        set LD_LIBRARY_PATH /usr/local/cuda-11.7/lib64 $LD_LIBRARY_PATH
-        set CUDA_HOME /usr/local/cuda
-        # set PYTHONPATH /opt/lib/python3.11/site-packages $PYTHONPATH
+        set PATH /opt/cuda/bin $PATH
+        set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
+        set CUDA_HOME /opt/cuda
     case Darwin
         set PATH /opt/homebrew/bin $PATH
         set CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
@@ -41,12 +39,11 @@ set -U fish_greeting
 set -g COLORTERM truecolor
 set -g fish_term24bit 1
 set EDITOR nvim
-export NNN_TMPFILE=~/.config/nnn/.lastd
-export NNN_SSHFS='sshfs -o reconnect,idmap=user,cache_timeout=3600'
+set VISUAL nvim
 
 # Aliases
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-alias ls="exa --icons -l"
+alias ls="eza --icons -l"
 
 # Funcs
 
@@ -54,7 +51,6 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 end
 
-# source $HOME/.config/fish/conf.d/local_conf.fish
+source $HOME/.config/fish/conf.d/local_conf.fish
 
 starship init fish | source
-
