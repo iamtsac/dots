@@ -104,7 +104,7 @@ vim.keymap.set("n", "<leader>z=", ts_builtin.spell_suggest, { desc = "Spell sugg
 
 -- Harpoon
 vim.keymap.set("n", "<leader>ba", function()
-        harpoon:list():append()
+        harpoon:list():add()
 end, { desc = "Append to harpoon list" })
 vim.keymap.set("n", "<leader><", function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
