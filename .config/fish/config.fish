@@ -26,6 +26,7 @@ switch (uname)
 end
 set PATH $HOME/.cargo/bin $PATH
 set PATH $HOME/.local/bin $PATH
+set PATH $HOME/.conda/bin $PATH
 export PATH
 export PYTHONPATH
 export LDFLAGS
