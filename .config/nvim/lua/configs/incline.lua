@@ -22,10 +22,11 @@ local function get_git_diff(props)
         end
       end
       if #labels > 0 then
+        table.insert(labels, 1, {' ', guibg=colors.bg})
         table.insert(labels, {' '})
         config.window.padding.left = 0
       else 
-        config.window.padding.left = 1
+        config.window.padding.left = 0
       end
       return labels
 end
@@ -69,11 +70,27 @@ require('incline').setup {
           filename = '[No Name]'
       end
       local modified = vim.bo[props.buf].modified
-      return {
-        {get_git_diff(props)},
-        filename,
-        modified and { ' *', gui = 'bold' } or '',
-      }
+      if props.focused == true then
+          return {
+            {" ", guibg = colors.bg, guifg = colors.violet } ,
+            {" "} ,
+            {get_git_diff(props)},
+            filename,
+            modified and { ' 󰻃', gui = 'bold' } or '',
+            {" "} ,
+            {"", guibg = colors.bg, guifg = colors.violet } ,
+          }
+      else 
+          return {
+            {" ", guibg = colors.bg, guifg = colors.bg } ,
+            {" "} ,
+            {get_git_diff(props)},
+            filename,
+            modified and { ' 󰻃', gui = 'bold' } or '',
+            {" "} ,
+            {"", guibg = colors.bg, guifg = colors.bg } ,
+          }
+      end
       end,
   window = {
     margin = {
@@ -90,11 +107,11 @@ require('incline').setup {
       tabline = false,
       winbar = false
     },
-    padding = {left = 1, right = 1},
+    padding = {left = 0, right = 0},
     padding_char = " ",
     placement = {
       horizontal = "right",
-      vertical = "bottom"
+      vertical = "top"
     },
     width = "fit",
     winhighlight = {
