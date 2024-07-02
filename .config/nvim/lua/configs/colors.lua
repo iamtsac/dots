@@ -16,6 +16,7 @@ local colors = {
   magenta = get_color("qFileName", "fg"),
   blue = get_color("Function", "fg"),
   red = get_color("Boolean", "fg"),
+  gray = get_color("NormalFloatNC", "bg")
 }
 
 return colors
