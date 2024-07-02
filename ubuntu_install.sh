@@ -6,7 +6,7 @@ cd $HOME/pkg/
 
 echo "Installing Essentials"
 sudo apt update && sudo apt upgrade -y
-sudo apt install build-essential cmake stow ninja-build gettext unzip curl python3-dev python-is-python3 -y
+sudo apt install build-essential cmake stow ninja-build gettext unzip curl python3-dev python-is-python3 imagemagick -y
 
 echo "Installing Neovim"
 git clone https://github.com/neovim/neovim 
@@ -33,12 +33,7 @@ sudo make install
 cd ..
 
 echo "Installing Ranger"
-pip install ranger-fm
-git clone https://github.com/ranger/ranger
-cd ranger
-sudo python setup.py install --optimize=1 --record=install_log.txt --prefix=/usr/
-ranger --copy-config=all
-cd ..
+pip install -U git+https://github.com/ranger/ranger
 
 echo "Setting up Rust"
 # rustup default stable
