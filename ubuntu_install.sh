@@ -46,6 +46,5 @@ export PATH=$HOME/.cargo/bin:$PATH
 echo "Install Rust apps"
 cargo install bat starship ripgrep
 cargo install --git https://github.com/eza-community/eza
-cargo install --git https://github.com/Morganamilo/paru
 
 rm -rf $HOME/pkg/
