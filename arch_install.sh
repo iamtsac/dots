@@ -5,11 +5,10 @@ mkdir $HOME/pkg/
 cd $HOME/pkg/
 
 echo "Installing paru"
-sudo pacman -S --needed base-devel
-
+sudo pacman -Sy --needed base-devel cmake unzip ninja curl
 
 echo "Installing Essentials"
-sudo pacman -Sy neovim cargo fish wezterm
+sudo pacman -Sy cargo fish wezterm
 
 echo "Installing Tmux"
 git clone https://github.com/tmux/tmux.git
@@ -20,11 +19,8 @@ sudo make install
 cd ..
 
 echo "Installing Ranger"
-git clone https://github.com/ranger/ranger
-cd ranger
-sudo python setup.py install --optimize=1 --record=install_log.txt --prefix=/usr/
+pip install -U git+https://github.com/ranger/ranger
 ranger --copy-config=all
-cd ..
 
 echo "Setting up Rust"
 # rustup default stable
@@ -35,4 +31,5 @@ cargo install bat starship ripgrep
 cargo install --git https://github.com/eza-community/eza
 cargo install --git https://github.com/Morganamilo/paru
 
+paru -Sy neovim-git --noconfirm
 rm -rf $HOME/pkg/

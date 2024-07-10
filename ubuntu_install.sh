@@ -34,6 +34,7 @@ cd ..
 
 echo "Installing Ranger"
 pip install -U git+https://github.com/ranger/ranger
+ranger --copy-config=all
 
 echo "Setting up Rust"
 # rustup default stable
