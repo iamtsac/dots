@@ -12,7 +12,7 @@ if wezterm.config_builder then
 end
 
 config.automatically_reload_config = true
-config.front_end = "WebGpu"
+config.front_end = "Software"
 config.term = "xterm-256color"
 local colors, color_conf, window_conf = dofile(os.getenv('HOME') .. '/.config/wezterm/colors.lua')
 
@@ -61,10 +61,13 @@ if string.find(io.popen('uname'):read('*a'), 'Darwin') then
     local main_resolution = tonumber(io.popen('system_profiler SPDisplaysDataType | grep Resolution | awk \'{print $2}\' | head -n 1'):read('*a'))
     config.default_prog = {'/opt/homebrew/bin/fish'}
     if main_resolution > 3000 then 
-        config.font_size = 17.0
+        config.font_size = 17.5
+    elseif main_resolution == 1920 then 
+        config.font_size = 13.5
     else
-        config.font_size = 13.0
+        config.font_size = 12.5
     end
+    config.window_decorations = "TITLE | RESIZE"
     -- config.window_decorations = "RESIZE"
 elseif string.find(io.popen('uname'):read('*a'), 'Linux') then
     config.default_prog = {'/usr/bin/fish'}
