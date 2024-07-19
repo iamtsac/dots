@@ -45,13 +45,14 @@ end
 vim.g.mapleader = " "
 
 -- Regster categories in which_key
-wk.register({
-        f = { name = "File" },
-        b = { name = "Buffer" },
-        g = { name = "Git" },
-        h = { name = "Help/Misc" },
-        m = { name = "Marks" },
-        TAB = { name = "Tabs" },
+wk.add({
+    { "<leader>z", group = "Spelling", hidden = true },
+    { "<leader>b", group = "Buffer" },
+    { "<leader>f", group = "Files" },
+    { "<leader>g", group = "Git" },
+    { "<leader>h", group = "Help/Misc" },
+    { "<leader>m", group = "Marks" },
+    { "<leader>t", group = "Tabs" },
 }, { prefix = "<leader>" })
 
 -- Generic
@@ -72,10 +73,10 @@ vim.keymap.set("n", "<leader>bp", "<cmd>bprevious<CR>", { silent = true, desc = 
 vim.keymap.set("n", "<leader>bk", "<cmd>bd<CR>", { silent = true, desc = "Buffer Kill" })
 
 -- Tabs
-vim.keymap.set("n", "<leader><TAB>+", "<cmd>tabnew<CR>", { silent = true, desc = "Tab New" })
-vim.keymap.set("n", "<leader><TAB>n", "<cmd>tabnext<CR>", { silent = true, desc = "Tab Next" })
-vim.keymap.set("n", "<leader><TAB>p", "<cmd>tabprevious<CR>", { silent = true, desc = "Tab Previous" })
-vim.keymap.set("n", "<leader><TAB>c", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
+vim.keymap.set("n", "<leader>t+", "<cmd>tabnew<CR>", { silent = true, desc = "Tab New" })
+vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<CR>", { silent = true, desc = "Tab Next" })
+vim.keymap.set("n", "<leader>tp", "<cmd>tabprevious<CR>", { silent = true, desc = "Tab Previous" })
+vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
 vim.keymap.set("n", "<leader>hl", ts_builtin.help_tags, { desc = "Help entries" })
@@ -112,16 +113,16 @@ end, { desc = "Toggle harpoon list" })
 
 vim.keymap.set("n", "<leader>1", function()
         harpoon:list():select(1)
-end, { desc = "Go to harpoon buffer 1" })
+end, { desc = "" })
 vim.keymap.set("n", "<leader>2", function()
         harpoon:list():select(2)
-end, { desc = "Go to harpoon buffer 2" })
+end, { desc = "" })
 vim.keymap.set("n", "<leader>3", function()
         harpoon:list():select(3)
-end, { desc = "Go to harpoon buffer 3" })
+end, { desc = "" })
 vim.keymap.set("n", "<leader>4", function()
         harpoon:list():select(4)
-end, { desc = "Go to harpoon buffer 4" })
+end, { desc = "" })
 vim.keymap.set("n", "<leader>5", function()
         harpoon:list():select(5)
-end, { desc = "Go to harpoon buffer 5" })
+end, { desc = "" })

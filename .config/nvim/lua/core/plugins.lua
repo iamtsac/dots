@@ -14,6 +14,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{
 		"folke/which-key.nvim",
+                dependencies = { 'echasnovski/mini.icons', version = false },
+                opts = {
+                    preset='classic',
+                    filter = function(mapping)
+                         return mapping.desc and mapping.desc ~= ""
+                     end
+                },
 	},
 	{
 
