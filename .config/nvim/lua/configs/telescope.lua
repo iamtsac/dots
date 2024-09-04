@@ -21,12 +21,11 @@ local new_maker = function(filepath, bufnr, opts)
                     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
                 end)
             end
-        end
+        end,
     }):sync()
 end
 
-
-require('telescope').setup{
+require("telescope").setup({
     defaults = {
         -- Default configuration for telescope goes here:
         -- config_key = value,
@@ -43,7 +42,7 @@ require('telescope').setup{
                 ["<C-a>"] = actions.cycle_previewers_prev,
             },
             n = {
-                ["<C-Space>"] = action_layout.toggle_preview
+                ["<C-Space>"] = action_layout.toggle_preview,
             },
         },
         preview = {
@@ -53,7 +52,7 @@ require('telescope').setup{
     },
     pickers = {
         defaults = {
-            theme= "ivy",
+            theme = "ivy",
         },
         find_files = {
             theme = "ivy",
@@ -87,9 +86,9 @@ require('telescope').setup{
             previewer = false,
             mappings = {
                 i = {
-                    ["<c-k>"] = actions.delete_buffer + actions.move_to_top
-                }
-            }
+                    ["<c-k>"] = actions.delete_buffer + actions.move_to_top,
+                },
+            },
         },
         git_commits = {
             theme = "ivy",
@@ -110,5 +109,5 @@ require('telescope').setup{
         --   extension_config_key = value,
         -- }
         -- please take a look at the readme of the extension you want to configure
-    }
-}
+    },
+})

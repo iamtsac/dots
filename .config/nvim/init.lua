@@ -48,28 +48,21 @@ vim.g.netrw_banner = 0
 vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
-vim.opt.completeopt = {"menu", "menuone", "noselect"}
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
--- vim.api.nvim_create_autocmd({ "BufWritePre" }, {
---   pattern = { "*" },
---   command = [[%s/\s\+$//e]],
--- })
-
-require "core/plugins"
-require "configs/treesitter"
-require "configs/telescope"
+require("core/plugins")
+require("configs/treesitter")
+require("configs/telescope")
 
 vim.opt.background = "dark"
-vim.cmd.colorscheme "moonfly"
+vim.cmd.colorscheme("moonfly")
 
-require "configs/highlights"
-require "configs/gitsigns"
-require "configs/comment"
-require "configs/harpoon"
-require "configs/mason"
-require "configs/conform"
-require "configs/oil"
-require "core/keymaps"
--- require "configs/lualine"
-require "configs/incline"
--- require "configs/tabline"
+require("configs/highlights")
+require("configs/gitsigns")
+require("configs/comment")
+require("configs/harpoon")
+require("configs/mason")
+require("configs/conform")
+require("configs/oil")
+require("core/keymaps")
+require("configs/incline")

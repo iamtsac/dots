@@ -7,10 +7,10 @@ local conform = require("conform")
 local function cat_table(x1, x2)
     local tmp = {}
     for k, v in pairs(x1) do
-            tmp[k] = v
+        tmp[k] = v
     end
     for k, v in pairs(x2) do
-            tmp[k] = v
+        tmp[k] = v
     end
     return tmp
 end
@@ -36,7 +36,7 @@ local oil_custom = function()
         local bufname = vim.api.nvim_buf_get_name(bufnr)
         if bufname:match("^oil:/") then
             vim.api.nvim_buf_delete(bufnr, { force = true })
-                return
+            return
         end
     end
     vim.cmd("Oil")
@@ -62,7 +62,7 @@ vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
 vim.keymap.set("n", "<leader>ff", ts_builtin.fd, { desc = "Find file" })
 vim.keymap.set("n", "<leader>fg", ts_builtin.live_grep, { desc = "Grep in file" })
 vim.keymap.set({ "n", "v" }, "=", function()
-        conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
+    conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
 end, { desc = "Format file" })
 vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "Open file explorer" })
 
@@ -94,7 +94,7 @@ vim.keymap.set("n", "<leader>gcr", ts_builtin.git_commits, { desc = "Commit hist
 vim.keymap.set("n", "<leader>gcb", ts_builtin.git_bcommits, { desc = "File's commit history" })
 vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff file" })
 vim.keymap.set("n", "<leader>gb", function()
-        gs.blame_line({ full = true })
+    gs.blame_line({ full = true })
 end, { desc = "Line blame" })
 
 -- Marks
@@ -105,24 +105,24 @@ vim.keymap.set("n", "<leader>z=", ts_builtin.spell_suggest, { desc = "Spell sugg
 
 -- Harpoon
 vim.keymap.set("n", "<leader>ba", function()
-        harpoon:list():add()
+    harpoon:list():add()
 end, { desc = "Append to harpoon list" })
 vim.keymap.set("n", "<leader><", function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
+    harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "Toggle harpoon list" })
 
 vim.keymap.set("n", "<leader>1", function()
-        harpoon:list():select(1)
+    harpoon:list():select(1)
 end, { desc = "" })
 vim.keymap.set("n", "<leader>2", function()
-        harpoon:list():select(2)
+    harpoon:list():select(2)
 end, { desc = "" })
 vim.keymap.set("n", "<leader>3", function()
-        harpoon:list():select(3)
+    harpoon:list():select(3)
 end, { desc = "" })
 vim.keymap.set("n", "<leader>4", function()
-        harpoon:list():select(4)
+    harpoon:list():select(4)
 end, { desc = "" })
 vim.keymap.set("n", "<leader>5", function()
-        harpoon:list():select(5)
+    harpoon:list():select(5)
 end, { desc = "" })

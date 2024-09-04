@@ -1,8 +1,8 @@
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = {"cpp", "python", "lua"},
+require("nvim-treesitter.configs").setup({
+    ensure_installed = { "cpp", "python", "lua" },
     auto_install = false,
     sync_install = true,
-    ignore_install = {"tmux"},
+    ignore_install = { "tmux" },
     highlight = {
         enable = true,
         disable = {},
@@ -16,13 +16,13 @@ require'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = false,
     },
     incremental_selection = {
-        enable = true
+        enable = true,
     },
     textobjects = {
-        enable = true
+        enable = true,
     },
     indent = {
         enable = false,
-        disable = { "cpp" }
+        disable = { "cpp" },
     },
-}
+})
