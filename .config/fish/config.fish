@@ -19,6 +19,7 @@ switch (uname)
         set PATH /opt/cuda/bin $PATH
         set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
         set CUDA_HOME /opt/cuda
+        export CUDA_HOME
     case Darwin
         set PATH /opt/homebrew/bin $PATH
         set CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
@@ -33,14 +34,13 @@ export LDFLAGS
 export CPPFLAGS
 export LD_LIBRARY_PATH
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # Settings
 set -U fish_greeting
 set -g COLORTERM truecolor
 set -g fish_term24bit 1
-set EDITOR nvim
-set VISUAL nvim
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Aliases
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
@@ -52,6 +52,8 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
 end
 
-source $HOME/.config/fish/conf.d/local_conf.fish
+if test -e $HOME/.config/fish/conf.d/local_conf.fish
+    source $HOME/.config/fish/conf.d/local_conf.fish
+end
 
 starship init fish | source
