@@ -32,10 +32,6 @@ sh autogen.sh
 sudo make install
 cd ..
 
-echo "Installing Ranger"
-pip install -U git+https://github.com/ranger/ranger
-ranger --copy-config=all
-
 echo "Setting up Rust"
 # rustup default stable
 export PATH=$HOME/.cargo/bin:$PATH
@@ -43,5 +39,6 @@ export PATH=$HOME/.cargo/bin:$PATH
 echo "Install Rust apps"
 cargo install bat starship ripgrep
 cargo install --git https://github.com/eza-community/eza
+cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
 
 rm -rf $HOME/pkg/
