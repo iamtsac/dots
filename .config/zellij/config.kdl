@@ -136,11 +136,10 @@ plugins {
 
 on_force_close "quit"
 default_shell "fish"
+theme "tokyo-night-storm"
 
-// pane_frames: false
-// simplified_ui true
-// default_layout "compact"
-
+simplified_ui true
+pane_frames false
 
 ui {
     pane_frames {
@@ -149,7 +148,4 @@ ui {
     }
 }
 
-
-theme "dracula"
-pane_frames false
 default_mode "locked"
