@@ -102,7 +102,7 @@ keybinds clear-defaults=true {
         bind "o" { SearchToggleOption "WholeWord"; }
     }
     entersearch {
-        bind "Ctrl c" "Esc" { SwitchToMode "Scroll"; }
+        bind "Ctrl c" "Esc" { SwitchToMode "Locked"; }
         bind "Enter" { SwitchToMode "Search"; }
     }
     renametab {
@@ -111,7 +111,7 @@ keybinds clear-defaults=true {
     }
     renamepane {
         bind "Enter" { SwitchToMode "Locked"; }
-        bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
+        bind "Esc" { UndoRenamePane; SwitchToMode "Locked"; }
     }
     session {
         bind "Ctrl o" { SwitchToMode "Locked"; }
