@@ -52,6 +52,8 @@ keybinds clear-defaults=true {
 
         bind "N" "Tab" { MovePane; SwitchToMode "Locked"; }
         bind "P" { MovePaneBackwards; SwitchToMode "Locked"; }
+        bind "Ctrl p" { MoveTab "left"; SwitchToMode "Locked"; }
+        bind "Ctrl n" { MoveTab "right"; SwitchToMode "Locked"; }
         bind "H" { MovePane "Left"; SwitchToMode "Locked"; }
         bind "J" { MovePane "Down"; SwitchToMode "Locked"; }
         bind "K" { MovePane "Up"; SwitchToMode "Locked"; }
