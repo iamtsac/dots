@@ -38,7 +38,7 @@ keybinds clear-defaults=true {
         bind "f" { ToggleFloatingPanes; SwitchToMode "Locked"; }
         bind "F" { TogglePaneEmbedOrFloating; SwitchToMode "Locked"; }
         bind "$" { SwitchToMode "RenamePane"; PaneNameInput 0;}
-        bind "a" { ToggleTab; }
+        bind "a" { ToggleTab; SwitchToMode "Locked"; }
         bind "1" { GoToTab 1; SwitchToMode "Locked"; }
         bind "2" { GoToTab 2; SwitchToMode "Locked"; }
         bind "3" { GoToTab 3; SwitchToMode "Locked"; }
@@ -134,7 +134,6 @@ plugins {
     }
 }
 
-on_force_close "quit"
 default_shell "fish"
 theme "tokyo-night-storm"
 

@@ -15,10 +15,10 @@ config.automatically_reload_config = true
 config.term = "xterm-256color"
 
 -- Window
-config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" })
+config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" })
 config.front_end = "WebGpu"
 config.freetype_load_flags = "NO_HINTING"
-config.freetype_render_target = "HorizontalLcd"
+config.freetype_render_target = "Normal"
 
 config.bold_brightens_ansi_colors = false
 config.color_scheme = "Jellybeans (Gogh)"
