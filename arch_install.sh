@@ -19,7 +19,14 @@ cargo install bat starship ripgrep
 cargo install --git https://github.com/eza-community/eza
 cargo install --git https://github.com/Morganamilo/paru
 cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
+cargo install --locked zellij
 
 echo "Install neovim"
 paru -Sy neovim-git --noconfirm
+
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+mkdir -p $HOME/.local/bin/
+cp bin/micromamba $HOME/.local/bin/micromamba
+$HOME/.local/bin/micromamba shell init -s fish -r ~/.mamba
+
 rm -rf $HOME/pkg/
