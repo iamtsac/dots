@@ -1,4 +1,4 @@
-linux_install.sh
+arch_install.sh
 ubuntu_install.sh
 .config/kitty
 .git
