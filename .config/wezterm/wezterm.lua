@@ -15,10 +15,9 @@ config.automatically_reload_config = true
 config.term = "xterm-256color"
 
 -- Window
-config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" })
+config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Light"})
 config.front_end = "WebGpu"
-config.freetype_load_flags = "NO_HINTING"
-config.freetype_render_target = "Normal"
+config.freetype_render_target = 'Normal'
 
 config.bold_brightens_ansi_colors = false
 config.color_scheme = "Jellybeans (Gogh)"
@@ -55,7 +54,7 @@ if string.find(io.popen("uname"):read("*a"), "Darwin") then
     config.window_decorations = "TITLE | RESIZE"
 elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     config.default_prog = { "/usr/bin/fish" }
-    config.font_size = 13
+    config.font_size = 10
     config.window_decorations = "RESIZE"
 end
 

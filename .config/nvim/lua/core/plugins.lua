@@ -66,6 +66,11 @@ require("lazy").setup({
         priority = 1000,
     },
     {
+        "dgox16/oldworld.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+    {
         "b0o/incline.nvim",
         event = "VeryLazy",
     },

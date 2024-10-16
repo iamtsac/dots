@@ -55,8 +55,9 @@ require("configs/treesitter")
 require("configs/telescope")
 
 vim.opt.background = "dark"
-vim.cmd.colorscheme("moonfly")
+vim.cmd.colorscheme("oldworld")
 
+require("configs/incline")
 require("configs/highlights")
 require("configs/gitsigns")
 require("configs/comment")
@@ -65,4 +66,3 @@ require("configs/mason")
 require("configs/conform")
 require("configs/oil")
 require("core/keymaps")
-require("configs/incline")
