@@ -66,7 +66,7 @@ require("lazy").setup({
         priority = 1000,
     },
     {
-        "dgox16/oldworld.nvim",
+        "mellow-theme/mellow.nvim",
         lazy = false,
         priority = 1000,
     },
