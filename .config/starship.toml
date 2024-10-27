@@ -1,4 +1,5 @@
 format = """
+$conda\
 $username\
 $hostname\
 $directory\
@@ -7,7 +8,6 @@ $git_state\
 $git_status\
 $cmd_duration\
 $line_break\
-$python\
 $character"""
 
 add_newline = false
@@ -22,7 +22,7 @@ vimcmd_symbol = "[❮](green)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bright-black"
+style = "yellow"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
@@ -43,6 +43,6 @@ style = "bright-black"
 format = "[$duration]($style) "
 style = "yellow"
 
-[python]
-format = "[$virtualenv]($style) "
-style = "bright-black"
+[conda]
+symbol = '🐍'
+format = '\[[$environment $symbol]($style)\] '

@@ -19,8 +19,9 @@ config.font = wezterm.font("JetBrainsMono Nerd Font", { weight = "Light"})
 config.front_end = "WebGpu"
 config.freetype_render_target = 'Normal'
 
-config.bold_brightens_ansi_colors = false
-config.color_scheme = "Jellybeans (Gogh)"
+config.color_scheme_dirs = {'$HOME/.config/wezterm/colors/'}
+config.bold_brightens_ansi_colors = true
+config.color_scheme = "mellow"
 config.cursor_blink_rate = 10
 
 -- Tab Bar
