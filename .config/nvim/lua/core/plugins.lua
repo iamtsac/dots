@@ -60,13 +60,7 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     {
-        "bluz71/vim-moonfly-colors",
-        name = "moonfly",
-        lazy = false,
-        priority = 1000,
-    },
-    {
-        "mellow-theme/mellow.nvim",
+        "dgox16/oldworld.nvim",
         lazy = false,
         priority = 1000,
     },
