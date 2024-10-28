@@ -1,5 +1,4 @@
 format = """
-$conda\
 $username\
 $hostname\
 $directory\
@@ -7,6 +6,8 @@ $git_branch\
 $git_state\
 $git_status\
 $cmd_duration\
+$fill\
+$conda\
 $line_break\
 $character"""
 
@@ -46,3 +47,7 @@ style = "yellow"
 [conda]
 symbol = '🐍'
 format = '\[[$environment $symbol]($style)\] '
+
+[fill]
+symbol = ' '
+style = 'black'
