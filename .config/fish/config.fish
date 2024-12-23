@@ -6,16 +6,19 @@ end
 # Exports
 switch (uname)
     case Linux
-        set PATH /usr/local/bin $PATH
         set CPPFLAGS -I/usr/include/ $CPPFLAGS
-        set CPPFLAGS -I/usr/local/include $CPPFLAGS
-        set CPPFLAGS -I/opt/include/ $CPPFLAGS
         set LDFLAGS -L/usr/lib/ $LDFLAGS
-        set LDFLAGS -L/usr/local/lib/ $LDFLAGS
-        set LDFLAGS -L/opt/lib/ $LDFLAGS
         set LD_LIBRARY_PATH /usr/lib/ $LD_LIBRARY_PATH
+
+        set PATH /usr/local/bin $PATH
+        set CPPFLAGS -I/usr/local/include $CPPFLAGS
+        set LDFLAGS -L/usr/local/lib/ $LDFLAGS
         set LD_LIBRARY_PATH /usr/local/lib/ $LD_LIBRARY_PATH
+
+        set CPPFLAGS -I/opt/include/ $CPPFLAGS
+        set LDFLAGS -L/opt/lib/ $LDFLAGS
         set LD_LIBRARY_PATH /opt/lib/ $LD_LIBRARY_PATH
+
         set PATH /opt/cuda/bin $PATH
         set LD_LIBRARY_PATH /opt/cuda/lib64 $LD_LIBRARY_PATH
         set CUDA_HOME /opt/cuda
@@ -28,6 +31,7 @@ end
 set PATH $HOME/.cargo/bin $PATH
 set PATH $HOME/.npm/bin $PATH
 set PATH $HOME/.local/bin $PATH
+set PATH /opt/bin/ $PATH
 set PATH $HOME/.conda/bin $PATH
 export PATH
 export PYTHONPATH
