@@ -49,7 +49,7 @@ export VISUAL=nvim
 
 # Aliases
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-alias ls="eza --icons -l"
+alias ls="eza --icons -l --group-directories-first"
 
 # Funcs
 

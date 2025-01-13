@@ -12,7 +12,7 @@ if wezterm.config_builder then
 end
 
 config.automatically_reload_config = true
-config.term = "screen-256color"
+-- config.term = "screen-256color"
 
 if string.find(io.popen("uname"):read("*a"), "Linux") and os.getenv("XDG_SESSION_TYPE") == "wayland" then
     config.enable_wayland = true
@@ -21,15 +21,22 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") and os.getenv("XDG_SES
 end
 
 -- Window
-config.font = wezterm.font("JetBrainsMono Nerd Font", {weight = "Light"})
+config.font = wezterm.font("JetBrainsMono Nerd Font", {weight = "Regular"})
 config.front_end = "WebGpu"
-config.freetype_render_target = 'Normal'
-config.freetype_load_flags = 'NO_AUTOHINT'
+config.freetype_load_target = 'Light'
+config.freetype_render_target = 'Light'
+config.freetype_interpreter_version = 40
+config.foreground_text_hsb = {
+  hue = 1.0,
+  saturation = 1.0,
+  brightness = 1.3,
+}
+config.freetype_load_flags = 'DEFAULT'
 
 config.color_scheme_dirs = {'$HOME/.config/wezterm/colors/'}
 config.bold_brightens_ansi_colors = false
 config.color_scheme = "mellow"
-config.cursor_blink_rate = 10
+config.default_cursor_style = 'SteadyBlock'
 
 -- Tab Bar
 wezterm.on("update-right-status", function(window, pane)
@@ -57,7 +64,7 @@ if string.find(io.popen("uname"):read("*a"), "Darwin") then
     elseif main_resolution == 1920 then
         config.font_size = 13
     else
-        config.font_size = 12
+        config.font_size = 9
     end
     config.window_decorations = "TITLE | RESIZE"
 elseif string.find(io.popen("uname"):read("*a"), "Linux") then
@@ -65,9 +72,9 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
         io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
     )
     if main_resolution > 3000 then
-        config.font_size = 10
+        config.font_size = 11
     elseif main_resolution == 1920 then
-        config.font_size = 9
+        config.font_size = 10
     else
         config.font_size = 9
     end
