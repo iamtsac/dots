@@ -21,8 +21,8 @@ layout {
                 mode_normal  "#[bg=blue] "
                 mode_tmux    "#[bg=#ffc387] "
 
-                tab_normal "#[bg=colour0,fg=colour15]#[bg=colour15,fg=colour0]{index}#[bg=colour0,fg=colour15]#[bg=colour0,fg=colour15] {name}#[fg=colour0,bg=color15]"
-                tab_active "#[fg=colour3,bg=color0]#[bg=colour3,fg=colour0]{name} #[bg=colour3,fg=colour0]#[bg=colour0,fg=colour15]{index}#[bg=color0,fg=colour0]"
+                tab_normal " #[bg=colour0,fg=colour15]#[bg=colour15,fg=colour0]{index}#[bg=colour0,fg=colour15]#[bg=colour0,fg=colour15] {name}#[fg=colour0,bg=color15]"
+                tab_active " #[fg=colour3,bg=color0]#[bg=colour3,fg=colour0]{name} #[bg=colour3,fg=colour0]#[bg=colour0,fg=colour15]{index}#[bg=color0,fg=colour0]"
 
                 command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
                 command_git_branch_format      "#[fg=blue] {stdout} "
