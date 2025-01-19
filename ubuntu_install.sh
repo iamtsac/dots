@@ -31,7 +31,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export PATH=$HOME/.cargo/bin:$PATH
 
 echo "Install Rust apps"
-cargo install bat starship ripgrep
+cargo install bat starship ripgrep cargo-update
 cargo install --git https://github.com/eza-community/eza
 cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
 cargo install --locked zellij
