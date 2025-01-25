@@ -60,7 +60,7 @@ wk.add({
 vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
 
 --Files specific
-vim.keymap.set("n", "<leader>ff", ts_builtin.fd, { desc = "Find file" })
+vim.keymap.set("n", "<leader>ff", ts_builtin.find_files, { desc = "Find file" })
 vim.keymap.set("n", "<leader>fg", ts_builtin.live_grep, { desc = "Grep in file" })
 vim.keymap.set({ "n", "v" }, "=", function()
     conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })

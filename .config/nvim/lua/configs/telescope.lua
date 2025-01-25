@@ -27,9 +27,6 @@ end
 
 require("telescope").setup({
     defaults = {
-        -- Default configuration for telescope goes here:
-        -- config_key = value,
-        theme = "ivy",
         mappings = {
             i = {
                 -- map actions.which_key to <C-h> (default: <C-/>)
@@ -57,8 +54,14 @@ require("telescope").setup({
         find_files = {
             theme = "ivy",
             hidden = true,
+            find_command = {"rg", "--ignore", "--hidden", "--files"},
             no_ignore = false,
             no_ignore_parents = false,
+            previewer = true,
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         fd = {
             theme = "ivy",
@@ -68,15 +71,27 @@ require("telescope").setup({
             mappings = {
                 i = {},
             },
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         git_files = {
             theme = "ivy",
             hidden = true,
             no_ignore = false,
             no_ignore_parents = false,
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         live_grep = {
             theme = "ivy",
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         buffers = {
             theme = "ivy",
@@ -89,18 +104,38 @@ require("telescope").setup({
                     ["<c-k>"] = actions.delete_buffer + actions.move_to_top,
                 },
             },
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         git_commits = {
             theme = "ivy",
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         git_bcommits = {
             theme = "ivy",
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         git_status = {
             theme = "ivy",
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
         git_branches = {
             theme = "ivy",
+            layout_config = {
+                height = 0.45, -- Adjust the height of the ivy layout
+                prompt_position = "top",
+            },
         },
     },
     extensions = {
