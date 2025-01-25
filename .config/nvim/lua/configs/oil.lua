@@ -129,7 +129,7 @@ require("oil").setup({
     max_height = 0.8,
     border = "rounded",
     win_options = {
-      winblend = 15,
+      winblend = 5,
     },
     -- optionally override the oil buffers window title with custom function: fun(winid: integer): string
     get_win_title = nil,
@@ -153,7 +153,7 @@ require("oil").setup({
     end,
     -- Window-local options to use for preview window buffers
     win_options = {
-        winblend = 15,
+        winblend = 5,
     },
   },
   -- Configuration for the floating action confirmation window
