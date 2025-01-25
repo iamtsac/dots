@@ -3,6 +3,7 @@ local ts_builtin = require("telescope.builtin")
 local gs = require("gitsigns")
 local harpoon = require("harpoon")
 local conform = require("conform")
+local oil = require("oil")
 
 local function cat_table(x1, x2)
     local tmp = {}
@@ -64,7 +65,8 @@ vim.keymap.set("n", "<leader>fg", ts_builtin.live_grep, { desc = "Grep in file" 
 vim.keymap.set({ "n", "v" }, "=", function()
     conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
 end, { desc = "Format file" })
-vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "Open file explorer" })
+-- vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "Open file explorer" })
+vim.keymap.set("n", "<leader>fe", function() oil.open_float() end, { desc = "Open file explorer" })
 
 -- Buffers
 vim.keymap.set("n", "<leader>,", ts_builtin.buffers, { desc = "Buffer Switch" })

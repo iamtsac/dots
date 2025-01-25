@@ -8,7 +8,7 @@ end
 -- vim.cmd([[hi! EndOfBuffer guibg=none ctermbg=none]])
 -- vim.cmd([[hi! LineNr guibg=none ctermbg=none]])
 -- vim.cmd([[hi! CursorLineNr guifg=#ffffff]])
--- vim.cmd([[hi! NormalFloat guibg=none ctermbg=none]])
+vim.cmd([[hi! NormalFloat guibg=none ctermbg=none]])
 -- vim.cmd([[hi! TelescopeNormal guibg=none ctermbg=none]])
 -- vim.cmd([[hi! WhichKeyFloat guibg=none ctermbg=none]])
 -- vim.cmd([[hi! FloatBorder guibg=none ctermbg=none blend=100]])
