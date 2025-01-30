@@ -25,12 +25,6 @@ config.font = wezterm.font("JetBrainsMono Nerd Font", {weight = "Regular"})
 config.front_end = "WebGpu"
 config.freetype_load_target = 'Light'
 config.freetype_render_target = 'Light'
-config.freetype_interpreter_version = 40
-config.foreground_text_hsb = {
-  hue = 1.0,
-  saturation = 1.0,
-  brightness = 1.3,
-}
 config.freetype_load_flags = 'DEFAULT'
 
 config.color_scheme_dirs = {'$HOME/.config/wezterm/colors/'}
@@ -71,10 +65,10 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     local main_resolution = tonumber(
         io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
     )
-    if main_resolution > 3000 then
-        config.font_size = 11
-    elseif main_resolution == 1920 then
+    if main_resolution == 3840 then
         config.font_size = 10
+    elseif main_resolution == 1920 then
+        config.font_size = 9
     else
         config.font_size = 9
     end
