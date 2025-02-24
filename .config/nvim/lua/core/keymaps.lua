@@ -1,9 +1,9 @@
 local wk = require("which-key")
-local ts_builtin = require("telescope.builtin")
-local gs = require("gitsigns")
 local harpoon = require("harpoon")
 local conform = require("conform")
 local oil = require("oil")
+local snacks_opts = require("configs/snacks_configs").snacks_config()
+
 
 local function cat_table(x1, x2)
     local tmp = {}
@@ -60,16 +60,17 @@ wk.add({
 vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
 
 --Files specific
-vim.keymap.set("n", "<leader>ff", ts_builtin.find_files, { desc = "Find file" })
-vim.keymap.set("n", "<leader>fg", ts_builtin.live_grep, { desc = "Grep in file" })
+vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.files_opts) end, { desc = "Find file" })
+vim.keymap.set("n", "<leader>fg", function() Snacks.picker.grep() end, { desc = "Grep in file" })
+
 vim.keymap.set({ "n", "v" }, "=", function()
     conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
 end, { desc = "Format file" })
--- vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "Open file explorer" })
+
 vim.keymap.set("n", "<leader>fe", function() oil.open_float() end, { desc = "Open file explorer" })
 
 -- Buffers
-vim.keymap.set("n", "<leader>,", ts_builtin.buffers, { desc = "Buffer Switch" })
+vim.keymap.set("n", "<leader>,", function() Snacks.picker.buffers(snacks_opts.buffer_opts) end, { desc = "Buffer Switch" })
 vim.keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { silent = true, desc = "Buffer Next" })
 vim.keymap.set("n", "<leader>bp", "<cmd>bprevious<CR>", { silent = true, desc = "Buffer Previous" })
 vim.keymap.set("n", "<leader>bk", "<cmd>bd<CR>", { silent = true, desc = "Buffer Kill" })
@@ -81,29 +82,30 @@ vim.keymap.set("n", "<leader>tp", "<cmd>tabprevious<CR>", { silent = true, desc 
 vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
-vim.keymap.set("n", "<leader>hl", ts_builtin.help_tags, { desc = "Help entries" })
-vim.keymap.set("n", "<leader>ht", ts_builtin.colorscheme, { desc = "Change colorscheme" })
-vim.keymap.set("n", "<leader>hk", ts_builtin.keymaps, { desc = "Show keybindings" })
-vim.keymap.set("n", "<leader>hm", ts_builtin.man_pages, { desc = "Show Manpages" })
+vim.keymap.set("n", "<leader>hl", function() Snacks.picker.help() end, { desc = "Help entries" })
+vim.keymap.set("n", "<leader>ht", function() Snacks.picker.colorschemes() end, { desc = "Change colorscheme" })
+vim.keymap.set("n", "<leader>hk", function() Snacks.picker.keymaps() end, { desc = "Show keybindings" })
+vim.keymap.set("n", "<leader>hm", function() Snacks.picker.man() end, { desc = "Show Manpages" })
 vim.keymap.set("n", "<leader>hrr", "<cmd>so $HOME/.config/nvim/init.lua<cr>", { desc = "Reload Config" })
 vim.keymap.set("n", "<leader>hp", "<cmd>Lazy<cr>", { desc = "Plugin Manager" })
 
 -- Git
-vim.keymap.set("n", "<leader>gf", ts_builtin.git_files, { desc = "Find file in repo" })
-vim.keymap.set("n", "<leader>gB", ts_builtin.git_branches, { desc = "Branches" })
-vim.keymap.set("n", "<leader>gs", ts_builtin.git_status, { desc = "Status" })
-vim.keymap.set("n", "<leader>gcr", ts_builtin.git_commits, { desc = "Commit history" })
-vim.keymap.set("n", "<leader>gcb", ts_builtin.git_bcommits, { desc = "File's commit history" })
+vim.keymap.set("n", "<leader>gf", function() Snacks.picker.git_files() end, { desc = "Find file in repo" })
+vim.keymap.set("n", "<leader>gB", function() Snacks.picker.git_branches() end, { desc = "Branches" })
+vim.keymap.set("n", "<leader>gs", function() Snacks.picker.git_status() end, { desc = "Status" })
+vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Commit history" })
+vim.keymap.set("n", "<leader>glf", function() Snacks.picker.git_log_file() end, { desc = "File's commit history" })
 vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff file" })
-vim.keymap.set("n", "<leader>gb", function()
-    gs.blame_line({ full = true })
-end, { desc = "Line blame" })
+vim.keymap.set("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc = "Line blame" })
 
 -- Marks
-vim.keymap.set("n", "<leader>ml", ts_builtin.marks, { desc = "Mark list" })
+vim.keymap.set("n", "<leader>ml", function() Snacks.picker.marks() end, { desc = "Mark list" })
+
+-- Marks
+vim.keymap.set("n", "<leader>tz", function() Snacks.zen() end, { desc = "Mark list" })
 
 -- later..
-vim.keymap.set("n", "<leader>z=", ts_builtin.spell_suggest, { desc = "Spell suggestions" })
+vim.keymap.set("n", "<leader>z=", function() Snacks.picker.spelling() end, { desc = "Spell suggestions" })
 
 -- Harpoon
 vim.keymap.set("n", "<leader>ba", function()

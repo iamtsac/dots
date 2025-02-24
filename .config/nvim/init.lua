@@ -52,7 +52,6 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 require("core/plugins")
 require("configs/treesitter")
-require("configs/telescope")
 
 require("configs/colorscheme")
 require("configs/incline")
@@ -63,4 +62,5 @@ require("configs/harpoon")
 require("configs/mason")
 require("configs/conform")
 require("configs/oil")
+require("configs/snacks")
 require("core/keymaps")
