@@ -53,7 +53,8 @@ wk.add({
     { "<leader>g", group = "Git" },
     { "<leader>h", group = "Help/Misc" },
     { "<leader>m", group = "Marks" },
-    { "<leader>t", group = "Tabs" },
+    { "<leader>t", group = "Toggle" },
+    { "<leader><Tab>", group = "Tabs" },
 }, { prefix = "<leader>" })
 
 -- Generic
@@ -72,14 +73,14 @@ vim.keymap.set("n", "<leader>fe", function() oil.open_float() end, { desc = "Ope
 -- Buffers
 vim.keymap.set("n", "<leader>,", function() Snacks.picker.buffers(snacks_opts.buffer_opts) end, { desc = "Buffer Switch" })
 vim.keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { silent = true, desc = "Buffer Next" })
-vim.keymap.set("n", "<leader>bp", "<cmd>bprevious<CR>", { silent = true, desc = "Buffer Previous" })
+vim.keymap.set("n", "<leader>bp", function() Snacks.bufdelete() end, { silent = true, desc = "Buffer Previous" })
 vim.keymap.set("n", "<leader>bk", "<cmd>bd<CR>", { silent = true, desc = "Buffer Kill" })
 
 -- Tabs
-vim.keymap.set("n", "<leader>t+", "<cmd>tabnew<CR>", { silent = true, desc = "Tab New" })
-vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<CR>", { silent = true, desc = "Tab Next" })
-vim.keymap.set("n", "<leader>tp", "<cmd>tabprevious<CR>", { silent = true, desc = "Tab Previous" })
-vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
+vim.keymap.set("n", "<leader><Tab><Tab>", "<cmd>tabnew<CR>", { silent = true, desc = "Tab New" })
+vim.keymap.set("n", "<leader><Tab>n", "<cmd>tabnext<CR>", { silent = true, desc = "Tab Next" })
+vim.keymap.set("n", "<leader><Tab>p", "<cmd>tabprevious<CR>", { silent = true, desc = "Tab Previous" })
+vim.keymap.set("n", "<leader><Tab>c", "<cmd>tabclose<CR>", { silent = true, desc = "Tab Close" })
 
 -- Help/Misc
 vim.keymap.set("n", "<leader>hl", function() Snacks.picker.help() end, { desc = "Help entries" })
@@ -88,6 +89,11 @@ vim.keymap.set("n", "<leader>hk", function() Snacks.picker.keymaps() end, { desc
 vim.keymap.set("n", "<leader>hm", function() Snacks.picker.man() end, { desc = "Show Manpages" })
 vim.keymap.set("n", "<leader>hrr", "<cmd>so $HOME/.config/nvim/init.lua<cr>", { desc = "Reload Config" })
 vim.keymap.set("n", "<leader>hp", "<cmd>Lazy<cr>", { desc = "Plugin Manager" })
+
+-- Toggle
+vim.keymap.set("n", "<leader>tz", function() Snacks.zen() end, { desc = "Toggle zen mode" })
+vim.keymap.set("n", "<leader>tZ", function() Snacks.zen.zoom() end, { desc = "Toggle zoom" })
+-- vim.keymap.set("n", "<leader>td", function() Snacks.dim.enable(snacks_opts.dim) end, { desc = "Toggle dim" })
 
 -- Git
 vim.keymap.set("n", "<leader>gf", function() Snacks.picker.git_files() end, { desc = "Find file in repo" })
@@ -101,8 +107,6 @@ vim.keymap.set("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc
 -- Marks
 vim.keymap.set("n", "<leader>ml", function() Snacks.picker.marks() end, { desc = "Mark list" })
 
--- Marks
-vim.keymap.set("n", "<leader>tz", function() Snacks.zen() end, { desc = "Mark list" })
 
 -- later..
 vim.keymap.set("n", "<leader>z=", function() Snacks.picker.spelling() end, { desc = "Spell suggestions" })

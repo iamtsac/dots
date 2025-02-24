@@ -11,8 +11,14 @@ function M.snacks_config()
             width = 0,
             height = 0.4,
             border = "top",
-            title = " {title} {live} ",
+            title = " {title} {live} {flags}",
             title_pos = "center",
+            {
+                win = "input",
+                height = 1,
+                border = "bottom",
+                width = 0.,
+            },
             {
                 box = "horizontal",
                 {
@@ -31,13 +37,6 @@ function M.snacks_config()
                     },
                 },
             },
-            {
-                win = "input",
-                height = 1,
-                border = "top",
-                width = 0.,
-                title = "{flags}",
-            },
         },
     }
 
@@ -47,8 +46,8 @@ function M.snacks_config()
         cmd = "rg",
         show_empty = true,
         hidden = false,
-        ignored = true,
-        follow = true,
+        ignored = false,
+        follow = false,
         supports_live = true,
     }
 
@@ -185,6 +184,25 @@ function M.snacks_config()
                 snacks_main = true,
             },
         },
+    }
+
+    conf.dim = {
+      scope = {
+        min_size = 5,
+        max_size = 20,
+        siblings = true,
+      },
+      animate = {
+        enabled = false,
+        easing = "outQuad",
+        duration = {
+          step = 20, -- ms per step
+          total = 300, -- maximum duration
+        },
+      },
+      filter = function(buf)
+        return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ""
+      end
     }
 
     return conf

@@ -28,4 +28,5 @@ Snacks.setup({
     },
     picker = conf.picker,
     zen = conf.zen,
+    toggle = { enabled = true }
 })
