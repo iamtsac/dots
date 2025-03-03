@@ -71,6 +71,13 @@ function M.snacks_config()
     conf.picker = {
         enabled = true,
         layout = conf.picker_layout,
+        formatters = {
+            file = {
+                filename_first = true,
+                icon_width = 3,
+                truncate = 60,
+            },
+        },
         win = {
             input = {
                 keys = {
@@ -113,10 +120,10 @@ function M.snacks_config()
     conf.indent = {
         indent = {
             priority = 200,
-            enabled = true, -- enable indent guides
+            enabled = false, -- enable indent guides
             char = "│",
-            only_scope = true, -- only show indent guides of the scope
-            only_current = true, -- only show indent guides in the current window
+            only_scope = false, -- only show indent guides of the scope
+            only_current = false, -- only show indent guides in the current window
             hl = "SnacksIndent", ---@type string|string[] hl groups for indent guides
         },
         animate = {
@@ -187,22 +194,22 @@ function M.snacks_config()
     }
 
     conf.dim = {
-      scope = {
-        min_size = 5,
-        max_size = 20,
-        siblings = true,
-      },
-      animate = {
-        enabled = false,
-        easing = "outQuad",
-        duration = {
-          step = 20, -- ms per step
-          total = 300, -- maximum duration
+        scope = {
+            min_size = 5,
+            max_size = 20,
+            siblings = true,
         },
-      },
-      filter = function(buf)
-        return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ""
-      end
+        animate = {
+            enabled = false,
+            easing = "outQuad",
+            duration = {
+                step = 20, -- ms per step
+                total = 300, -- maximum duration
+            },
+        },
+        filter = function(buf)
+            return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ""
+        end,
     }
 
     return conf
