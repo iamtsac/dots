@@ -1,6 +1,5 @@
 arch_install.sh
 remote_install.sh
 ubuntu_install.sh
-.config/kitty
 .git
 .gitignore
