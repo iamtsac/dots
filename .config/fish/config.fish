@@ -69,5 +69,7 @@ if test -e $HOME/.config/fish/conf.d/local_conf.fish
     source $HOME/.config/fish/conf.d/local_conf.fish
 end
 
-lua $HOME/.config/kitty/configure.lua
+if not test -n $SSH_CLIENT
+    lua $HOME/.config/kitty/configure.lua
+end
 starship init fish | source
