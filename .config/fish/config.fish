@@ -71,4 +71,3 @@ end
 
 lua $HOME/.config/kitty/configure.lua
 starship init fish | source
-pixi completion --shell fish | source
