@@ -4,11 +4,11 @@ c.bg = "#131314"
 require("oldworld").setup({
     terminal_colors = true, -- enable terminal colors
     styles = { -- You can pass the style using the format: style = true
-        comments = {}, -- style for comments
+        comments = { italic = true }, -- style for comments
         keywords = {}, -- style for keywords
         identifiers = {}, -- style for identifiers
-        functions = {italic=true, bold=true}, -- style for functions
-        variables = {bold=true}, -- style for variables
+        functions = {italic=false, bold=false}, -- style for functions
+        variables = {bold=false}, -- style for variables
         booleans = {}, -- style for booleans
     },
     integrations = { -- You can disable/enable integrations
@@ -42,6 +42,8 @@ require("oldworld").setup({
         TelescopePromptNormal = { fg = c.gray06, bg = c.gray01 },
         TelescopePromptCounter = { fg = c.gray04, bg = c.gray01 },
         TelescopeMatching = { fg = c.yellow, underline = true },
+
+        SnacksPickerMatch = { fg = c.yellow, underline = true },
     }
 })
 

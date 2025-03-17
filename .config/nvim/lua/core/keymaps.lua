@@ -107,7 +107,6 @@ vim.keymap.set("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc
 -- Marks
 vim.keymap.set("n", "<leader>ml", function() Snacks.picker.marks() end, { desc = "Mark list" })
 
-
 -- later..
 vim.keymap.set("n", "<leader>z=", function() Snacks.picker.spelling() end, { desc = "Spell suggestions" })
 

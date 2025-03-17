@@ -3,6 +3,13 @@ function fish_user_key_bindings
     fish_vi_key_bindings --no-erase insert
 end
 
+# if not set -q MONITOR_KITTY_CONFIG
+#     set -U MONITOR_KITTY_CONFIG 1
+#     while inotifywait -e close_write $HOME/.config/kitty/configure.lua
+#         lua $HOME/.config/kitty/configure.lua
+#     end > /dev/null 2>&1 &; disown
+# end
+
 # Exports
 switch (uname)
     case Linux
@@ -30,6 +37,7 @@ switch (uname)
 end
 set PATH $HOME/.cargo/bin $PATH
 set PATH $HOME/.npm/bin $PATH
+set PATH $HOME/.pixi/bin $PATH
 set PATH $HOME/.local/bin $PATH
 set PATH /opt/bin/ $PATH
 set PATH $HOME/.conda/bin $PATH
@@ -61,4 +69,6 @@ if test -e $HOME/.config/fish/conf.d/local_conf.fish
     source $HOME/.config/fish/conf.d/local_conf.fish
 end
 
+lua $HOME/.config/kitty/configure.lua
 starship init fish | source
+pixi completion --shell fish | source

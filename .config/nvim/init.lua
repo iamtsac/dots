@@ -1,5 +1,5 @@
--- vim.g.loaded_netrw = 1init
--- vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 vim.opt.encoding = "utf-8"
 vim.opt.mouse = "a"
@@ -26,13 +26,13 @@ vim.opt.tabstop = 8
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 
 -- window-local options
 vim.wo.number = true
 vim.wo.relativenumber = false
 vim.wo.numberwidth = 1
-vim.wo.signcolumn = "yes:1"
+vim.wo.signcolumn = "auto"
 vim.wo.wrap = false
 
 -- buffer-local options

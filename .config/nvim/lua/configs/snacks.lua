@@ -2,12 +2,11 @@ local Snacks = require("snacks")
 local conf = require("configs/snacks_configs").snacks_config()
 
 
-
 Snacks.setup({
     ---@type snacks.Config
     bigfile = { enabled = true },
     dashboard = { enabled = false },
-    explorer = { enabled = true },
+    explorer = { enabled = false },
     image = { enabled = true },
     indent = conf.indent,
     input = { enabled = true },
@@ -18,7 +17,7 @@ Snacks.setup({
     quickfile = { enabled = true },
     git = {enabled = true},
     scope = { enabled = true },
-    scroll = { enabled = false },
+    scroll = conf.scroll,
     statuscolumn = conf.statuscolumn,
     words = { enabled = true },
     styles = {
