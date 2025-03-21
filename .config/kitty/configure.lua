@@ -24,7 +24,7 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
         io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
     )
     if main_resolution == 3840 then
-        config.font_size = 10
+        config.font_size = 13
     elseif main_resolution == 1920 then
         config.font_size = 10
     else
@@ -39,15 +39,30 @@ end
 
 config.term = "xterm-kitty"
 
-config.font_family = "family='Iosevka Nerd Font'"
+-- config.font_family = "SFMono Nerd Font Mono"
+config.font_family = "Adwaita Mono"
 config.bold_font = "auto"
 config.italic_font = "auto"
 config.bold_italic_font = "auto"
+config.text_compositions_strategy = "platform"
 
 config.remember_window_size = "yes"
 config.hide_window_decorations = "yes"
-config.map = "kitty_mod+f5 load_config_file"
+
+config.clear_all_shortcuts = "no"
+
 config.kitty_mod = "super"
+
+config.map = {}
+config.map.load_config_file = "kitty_mod+f5"
+config.map.copy_to_clipboard = "ctrl+shift+c"
+config.map.new_tab = "kitty_mod+t"
+config.map.close_tab = "kitty_mod+w"
+config.map.next_tab = "ctrl+tab"
+config.map["change_font_size all +1"] = "ctrl+shift+equal"
+config.map["change_font_size all -1"] = "ctrl+shift+minus"
+config.map["change_font_size all 0"] = "ctrl+shift+0"
+
 
 config.tab_bar_style = "powerline"
 config.tab_bar_edge = "top"
@@ -76,7 +91,13 @@ config.color15 = "#cac9dd"
 kitty_conf_file = io.open(os.getenv("HOME") .. "/.config/kitty/kitty.conf", "w")
 io.output(kitty_conf_file)
 for k, v in pairs(config) do
-    io.write(k .. " " .. v .. "\n")
+    if k == "map" then
+        for km, vm in pairs(v) do
+            io.write(k .. " " .. vm .. " " .. km .. "\n")
+        end
+    else
+        io.write(k .. " " .. v .. "\n")
+    end
 end
 io.close(kitty_conf_file)
 
