@@ -31,10 +31,10 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") and os.getenv("XDG_SES
 end
 
 -- Window
-config.font = wezterm.font("Iosevka Nerd Font", {weight = "Regular"})
+config.font = wezterm.font("SFMono Nerd Font Mono", {weight = "Regular"})
 config.front_end = "WebGpu"
-config.freetype_load_target = 'Normal'
-config.freetype_load_flags = 'NO_HINTING'
+-- config.freetype_load_target = 'Normal'
+-- config.freetype_load_flags = 'NO_HINTING'
 config.font_shaper = 'Harfbuzz'
 
 config.color_scheme_dirs = {'$HOME/.config/wezterm/colors/'}
@@ -63,7 +63,7 @@ if string.find(io.popen("uname"):read("*a"), "Darwin") then
         io.popen("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1"):read("*a")
     )
     config.default_prog = { "/opt/homebrew/bin/fish" }
-    if main_resolution > 3000 then
+    if main_resolution == 3840 then
         config.font_size = 16
     elseif main_resolution == 1920 then
         config.font_size = 13
@@ -77,13 +77,10 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     )
     if main_resolution == 3840 then
         config.font_size = 11.5
-        config.dpi = 192
     elseif main_resolution == 1920 then
         config.font_size = 10
-        config.dpi = 96
     else
         config.font_size = 9
-        config.dpi = 96
     end
     config.default_prog = { "/usr/bin/fish" }
     config.window_decorations = "RESIZE"

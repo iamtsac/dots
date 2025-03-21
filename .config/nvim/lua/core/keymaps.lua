@@ -68,7 +68,7 @@ vim.keymap.set({ "n", "v" }, "=", function()
     conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
 end, { desc = "Format file" })
 
-vim.keymap.set("n", "<leader>fe", function() oil.open_float() end, { desc = "Open file explorer" })
+vim.keymap.set("n", "<leader>fe", function() oil.open() end, { desc = "Open file explorer" })
 
 -- Buffers
 vim.keymap.set("n", "<leader>,", function() Snacks.picker.buffers(snacks_opts.buffer_opts) end, { desc = "Buffer Switch" })

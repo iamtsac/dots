@@ -67,5 +67,10 @@ require("lazy").setup({
           "folke/snacks.nvim",
           priority = 1000,
           lazy = false,
+        },
+        {
+          "wtfox/jellybeans.nvim",
+          lazy = false,
+          priority = 1000,
         }
     })
