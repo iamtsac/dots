@@ -43,7 +43,6 @@ function M.snacks_config()
     conf.files_opts = {
         finder = "files",
         format = "file",
-        cmd = "rg",
         show_empty = true,
         hidden = false,
         ignored = false,
@@ -56,7 +55,7 @@ function M.snacks_config()
         format = "buffer",
         hidden = false,
         unloaded = true,
-        current = true,
+        current = false,
         sort_lastused = true,
         win = {
             input = {
@@ -73,7 +72,7 @@ function M.snacks_config()
         layout = conf.picker_layout,
         formatters = {
             file = {
-                filename_first = false,
+                filename_first = true,
                 icon_width = 3,
                 truncate = 60,
             },
@@ -104,7 +103,7 @@ function M.snacks_config()
 
     conf.statuscolumn = {
         enabled = true,
-        left = { "mark", "git" }, -- priority of signs on the left (high to low)
+        left = { "git", "mark" }, -- priority of signs on the left (high to low)
         right = { "fold", "sign" }, -- priority of signs on the right (high to low)
         folds = {
             open = false, -- show open fold icons

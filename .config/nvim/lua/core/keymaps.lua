@@ -59,6 +59,8 @@ wk.add({
 
 -- Generic
 vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz", { silent = true })
+vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz", { silent = true })
 
 --Files specific
 vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.files_opts) end, { desc = "Find file" })
@@ -118,18 +120,8 @@ vim.keymap.set("n", "<leader><", function()
     harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = "Toggle harpoon list" })
 
-vim.keymap.set("n", "<leader>1", function()
-    harpoon:list():select(1)
-end, { desc = "" })
-vim.keymap.set("n", "<leader>2", function()
-    harpoon:list():select(2)
-end, { desc = "" })
-vim.keymap.set("n", "<leader>3", function()
-    harpoon:list():select(3)
-end, { desc = "" })
-vim.keymap.set("n", "<leader>4", function()
-    harpoon:list():select(4)
-end, { desc = "" })
-vim.keymap.set("n", "<leader>5", function()
-    harpoon:list():select(5)
-end, { desc = "" })
+for i=1,9 do
+    vim.keymap.set("n", "<leader>" .. tostring(i), function()
+        harpoon:list():select(i)
+    end, { desc = "" })
+end

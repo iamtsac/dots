@@ -1,38 +1,52 @@
 -- vim.g.loaded_netrw = 1
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
+
 vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
-vim.opt.encoding = "utf-8"
-vim.opt.mouse = "a"
-vim.opt.backspace = "indent,eol,start"
-vim.opt.updatetime = 1000
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.incsearch = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.hidden = true
-vim.opt.clipboard = "unnamedplus"
-vim.opt.showcmd = true
-vim.opt.errorbells = false
-vim.opt.visualbell = false
-vim.opt.autoread = true
-vim.opt.backup = false
-vim.opt.timeoutlen = 500
-vim.opt.ttimeoutlen = 0
-vim.opt.writebackup = false
-vim.opt.cmdheight = 1
-vim.opt.laststatus = 0
-vim.opt.tabstop = 8
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.cursorline = false
+vim.o.termguicolors = true
+vim.o.encoding = "utf-8"
+vim.o.mouse = "a"
+vim.o.backspace = "indent,eol,start"
+vim.o.updatetime = 1000
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.incsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.hidden = true
+vim.o.clipboard = "unnamedplus"
+vim.o.showcmd = true
+vim.o.errorbells = false
+vim.o.visualbell = false
+vim.o.autoread = true
+vim.o.backup = false
+vim.o.timeoutlen = 500
+vim.o.ttimeoutlen = 0
+vim.o.writebackup = false
+vim.o.cmdheight = 0
+vim.o.laststatus = 3
+vim.o.tabstop = 8
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.cursorline = false
+vim.opt.fillchars = {
+  horiz = '━',
+  horizup = '┻',
+  horizdown = '┳',
+  vert = '┃',
+  vertleft  = '┫',
+  vertright = '┣',
+  verthoriz = '╋',
+}
 
 -- window-local options
 vim.wo.number = true
-vim.wo.relativenumber = false
-vim.wo.numberwidth = 1
-vim.wo.signcolumn = "auto"
+vim.wo.relativenumber = true
+vim.wo.numberwidth = 4
+vim.wo.signcolumn = "yes:2"
 vim.wo.wrap = false
 
 -- buffer-local options
@@ -49,18 +63,21 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.o.statusline = " "
 
 require("core/plugins")
 require("configs/treesitter")
+require("configs/snacks")
 
-require("configs/colorscheme")
-require("configs/incline")
-require("configs/highlights")
 require("configs/gitsigns")
 require("configs/comment")
 require("configs/harpoon")
 require("configs/mason")
 require("configs/conform")
 require("configs/oil")
-require("configs/snacks")
 require("core/keymaps")
+
+require("configs/colorscheme")
+require("configs/tabline")
+require("configs/incline")
+require("configs/highlights")

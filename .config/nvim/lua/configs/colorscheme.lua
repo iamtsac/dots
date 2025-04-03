@@ -1,10 +1,11 @@
 vim.opt.background = "dark"
 local c = require("oldworld.palette")
-c.bg = "#131314"
+c.bg = "#0D0D0D"
+c.fg = "#EEEEEE"
 require("oldworld").setup({
     terminal_colors = true, -- enable terminal colors
     styles = { -- You can pass the style using the format: style = true
-        comments = { italic = true }, -- style for comments
+        comments = { italic = true, bold = true }, -- style for comments
         keywords = {}, -- style for keywords
         identifiers = {}, -- style for identifiers
         functions = { italic = false, bold = false }, -- style for functions
@@ -34,52 +35,131 @@ require("oldworld").setup({
 
     highlight_overrides = {
         -- Normal = { bg = nil },
-        NormalFloat = { bg = nil },
+        -- NormalFloat = { bg = nil },
+        NormalNC = { bg = nil },
         SignColumn = { bg = nil },
-        TelescopeBorder = { fg = c.bg, bg = c.bg },
-        TelescopeNormal = { fg = c.fg, bg = c.bg },
-        TelescopePreviewTitle = { fg = c.black, bg = c.green, bold = true },
-        TelescopeResultsTitle = { fg = c.bg, bg = c.bg },
-        TelescopePromptTitle = { fg = c.black, bg = c.cyan, bold = true },
-        TelescopePromptBorder = { fg = c.gray01, bg = c.gray01 },
-        TelescopePromptNormal = { fg = c.gray06, bg = c.gray01 },
-        TelescopePromptCounter = { fg = c.gray04, bg = c.gray01 },
-        TelescopeMatching = { fg = c.yellow, underline = true },
+        LineNr = { fg = "#888888" },
 
-        SnacksPickerBorder = { fg = c.background, bg = c.background },
-        SnacksPickerInput = { fg = c.foreground, bg = c.gray0 },
+        SnacksPickerBorder = { fg = c.bg, bg = c.bg },
+        SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
         SnacksPickerInputBorder = { fg = c.gray0, bg = c.gray0 },
         SnacksPickerBoxBorder = { fg = c.gray0, bg = c.gray0 },
-        SnacksPickerTitle = { fg = c.background, bg = c.green },
+        SnacksPickerTitle = { fg = c.bg, bg = c.green },
         SnacksPickerBoxTitle = { fg = c.gray0, bg = c.green },
         SnacksPickerList = { bg = c.gray0 },
         SnacksPickerPrompt = { fg = c.red, bg = c.gray0 },
-        SnacksPickerPreviewTitle = { fg = c.background, bg = c.red },
-        SnacksPickerPreview = { bg = c.background },
-        SnacksPickerToggle = { bg = c.green, fg = c.background },
+        SnacksPickerPreviewTitle = { fg = c.bg, bg = c.red },
+        SnacksPickerPreview = { bg = c.bg },
+        SnacksPickerToggle = { bg = c.green, fg = c.bg },
+        SnacksPickerDir = { fg = c.purple },
+
+        TabLine = { bg = c.gray2, fg = c.fg },
+        TabLineFill = { bg = nil, fg = nil },
+        TabLineSel = { bg = c.blue, fg = c.bg },
+        ["@module.python"] = { link = "Type" }
     },
 })
---
--- require("jellybeans").setup({
---     style = "dark", -- "dark" or "light"
---     transparent = false,
---     italics = false,
---     flat_ui = true, -- toggles "flat UI" for pickers
---     plugins = {
---         all = false,
---         auto = true, -- will read lazy.nvim and apply the colors for plugins that are installed
---     },
---     on_highlights = function(hl, c)
---         -- hl.Constant = { fg = "#00ff00", bold = true }
---         -- hl.InclineNormal = { bg = "#00ff00", bold = true }
---     end,
---     on_colors = function(c)
---         -- local light_bg = "#ffffff"
---         -- local dark_bg = nil
---         c.background = dark_bg
---         c.float_bg = c.background
---         c.mine_shaft = "#1b1b1b"
---     end,
+
+-- local c = require("no-clown-fiesta.palette")
+-- require("no-clown-fiesta").setup({
+--   transparent = false, -- Enable this to disable the bg color
+--   styles = {
+--     -- You can set any of the style values specified for `:h nvim_set_hl`
+--     comments = {},
+--     functions = {},
+--     keywords = {},
+--     lsp = {},
+--     match_paren = {},
+--     type = { fg = c.red },
+--     variables = {},
+
+--   },
 -- })
 
-vim.cmd.colorscheme("oldworld")
+--[[ local c = require('nvim-tundra.palette.jungle')
+c.gray._900 = "#101010"
+require('nvim-tundra').setup({
+  transparent_background = false,
+  dim_inactive_windows = {
+    enabled = false,
+    color = nil,
+  },
+  sidebars = {
+    enabled = true,
+    color = nil,
+  },
+  editor = {
+    search = {},
+    substitute = {},
+  },
+  syntax = {
+    booleans = { bold = true, italic = false },
+    comments = { fg = c.gray._400, bold = true, italic = true },
+    conditionals = {},
+    constants = { bold = true },
+    fields = { fg = c.white },
+    functions = {},
+    keywords = {},
+    loops = {},
+    numbers = { bold = true },
+    operators = {fg = c.green._500, bold = true },
+    punctuation = {},
+    strings = { fg = c.sand._500 },
+    types = { fg = c.green._500, italic = false },
+  },
+  diagnostics = {
+    errors = {},
+    warnings = {},
+    information = {},
+    hints = {},
+  },
+  plugins = {
+    lsp = true,
+    semantic_tokens = true,
+    treesitter = true,
+    telescope = true,
+    nvimtree = true,
+    cmp = true,
+    context = true,
+    dbui = true,
+    gitsigns = true,
+    neogit = true,
+    textfsm = true,
+  },
+  overwrite = {
+    colors = { 
+        gray = {
+            _900 = "#101010",
+            _200 = "#FFFFFF"
+        }
+    },
+    highlights = {
+    },
+  },
+})
+
+vim.g.tundra_biome = 'jungle'
+
+vim.cmd.colorscheme("tundra")
+
+hl_overwrite = {
+    LineNr = { fg = c.gray._400, bg = c.gray._950 },
+    SnacksPickerBorder = { fg = c.gray._900, bg = c.gray._900 },
+    SnacksPickerInput = { fg = c.gray._50, bg = c.gray._950 },
+    SnacksPickerInputBorder = { fg = c.gray._950, bg = c.gray._950 },
+    SnacksPickerBoxBorder = { fg = c.gray._950, bg = c.gray._950 },
+    SnacksPickerTitle = { fg = c.gray._900, bg = c.green._600 },
+    SnacksPickerBoxTitle = { fg = c.gray._950, bg = c.green._600 },
+    SnacksPickerList = { bg = c.gray._950, fg = c.white },
+    SnacksPickerDir = { fg = c.gray._500 },
+    SnacksPickerPrompt = { fg = c.red._950, bg = c.gray._950 },
+    SnacksPickerPreviewTitle = { fg = c.gray._900, bg = c.red._950 },
+    SnacksPickerPreview = { bg = c.gray._900 },
+    SnacksPickerToggle = { bg = c.green._600, fg = c.gray._900 },
+    ["@type.cpp"] = { fg = "#FFFFFF" },
+}
+for k, v in pairs(hl_overwrite) do
+    vim.api.nvim_set_hl(0, k, v)
+end ]]
+
+vim.cmd.colorscheme('oldworld')

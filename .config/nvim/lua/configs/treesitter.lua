@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "cpp", "python", "lua" },
+    ensure_installed = { "cpp", "python", "lua", "latex", "tsx", "typst", "regex", "markdown", "markdown_inline" },
     auto_install = false,
     sync_install = true,
     ignore_install = { "tmux" },
@@ -23,6 +23,6 @@ require("nvim-treesitter.configs").setup({
     },
     indent = {
         enable = false,
-        disable = { "cpp" },
+        -- disable = { "cpp" },
     },
 })
