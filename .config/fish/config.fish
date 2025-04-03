@@ -3,13 +3,6 @@ function fish_user_key_bindings
     fish_vi_key_bindings --no-erase insert
 end
 
-# if not set -q MONITOR_KITTY_CONFIG
-#     set -U MONITOR_KITTY_CONFIG 1
-#     while inotifywait -e close_write $HOME/.config/kitty/configure.lua
-#         lua $HOME/.config/kitty/configure.lua
-#     end > /dev/null 2>&1 &; disown
-# end
-
 # Exports
 switch (uname)
     case Linux
@@ -69,7 +62,4 @@ if test -e $HOME/.config/fish/conf.d/local_conf.fish
     source $HOME/.config/fish/conf.d/local_conf.fish
 end
 
-if not test -n "$SSH_CLIENT" -o -n "$SSH_TTY"
-    lua $HOME/.config/kitty/configure.lua
-end
 starship init fish | source
