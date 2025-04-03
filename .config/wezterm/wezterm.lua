@@ -31,14 +31,14 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") and os.getenv("XDG_SES
 end
 
 -- Window
-config.font = wezterm.font("SFMono Nerd Font Mono", {weight = "Regular"})
+config.font = wezterm.font("Iosevka Nerd Font Mono", {weight = "DemiBold"})
 config.front_end = "WebGpu"
 -- config.freetype_load_target = 'Normal'
 -- config.freetype_load_flags = 'NO_HINTING'
 config.font_shaper = 'Harfbuzz'
 
 config.color_scheme_dirs = {'$HOME/.config/wezterm/colors/'}
-config.bold_brightens_ansi_colors = false
+config.bold_brightens_ansi_colors = true
 config.color_scheme = "mellow"
 config.default_cursor_style = 'SteadyBlock'
 
@@ -76,7 +76,7 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
         io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
     )
     if main_resolution == 3840 then
-        config.font_size = 11.5
+        config.font_size = 11
     elseif main_resolution == 1920 then
         config.font_size = 10
     else
