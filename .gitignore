@@ -5,3 +5,5 @@
 !.emacs.d/early-init.el
 .config/fish/conf.d/*
 .config/fish/completions/*
+.config/fish/functions/*
+.config/fish/fish_variables
