@@ -9,7 +9,7 @@ require("oldworld").setup({
         keywords = {}, -- style for keywords
         identifiers = {}, -- style for identifiers
         functions = { italic = false, bold = false }, -- style for functions
-        variables = { bold = false }, -- style for variables
+        variables = { bold = true }, -- style for variables
         booleans = {}, -- style for booleans
     },
     integrations = { -- You can disable/enable integrations
@@ -34,11 +34,17 @@ require("oldworld").setup({
     },
 
     highlight_overrides = {
-        -- Normal = { bg = nil },
-        -- NormalFloat = { bg = nil },
+        NormalFloat = { bg = nil },
         NormalNC = { bg = nil },
         SignColumn = { bg = nil },
         LineNr = { fg = "#888888" },
+
+        TabLine = { bg = c.gray2, fg = c.fg },
+        TabLineFill = { bg = nil, fg = nil },
+        TabLineSel = { bg = c.blue, fg = c.bg },
+        ["@module.python"] = { link = "Type" },
+        ["@constructor"] = { link="@variable" },
+        -- ["@property"] = { link="Type" },
 
         SnacksPickerBorder = { fg = c.bg, bg = c.bg },
         SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
@@ -53,12 +59,10 @@ require("oldworld").setup({
         SnacksPickerToggle = { bg = c.green, fg = c.bg },
         SnacksPickerDir = { fg = c.purple },
 
-        TabLine = { bg = c.gray2, fg = c.fg },
-        TabLineFill = { bg = nil, fg = nil },
-        TabLineSel = { bg = c.blue, fg = c.bg },
-        ["@module.python"] = { link = "Type" }
     },
 })
+
+vim.cmd.colorscheme('oldworld')
 
 -- local c = require("no-clown-fiesta.palette")
 -- require("no-clown-fiesta").setup({
@@ -162,4 +166,3 @@ for k, v in pairs(hl_overwrite) do
     vim.api.nvim_set_hl(0, k, v)
 end ]]
 
-vim.cmd.colorscheme('oldworld')

@@ -40,7 +40,7 @@ require("incline").setup({
         rising = 10,
     },
     hide = {
-        cursorline = true,
+        cursorline = false,
         focused_win = false,
         only_win = false,
     },
@@ -49,7 +49,7 @@ require("incline").setup({
             InclineNormal = {
                 default = true,
                 guifg = colors.bg,
-                guibg = colors.violet,
+                guibg = colors.yellow,
                 gui = "bold",
             },
             InclineNormalNC = {
@@ -75,13 +75,13 @@ require("incline").setup({
         local modified = vim.bo[props.buf].modified
         if props.focused == true then
             return {
-                { " ", guibg = colors.bg, guifg = colors.violet },
+                { " ", guibg = colors.bg, guifg = colors.yellow },
                 { " " },
                 { get_git_diff(props) },
                 filename,
                 modified and { " 󰻃", gui = "bold" } or "",
                 { " " },
-                { "", guibg = colors.bg, guifg = colors.violet },
+                { "", guibg = colors.bg, guifg = colors.yellow },
             }
         else
             return {
@@ -98,7 +98,7 @@ require("incline").setup({
     window = {
         margin = {
             horizontal = 1,
-            vertical = 1,
+            vertical = 0,
         },
         options = {
             signcolumn = "no",
@@ -106,15 +106,15 @@ require("incline").setup({
         },
         overlap = {
             borders = true,
-            statusline = false,
+            statusline = true,
             tabline = false,
-            winbar = false,
+            winbar = true,
         },
-        padding = { left = 0, right = 0 },
+        padding = { left = 0, right = 0},
         padding_char = " ",
         placement = {
             horizontal = "right",
-            vertical = "bottom",
+            vertical = "top",
         },
         width = "fit",
         winhighlight = {

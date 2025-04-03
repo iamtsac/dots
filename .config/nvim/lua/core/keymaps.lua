@@ -64,7 +64,8 @@ vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz", { silent = true })
 
 --Files specific
 vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.files_opts) end, { desc = "Find file" })
-vim.keymap.set("n", "<leader>fg", function() Snacks.picker.grep() end, { desc = "Grep in file" })
+vim.keymap.set("n", "<leader>/", function() Snacks.picker.grep() end, { desc = "Grep in file" })
+-- vim.keymap.set("n", "<leader>fE", function() Snacks.picker.explorer(snacks_opts.explorer_opts) end, { desc = "Grep in file" })
 
 vim.keymap.set({ "n", "v" }, "=", function()
     conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })

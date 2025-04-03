@@ -55,6 +55,7 @@ config.keybind = {}
 config.keybind.reload_config = "cmd+r"
 config.keybind.new_tab = "cmd+t"
 config.keybind.close_tab = "cmd+w"
+config.keybind.unbind = {"ctrl+enter"}
 
 -- config.theme = "Jellybeans"
 local theme = custom_theme("oldworld")
@@ -64,7 +65,13 @@ io.output(ghostty_conf_file)
 for k, v in pairs(config) do
     if k == "keybind" then
         for km, vm in pairs(v) do
-            io.write(k .. " = " .. vm .. "=" .. km .. "\n")
+            if km == "unbind" then
+                for i=1,#vm do
+                    io.write(k .. " = " .. vm[i] .. "=unbind" .. "\n")
+                end
+            else
+                io.write(k .. " = " .. vm .. "=" .. km .. "\n")
+            end
         end
     else
         k = k:gsub("%_", "-")

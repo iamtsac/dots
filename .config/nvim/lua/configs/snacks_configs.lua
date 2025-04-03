@@ -40,12 +40,56 @@ function M.snacks_config()
         },
     }
 
+    conf.explorer_layout = {
+        preview = "main",
+        layout = {
+            box = "vertical",
+            backdrop = false,
+            row = -1,
+            width = 0,
+            height = 0.4,
+            border = "top",
+            position = "bottom",
+            title = " {title} {live} {flags}",
+            title_pos = "center",
+            {
+                win = "input",
+                height = 1,
+                border = "bottom",
+                width = 0.,
+            },
+            {
+                box = "horizontal",
+                {
+                    win = "list",
+                    border = "none",
+                },
+                {
+                    win = "preview",
+                    title = "{preview}",
+                    title_pos = "center",
+                    width = 0.5,
+                    border = "none",
+                    wo = {
+                        number = false,
+                        signcolumn = "yes:4",
+                    },
+                },
+            },
+        },
+    }
+
     conf.files_opts = {
         finder = "files",
         format = "file",
+        cmd = "rg",
+        exclude = {
+            "*submodules/",
+            "*build/",
+        },
         show_empty = true,
         hidden = false,
-        ignored = false,
+        ignored = true,
         follow = false,
         supports_live = true,
     }
@@ -74,7 +118,7 @@ function M.snacks_config()
             file = {
                 filename_first = true,
                 icon_width = 3,
-                truncate = 60,
+                truncate = 120,
             },
         },
         win = {
@@ -87,6 +131,8 @@ function M.snacks_config()
                     ["<c-b>"] = { "list_scroll_up", mode = { "i", "n" } },
                     ["<c-j>"] = { "history_forward", mode = { "i", "n" } },
                     ["<c-k>"] = { "history_back", mode = { "i", "n" } },
+                    ["<c-Return>"] = { "toggle_maximize", mode = { "i", "n" } },
+                    ["<c-w>w"] = { "cycle_win", mode = { "i", "n" } },
                 },
             },
             list = {
@@ -96,6 +142,8 @@ function M.snacks_config()
                     ["<c-d>"] = "preview_scroll_down",
                     ["<c-b>"] = "list_scroll_up",
                     ["<c-f>"] = "list_scroll_down",
+                    ["<c-Return>"] = { "toggle_maximize", mode = { "i", "n" } },
+                    ["<c-w>w"] = { "cycle_win", mode = { "i", "n" } },
                 },
             },
         },
@@ -216,6 +264,70 @@ function M.snacks_config()
         animate = {
             duration = { step = 5, total = 250 },
             easing = "linear",
+        },
+    }
+
+    conf.explorer_opts = {
+        finder = "explorer",
+        sort = { fields = { "sort" } },
+        supports_live = true,
+        tree = true,
+        watch = true,
+        diagnostics = true,
+        diagnostics_open = false,
+        git_status = true,
+        git_status_open = false,
+        git_untracked = true,
+        follow_file = true,
+        focus = "list",
+        auto_close = false,
+        jump = { close = false },
+        layout = conf.explorer_layout,
+        -- to show the explorer to the right, add the below to
+        -- your config under `opts.picker.sources.explorer`
+        -- layout = { layout = { position = "right" } },
+        formatters = {
+            file = { filename_only = true },
+            severity = { pos = "right" },
+        },
+        matcher = { sort_empty = false, fuzzy = false },
+        config = function(opts)
+            return require("snacks.picker.source.explorer").setup(opts)
+        end,
+        win = {
+            list = {
+                keys = {
+                    ["<BS>"] = "explorer_up",
+                    ["-"] = "explorer_up",
+                    ["l"] = "confirm",
+                    ["h"] = "explorer_close", -- close directory
+                    ["a"] = "explorer_add",
+                    ["d"] = "explorer_del",
+                    ["r"] = "explorer_rename",
+                    ["c"] = "explorer_copy",
+                    ["m"] = "explorer_move",
+                    ["o"] = "explorer_open", -- open with system application
+                    ["P"] = "toggle_preview",
+                    ["y"] = { "explorer_yank", mode = { "n", "x" } },
+                    ["p"] = "explorer_paste",
+                    ["u"] = "explorer_update",
+                    ["<c-c>"] = "tcd",
+                    ["<leader>/"] = "picker_grep",
+                    ["<c-t>"] = "terminal",
+                    ["."] = "explorer_focus",
+                    ["I"] = "toggle_ignored",
+                    ["H"] = "toggle_hidden",
+                    ["Z"] = "explorer_close_all",
+                    ["]g"] = "explorer_git_next",
+                    ["[g"] = "explorer_git_prev",
+                    ["]d"] = "explorer_diagnostic_next",
+                    ["[d"] = "explorer_diagnostic_prev",
+                    ["]w"] = "explorer_warn_next",
+                    ["[w"] = "explorer_warn_prev",
+                    ["]e"] = "explorer_error_next",
+                    ["[e"] = "explorer_error_prev",
+                },
+            },
         },
     }
 

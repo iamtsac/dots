@@ -19,7 +19,8 @@ function MyTabLine()
         end
 
         -- Tab number
-        s = s .. " " .. vim.fn.fnamemodify(bufname, ":p:t")
+        s = s .. " " .. i
+        -- s = s .. " " .. vim.fn.fnamemodify(bufname, ":p:t")
 
         -- Show `+` if buffer is modified
         if bufmodified == 1 then
@@ -30,7 +31,7 @@ function MyTabLine()
     end
 
     -- Right-aligned close button
-    s = s .. "%#TabLineFill#%T%=%"
+    s = "%#TabLineFill#%=" .. s .. "%#TabLineFill#%="
     -- s = s .. "%#TabLineFill#%T%=%#TabLineFill#X"
 
     return s
