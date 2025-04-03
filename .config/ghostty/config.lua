@@ -1,6 +1,9 @@
 local os = require("os")
 local config = {}
-local theme = {}
+
+function custom_theme(name)
+    return dofile(os.getenv("HOME") .. "/.config/ghostty/themes/" .. name .. ".lua")
+end
 
 function file_exists(name)
    local f=io.open(name,"r")
@@ -34,9 +37,9 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     end
 end
 
-config.font_family = "JetBrains Mono"
+config.font_family = "Iosevka Nerd Font Mono"
 config.font_style = "SemiBold"
-config.font_feature = "feat on"
+config.font_feature = "-calt, -liga, -dliga"
 config.freetype_load_flags = "true"
 
 config.window_decoration = "none"
@@ -44,7 +47,7 @@ config.window_theme = "ghostty"
 config.window_vsync = "false"
 config.copy_on_select = "false"
 config.shell_integration_features = "true"
-config.bold_is_bright = "false"
+config.bold_is_bright = "true"
 config.cursor_style_blink = "false"
 config.app_notifications = "no-clipboard-copy"
 
@@ -54,28 +57,7 @@ config.keybind.new_tab = "cmd+t"
 config.keybind.close_tab = "cmd+w"
 
 -- config.theme = "Jellybeans"
-
-theme.color0 = "#27272a"
-theme.color1 = "#f5a191"
-theme.color2 = "#90b99f"
-theme.color3 = "#e6b99d"
-theme.color4 = "#aca1cf"
-theme.color5 = "#e29eca"
-theme.color6 = "#ea83a5"
-theme.color7 = "#c1c0d4"
-theme.color8 = "#353539"
-theme.color9 = "#ffae9f"
-theme.color10 = "#9dc6ac"
-theme.color11 = "#f0c5a9"
-theme.color12 = "#b9aeda"
-theme.color13 = "#ecaad6"
-theme.color14 = "#f591b2"
-theme.color15 = "#cac9dd"
-theme.background = "#131314"
-theme.foreground = "#c9c7cd"
-theme.cursor_color = "#cac9dd"
-theme.selection_background = "#2a2a2d"
-theme.selection_foreground = "#c1c0d4"
+local theme = custom_theme("oldworld")
 
 ghostty_conf_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
 io.output(ghostty_conf_file)

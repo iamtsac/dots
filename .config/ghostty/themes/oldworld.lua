@@ -1,0 +1,25 @@
+local M = {}
+
+M.color0 = "#27272a"
+M.color1 = "#f5a191"
+M.color2 = "#90b99f"
+M.color3 = "#e6b99d"
+M.color4 = "#aca1cf"
+M.color5 = "#e29eca"
+M.color6 = "#ea83a5"
+M.color7 = "#c1c0d4"
+M.color8 = "#353539"
+M.color9 = "#ffae9f"
+M.color10 = "#9dc6ac"
+M.color11 = "#f0c5a9"
+M.color12 = "#b9aeda"
+M.color13 = "#ecaad6"
+M.color14 = "#f591b2"
+M.color15 = "#cac9dd"
+M.background = "#0D0D0D"
+M.foreground = "#EEEEEE"
+M.cursor_color = "#cac9dd"
+M.selection_background = "#2a2a2d"
+M.selection_foreground = "#c1c0d4"
+
+return M
