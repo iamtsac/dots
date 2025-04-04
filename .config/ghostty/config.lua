@@ -37,7 +37,7 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     end
 end
 
-config.font_family = "Iosevka Nerd Font Mono"
+config.font_family = "Iosevka Nerd Font"
 config.font_style = "SemiBold"
 config.font_feature = "-calt, -liga, -dliga"
 config.freetype_load_flags = "true"
