@@ -1,7 +1,7 @@
 # vim: ft=tmux
 
 # Use if-shell to check the variable and change settings accordingly
-if-shell "[[ $(echo $TMUX_THEME) == 'simple' ]]" {
+if-shell '[ "#{TMUX_THEME}" = "simple" ]' {
 
     set-option -g status-style bg=default
     set -g status-fg colour15
@@ -31,7 +31,7 @@ if-shell "[[ $(echo $TMUX_THEME) == 'simple' ]]" {
     set -g status-justify left
 }
 
-if-shell "[[ $(echo $TMUX_THEME) == 'bubbles' ]]" {
+if-shell '[ "#{TMUX_THEME}" = "bubbles" ]' {
     set-option -g status-style bg=default
     set -g status-fg colour15
     set -g status-style bright
