@@ -31,7 +31,7 @@ function MyTabLine()
     end
 
     -- Right-aligned close button
-    s = "%#TabLineFill#%=" .. s .. "%#TabLineFill#%="
+    s = s .. "%#TabLineFill#%="
     -- s = s .. "%#TabLineFill#%T%=%#TabLineFill#X"
 
     return s

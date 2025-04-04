@@ -4,7 +4,6 @@ local conform = require("conform")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
 
-
 local function cat_table(x1, x2)
     local tmp = {}
     for k, v in pairs(x1) do

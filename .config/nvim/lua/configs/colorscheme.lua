@@ -1,18 +1,28 @@
+local hl_overwrite = function(hls)
+    for k, v in pairs(hls) do
+        vim.api.nvim_set_hl(0, k, v)
+    end
+end
+
+local function get_color(group, attr)
+    return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), attr)
+end
+
 vim.opt.background = "dark"
 local c = require("oldworld.palette")
 c.bg = "#0D0D0D"
-c.fg = "#EEEEEE"
+c.fg = "#DDDDDD"
 require("oldworld").setup({
-    terminal_colors = true, -- enable terminal colors
-    styles = { -- You can pass the style using the format: style = true
-        comments = { italic = true, bold = true }, -- style for comments
-        keywords = {}, -- style for keywords
-        identifiers = {}, -- style for identifiers
-        functions = { italic = false, bold = false }, -- style for functions
-        variables = { bold = true }, -- style for variables
-        booleans = {}, -- style for booleans
+    terminal_colors = true,
+    styles = {
+        comments = { italic = true, bold = true },
+        keywords = {},
+        identifiers = {},
+        functions = { italic = false, bold = false },
+        variables = { bold = true },
+        booleans = {},
     },
-    integrations = { -- You can disable/enable integrations
+    integrations = {
         alpha = true,
         cmp = true,
         flash = true,
@@ -33,52 +43,57 @@ require("oldworld").setup({
         treesitter = true,
     },
 
-    highlight_overrides = {
-        NormalFloat = { bg = nil },
-        NormalNC = { bg = nil },
-        SignColumn = { bg = nil },
-        LineNr = { fg = "#888888" },
-
-        TabLine = { bg = c.gray2, fg = c.fg },
-        TabLineFill = { bg = nil, fg = nil },
-        TabLineSel = { bg = c.blue, fg = c.bg },
-        ["@module.python"] = { link = "Type" },
-        ["@constructor"] = { link="@variable" },
-        -- ["@property"] = { link="Type" },
-
-        SnacksPickerBorder = { fg = c.bg, bg = c.bg },
-        SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
-        SnacksPickerInputBorder = { fg = c.gray0, bg = c.gray0 },
-        SnacksPickerBoxBorder = { fg = c.gray0, bg = c.gray0 },
-        SnacksPickerTitle = { fg = c.bg, bg = c.green },
-        SnacksPickerBoxTitle = { fg = c.gray0, bg = c.green },
-        SnacksPickerList = { bg = c.gray0 },
-        SnacksPickerPrompt = { fg = c.red, bg = c.gray0 },
-        SnacksPickerPreviewTitle = { fg = c.bg, bg = c.red },
-        SnacksPickerPreview = { bg = c.bg },
-        SnacksPickerToggle = { bg = c.green, fg = c.bg },
-        SnacksPickerDir = { fg = c.purple },
-
-    },
+    highlight_overrides = {},
 })
 
-vim.cmd.colorscheme('oldworld')
+vim.cmd.colorscheme("oldworld")
 
--- local c = require("no-clown-fiesta.palette")
--- require("no-clown-fiesta").setup({
---   transparent = false, -- Enable this to disable the bg color
---   styles = {
---     -- You can set any of the style values specified for `:h nvim_set_hl`
---     comments = {},
---     functions = {},
---     keywords = {},
---     lsp = {},
---     match_paren = {},
---     type = { fg = c.red },
---     variables = {},
+hl_overwrite({
+    NormalFloat = { bg = nil },
+    NormalNC = { bg = nil },
+    SignColumn = { bg = nil },
+    LineNr = { fg = "#888888" },
 
---   },
--- })
+    TabLine = { bg = c.gray2, fg = c.fg },
+    TabLineFill = { bg = nil, fg = nil },
+    TabLineSel = { bg = c.blue, fg = c.bg },
+    ["@module.python"] = { link = "Type" },
+    ["@constructor"] = { link = "@variable" },
+
+    -- ["@property"] = { link="Type" },
+    -- StatusLine = { fg = nil, bg = nil },
+    -- StatusLineNC = { fg = nil, bg = c.gray1 },
+
+    SnacksPickerBorder = { fg = c.bg, bg = c.bg },
+    SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
+    SnacksPickerMatch = { link = "Type" },
+    SnacksPickerInputBorder = { fg = c.gray0, bg = c.gray0 },
+    SnacksPickerBoxBorder = { fg = c.gray0, bg = c.gray0 },
+    SnacksPickerTitle = { fg = c.bg, bg = c.green },
+    SnacksPickerBoxTitle = { fg = c.gray0, bg = c.green },
+    SnacksPickerList = { bg = c.gray0 },
+    SnacksPickerPrompt = { fg = c.red, bg = c.gray0 },
+    SnacksPickerPreviewTitle = { fg = c.bg, bg = c.red },
+    SnacksPickerPreview = { bg = c.bg },
+    SnacksPickerToggle = { bg = c.green, fg = c.bg },
+    SnacksPickerDir = { fg = c.purple },
+})
+
+--[[ local c = require("no-clown-fiesta.palette")
+require("no-clown-fiesta").setup({
+  transparent = false, -- Enable this to disable the bg color
+  styles = {
+    -- You can set any of the style values specified for `:h nvim_set_hl`
+    comments = {},
+    functions = {},
+    keywords = {},
+    lsp = {},
+    match_paren = {},
+    type = { fg = c.red },
+    variables = {},
+
+  },
+}) ]]
 
 --[[ local c = require('nvim-tundra.palette.jungle')
 c.gray._900 = "#101010"
@@ -131,7 +146,7 @@ require('nvim-tundra').setup({
     textfsm = true,
   },
   overwrite = {
-    colors = { 
+    colors = {
         gray = {
             _900 = "#101010",
             _200 = "#FFFFFF"
@@ -165,4 +180,3 @@ hl_overwrite = {
 for k, v in pairs(hl_overwrite) do
     vim.api.nvim_set_hl(0, k, v)
 end ]]
-

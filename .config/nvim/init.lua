@@ -25,7 +25,10 @@ vim.o.backup = false
 vim.o.timeoutlen = 500
 vim.o.ttimeoutlen = 0
 vim.o.writebackup = false
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
+vim.o.showcmd = true
+vim.o.showcmdloc = "statusline"
+vim.o.showmode = false
 vim.o.laststatus = 3
 vim.o.tabstop = 8
 vim.o.softtabstop = 4
@@ -33,13 +36,13 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.cursorline = false
 vim.opt.fillchars = {
-  horiz = '━',
-  horizup = '┻',
-  horizdown = '┳',
-  vert = '┃',
-  vertleft  = '┫',
-  vertright = '┣',
-  verthoriz = '╋',
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vert = "┃",
+    vertleft = "┫",
+    vertright = "┣",
+    verthoriz = "╋",
 }
 
 -- window-local options
@@ -63,7 +66,7 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
-vim.o.statusline = " "
+-- vim.o.statusline = " "
 
 require("core/plugins")
 require("configs/treesitter")
@@ -79,5 +82,4 @@ require("core/keymaps")
 
 require("configs/colorscheme")
 require("configs/tabline")
-require("configs/incline")
-require("configs/highlights")
+require("configs/statusline")

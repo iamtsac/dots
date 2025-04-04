@@ -7,7 +7,7 @@ local function generate_harpoon_picker()
     for _, item in ipairs(harpoon:list().items) do
         table.insert(file_paths, {
             text = item.value,
-            file = item.value
+            file = item.value,
         })
     end
     return file_paths

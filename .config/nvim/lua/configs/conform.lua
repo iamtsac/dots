@@ -208,12 +208,13 @@ conform.setup({
         ["*"] = { "trim_whitespace" },
     },
     formatters = {
-    clang_format = {
-      prepend_args = {
-        "--style", cpp_format_opts
-      }
-    }
-  }
+        clang_format = {
+            prepend_args = {
+                "--style",
+                cpp_format_opts,
+            },
+        },
+    },
 })
 
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"

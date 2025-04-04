@@ -110,7 +110,7 @@ require("incline").setup({
             tabline = false,
             winbar = true,
         },
-        padding = { left = 0, right = 0},
+        padding = { left = 0, right = 0 },
         padding_char = " ",
         placement = {
             horizontal = "right",
