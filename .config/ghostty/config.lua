@@ -59,6 +59,8 @@ config.keybind.unbind = {"ctrl+enter"}
 
 -- config.theme = "Jellybeans"
 local theme = custom_theme("oldworld")
+theme.background = "#050505"
+theme.foreground = "#DDDDDD"
 
 ghostty_conf_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
 io.output(ghostty_conf_file)

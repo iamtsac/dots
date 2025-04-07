@@ -31,7 +31,7 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") and os.getenv("XDG_SES
 end
 
 -- Window
-config.font = wezterm.font("Iosevka Nerd Font Mono", {weight = "DemiBold"})
+config.font = wezterm.font("Iosevka Nerd Font", {weight = "DemiBold"})
 config.front_end = "WebGpu"
 -- config.freetype_load_target = 'Normal'
 -- config.freetype_load_flags = 'NO_HINTING'

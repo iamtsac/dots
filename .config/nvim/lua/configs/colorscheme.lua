@@ -49,6 +49,7 @@ require("oldworld").setup({
 vim.cmd.colorscheme("oldworld")
 
 hl_overwrite({
+    Normal = { bg = nil },
     NormalFloat = { bg = nil },
     NormalNC = { bg = nil },
     SignColumn = { bg = nil },

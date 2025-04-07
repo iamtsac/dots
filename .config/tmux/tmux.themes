@@ -12,19 +12,19 @@ if-shell '[ "#{TMUX_THEME}" = "simple" ]' {
 #[fg=colour0, bg=colour231] #S\
 #[bg=colour231, fg=colour235] \
 #[fg=colour253,bg=colour235] #H \
-#[bg=colour0,fg=colour238]\
-#[fg=colour254,bg=colour239,bold] %b %d %H:%M:%S \
+#[bg=colour0,fg=colour238]#[bg=colour238,fg=default] \
+#[fg=colour254,bg=colour239,bold]%H:%M:%S \
 #[bg=default,fg=colour239]
 '
 
     setw -g window-status-format '\
-#[bg=default, fg=colour246, italics]#I: #W\
+#[bg=default, fg=colour246, italics]#I: #W \
 '
 
     setw -g window-status-current-format '\
 #[fg=colour235, bg=default]\
-#[bg=colour235, fg=default] #I: #W \
-#[bg=default, fg=colour235]\
+#[bg=colour235, fg=default]#I: #W\
+#[bg=default, fg=colour235] \
 '
     set -g status-right-length 100
     set -g status-left-length 100
