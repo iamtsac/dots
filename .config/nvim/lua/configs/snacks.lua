@@ -6,7 +6,7 @@ Snacks.setup({
     bigfile = { enabled = true },
     dashboard = { enabled = false },
     explorer = { enabled = false },
-    image = { enabled = true },
+    image = conf.image_opts,
     indent = conf.indent,
     input = { enabled = true },
     notifier = {
@@ -28,3 +28,5 @@ Snacks.setup({
     zen = conf.zen,
     toggle = { enabled = true },
 })
+
+Snacks.config.style("snacks_image", conf.image_style)

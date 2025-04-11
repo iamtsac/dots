@@ -66,7 +66,6 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
--- vim.o.statusline = " "
 
 require("core/plugins")
 require("configs/treesitter")
@@ -83,3 +82,4 @@ require("core/keymaps")
 require("configs/colorscheme")
 require("configs/tabline")
 require("configs/statusline")
+require("configs/markdown")

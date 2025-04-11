@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "cpp", "python", "lua", "typst", "regex", "markdown", "markdown_inline" },
+    ensure_installed = { "cpp", "python", "lua", "typst", "regex", "markdown", "markdown_inline", "html", "css", "javascript", "scss", "svelte", "vue" },
     auto_install = false,
     sync_install = true,
     ignore_install = { "tmux" },

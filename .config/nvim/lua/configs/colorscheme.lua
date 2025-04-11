@@ -53,13 +53,16 @@ hl_overwrite({
     NormalFloat = { bg = nil },
     NormalNC = { bg = nil },
     SignColumn = { bg = nil },
-    LineNr = { fg = "#888888" },
+    LineNr = { fg = "#999999" },
+    EndOfBuffer = { link = "LineNr" },
 
     TabLine = { bg = c.gray2, fg = c.fg },
     TabLineFill = { bg = nil, fg = nil },
     TabLineSel = { bg = c.blue, fg = c.bg },
     ["@module.python"] = { link = "Type" },
     ["@constructor"] = { link = "@variable" },
+    -- RenderMarkdownCode = { bg = "#0F0F0F" },
+    SnacksImageMath = { bg = nil, fg = c.fg },
 
     -- ["@property"] = { link="Type" },
     -- StatusLine = { fg = nil, bg = nil },
