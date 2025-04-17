@@ -38,7 +38,7 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
 end
 
 config.font_family = "Iosevka Nerd Font"
-config.font_style = "SemiBold"
+config.font_style = "Medium"
 config.font_feature = "-calt, -liga, -dliga"
 config.freetype_load_flags = "true"
 
@@ -58,9 +58,9 @@ config.keybind.close_tab = "cmd+w"
 config.keybind.unbind = {"ctrl+enter"}
 
 -- config.theme = "Jellybeans"
-local theme = custom_theme("oldworld")
-theme.background = "#050505"
-theme.foreground = "#DDDDDD"
+local theme = custom_theme("black_metal_gorgoroth")
+-- theme.background = "#050505"
+-- theme.foreground = "#DDDDDD"
 
 ghostty_conf_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
 io.output(ghostty_conf_file)
