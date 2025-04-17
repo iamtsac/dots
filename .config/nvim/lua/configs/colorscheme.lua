@@ -96,6 +96,7 @@ if current_theme == "black-metal-gorgoroth" then
 
     vim.cmd.colorscheme("base16-black-metal-gorgoroth")
     local c = require("base16-colorscheme").colors
+    c.base08 = "#5f7887"
     require("base16-colorscheme").setup(c)
     c.bg = c.base00
     c.fg = c.base0C

@@ -1,7 +1,7 @@
 local M = {}
 
 M.color0 = "#000000"
-M.color1 = "#5f8787"
+M.color1 = "#5f7887"
 M.color2 = "#9b8d7f"
 M.color3 = "#8c7f70"
 M.color4 = "#888888"
@@ -9,7 +9,7 @@ M.color5 = "#999999"
 M.color6 = "#aaaaaa"
 M.color7 = "#c1c1c1"
 M.color8 = "#333333"
-M.color9 = "#5f8787"
+M.color9 = "#5f7887"
 M.color10 = "#9b8d7f"
 M.color11 = "#8c7f70"
 M.color12 = "#888888"
