@@ -65,13 +65,8 @@ if current_theme == "oldworld" then
         TabLineSel = { bg = c.blue, fg = c.bg },
         ["@module.python"] = { link = "Type" },
         ["@constructor"] = { link = "@variable" },
-        -- RenderMarkdownCode = { bg = "#0F0F0F" },
+
         SnacksImageMath = { bg = nil, fg = c.fg },
-
-        -- ["@property"] = { link="Type" },
-        -- StatusLine = { fg = nil, bg = nil },
-        -- StatusLineNC = { fg = nil, bg = c.gray1 },
-
         SnacksPickerBorder = { fg = c.bg, bg = c.bg },
         SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
         SnacksPickerMatch = { link = "Type" },
@@ -89,7 +84,7 @@ if current_theme == "oldworld" then
 end
 
 if current_theme == "black-metal-gorgoroth" then
-    require('base16-colorscheme').with_config({
+    require("base16-colorscheme").with_config({
         telescope = true,
         indentblankline = true,
         notify = true,
@@ -100,9 +95,9 @@ if current_theme == "black-metal-gorgoroth" then
     })
 
     vim.cmd.colorscheme("base16-black-metal-gorgoroth")
-    local c = require('base16-colorscheme').colors
+    local c = require("base16-colorscheme").colors
     c.base05 = "#DDDDDD"
-    require('base16-colorscheme').setup(c)
+    require("base16-colorscheme").setup(c)
     c.bg = c.base00
     c.fg = c.base0C
     c.gray0 = c.base01
@@ -119,15 +114,16 @@ if current_theme == "black-metal-gorgoroth" then
         LineNr = { fg = c.base0C },
         EndOfBuffer = { link = "LineNr" },
 
-        TabLine = { bg = c.gray2, fg = c.fg },
+        TabLine = { bg = nil, fg = c.gray2 },
         TabLineFill = { bg = nil, fg = nil },
-        TabLineSel = { bg = c.blue, fg = c.bg },
+        TabLineSel = { bg = c.gray2, fg = c.fg },
         SnacksImageMath = { bg = nil, fg = c.fg },
 
-        TSPunctDelimiter = { link="TSParameter" },
-        -- ["@property"] = { link="Type" },
-        -- StatusLine = { fg = nil, bg = nil },
-        -- StatusLineNC = { fg = nil, bg = c.gray1 },
+        TSPunctDelimiter = { link = "TSParameter" },
+        StatusLine = { fg = nil, bg = c.gray0 },
+        StatusLineNC = { fg = nil, bg = c.gray0 },
+
+        WhichKeyNormal = { bg = c.gray0 },
 
         SnacksPickerBorder = { fg = c.bg, bg = c.bg },
         SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
@@ -144,105 +140,3 @@ if current_theme == "black-metal-gorgoroth" then
         SnacksPickerDir = { fg = c.dark_yellow },
     })
 end
-
---[[ local c = require("no-clown-fiesta.palette")
-require("no-clown-fiesta").setup({
-  transparent = false, -- Enable this to disable the bg color
-  styles = {
-    -- You can set any of the style values specified for `:h nvim_set_hl`
-    comments = {},
-    functions = {},
-    keywords = {},
-    lsp = {},
-    match_paren = {},
-    type = { fg = c.red },
-    variables = {},
-
-  },
-}) ]]
-
---[[ local c = require('nvim-tundra.palette.jungle')
-c.gray._900 = "#101010"
-require('nvim-tundra').setup({
-  transparent_background = false,
-  dim_inactive_windows = {
-    enabled = false,
-    color = nil,
-  },
-  sidebars = {
-    enabled = true,
-    color = nil,
-  },
-  editor = {
-    search = {},
-    substitute = {},
-  },
-  syntax = {
-    booleans = { bold = true, italic = false },
-    comments = { fg = c.gray._400, bold = true, italic = true },
-    conditionals = {},
-    constants = { bold = true },
-    fields = { fg = c.white },
-    functions = {},
-    keywords = {},
-    loops = {},
-    numbers = { bold = true },
-    operators = {fg = c.green._500, bold = true },
-    punctuation = {},
-    strings = { fg = c.sand._500 },
-    types = { fg = c.green._500, italic = false },
-  },
-  diagnostics = {
-    errors = {},
-    warnings = {},
-    information = {},
-    hints = {},
-  },
-  plugins = {
-    lsp = true,
-    semantic_tokens = true,
-    treesitter = true,
-    telescope = true,
-    nvimtree = true,
-    cmp = true,
-    context = true,
-    dbui = true,
-    gitsigns = true,
-    neogit = true,
-    textfsm = true,
-  },
-  overwrite = {
-    colors = {
-        gray = {
-            _900 = "#101010",
-            _200 = "#FFFFFF"
-        }
-    },
-    highlights = {
-    },
-  },
-})
-
-vim.g.tundra_biome = 'jungle'
-
-vim.cmd.colorscheme("tundra")
-
-hl_overwrite = {
-    LineNr = { fg = c.gray._400, bg = c.gray._950 },
-    SnacksPickerBorder = { fg = c.gray._900, bg = c.gray._900 },
-    SnacksPickerInput = { fg = c.gray._50, bg = c.gray._950 },
-    SnacksPickerInputBorder = { fg = c.gray._950, bg = c.gray._950 },
-    SnacksPickerBoxBorder = { fg = c.gray._950, bg = c.gray._950 },
-    SnacksPickerTitle = { fg = c.gray._900, bg = c.green._600 },
-    SnacksPickerBoxTitle = { fg = c.gray._950, bg = c.green._600 },
-    SnacksPickerList = { bg = c.gray._950, fg = c.white },
-    SnacksPickerDir = { fg = c.gray._500 },
-    SnacksPickerPrompt = { fg = c.red._950, bg = c.gray._950 },
-    SnacksPickerPreviewTitle = { fg = c.gray._900, bg = c.red._950 },
-    SnacksPickerPreview = { bg = c.gray._900 },
-    SnacksPickerToggle = { bg = c.green._600, fg = c.gray._900 },
-    ["@type.cpp"] = { fg = "#FFFFFF" },
-}
-for k, v in pairs(hl_overwrite) do
-    vim.api.nvim_set_hl(0, k, v)
-end ]]

@@ -73,7 +73,6 @@ require("configs/snacks")
 
 require("configs/gitsigns")
 require("configs/comment")
-require("configs/harpoon")
 require("configs/mason")
 require("configs/conform")
 require("configs/oil")

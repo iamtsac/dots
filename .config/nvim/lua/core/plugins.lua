@@ -29,6 +29,11 @@ require("lazy").setup({
         build = ":TSUpdate",
     },
     {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+    },
+    {
         "nvim-tree/nvim-web-devicons",
     },
     {
@@ -41,11 +46,6 @@ require("lazy").setup({
         "stevearc/conform.nvim",
     },
     {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
-    {
         "williamboman/mason.nvim",
     },
     {
@@ -55,20 +55,15 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
     {
+        "MeanderingProgrammer/render-markdown.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    },
+    {
         "dgox16/oldworld.nvim",
         lazy = false,
         priority = 1000,
     },
     {
-        "folke/snacks.nvim",
-        priority = 1000,
-        lazy = false,
-    },
-    {
-        "MeanderingProgrammer/render-markdown.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
-    },
-    {
-        "RRethy/base16-nvim"
+        "RRethy/base16-nvim",
     },
 })

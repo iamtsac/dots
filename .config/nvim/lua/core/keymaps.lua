@@ -1,5 +1,5 @@
 local wk = require("which-key")
-local harpoon = require("harpoon")
+-- local harpoon = require("harpoon")
 local conform = require("conform")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
@@ -113,15 +113,15 @@ vim.keymap.set("n", "<leader>ml", function() Snacks.picker.marks() end, { desc =
 vim.keymap.set("n", "<leader>z=", function() Snacks.picker.spelling() end, { desc = "Spell suggestions" })
 
 -- Harpoon
-vim.keymap.set("n", "<leader>ba", function()
-    harpoon:list():add()
-end, { desc = "Append to harpoon list" })
-vim.keymap.set("n", "<leader><", function()
-    harpoon.ui:toggle_quick_menu(harpoon:list())
-end, { desc = "Toggle harpoon list" })
+-- vim.keymap.set("n", "<leader>ba", function()
+--     harpoon:list():add()
+-- end, { desc = "Append to harpoon list" })
+-- vim.keymap.set("n", "<leader><", function()
+--     harpoon.ui:toggle_quick_menu(harpoon:list())
+-- end, { desc = "Toggle harpoon list" })
 
-for i=1,9 do
-    vim.keymap.set("n", "<leader>" .. tostring(i), function()
-        harpoon:list():select(i)
-    end, { desc = "" })
-end
+-- for i=1,9 do
+--     vim.keymap.set("n", "<leader>" .. tostring(i), function()
+--         harpoon:list():select(i)
+--     end, { desc = "" })
+-- end

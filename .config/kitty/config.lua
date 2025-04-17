@@ -53,7 +53,7 @@ config.remember_window_size = "yes"
 config.hide_window_decorations = "yes"
 
 config.kitty_mod = "super"
-config.cursor_trail = 1
+config.cursor_trail = 0
 
 config.map = {}
 config.map.load_config_file = "kitty_mod+r"
