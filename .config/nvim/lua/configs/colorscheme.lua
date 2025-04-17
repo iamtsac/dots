@@ -96,13 +96,14 @@ if current_theme == "black-metal-gorgoroth" then
 
     vim.cmd.colorscheme("base16-black-metal-gorgoroth")
     local c = require("base16-colorscheme").colors
-    c.base05 = "#DDDDDD"
     require("base16-colorscheme").setup(c)
     c.bg = c.base00
     c.fg = c.base0C
     c.gray0 = c.base01
     c.gray1 = c.base02
     c.gray2 = c.base03
+    c.gray3 = c.base0D
+    c.gray4 = c.base04
     c.blue = c.base08
     c.dark_yellow = c.base0B
 
@@ -124,6 +125,7 @@ if current_theme == "black-metal-gorgoroth" then
         StatusLineNC = { fg = nil, bg = c.gray0 },
 
         WhichKeyNormal = { bg = c.gray0 },
+        WhichKeyValue = { fg = c.gray3 },
 
         SnacksPickerBorder = { fg = c.bg, bg = c.bg },
         SnacksPickerInput = { fg = c.fg, bg = c.gray0 },

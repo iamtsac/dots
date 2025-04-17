@@ -58,6 +58,7 @@ config.cursor_trail = 0
 config.map = {}
 config.map.load_config_file = "kitty_mod+r"
 config.map.copy_to_clipboard = "ctrl+shift+c"
+config.map.paste_from_clipboard = "ctrl+shift+v"
 config.map.new_tab = "kitty_mod+t"
 config.map.close_tab = "kitty_mod+w"
 config.map.next_tab = "ctrl+tab"
