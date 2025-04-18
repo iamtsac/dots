@@ -113,7 +113,7 @@ if current_theme == "black-metal-gorgoroth" then
         NormalFloat = { bg = nil },
         NormalNC = { bg = nil },
         SignColumn = { bg = nil },
-        LineNr = { fg = c.base0C },
+        LineNr = { fg = c.gray3 },
         EndOfBuffer = { link = "LineNr" },
 
         TabLine = { bg = nil, fg = c.gray2 },
@@ -121,7 +121,9 @@ if current_theme == "black-metal-gorgoroth" then
         TabLineSel = { bg = c.gray2, fg = c.fg },
         SnacksImageMath = { bg = nil, fg = c.fg },
 
-        TSPunctDelimiter = { link = "TSParameter" },
+        TSFuncBuiltin = { italic = false },
+        TSVariableBuiltin = { italic = false },
+        TSPunctDelimiter = { link = "TSType" },
         StatusLine = { fg = nil, bg = c.gray0 },
         StatusLineNC = { fg = nil, bg = c.gray0 },
 
