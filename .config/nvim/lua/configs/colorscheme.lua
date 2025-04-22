@@ -118,6 +118,7 @@ if current_theme == "black-metal-gorgoroth" then
         BlinkCmpMenuBorder = { link = "Normal" },
         BlinkCmpKind = { link = "TSNamespace" },
         BlinkCmpLabelDetail = { link = "TSType" },
+        BlinkCmpScrollBarThumb = { bg = c.fg },
         SignColumn = { bg = nil },
         LineNr = { fg = c.gray3 },
         EndOfBuffer = { link = "LineNr" },
