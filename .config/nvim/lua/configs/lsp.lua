@@ -1,5 +1,3 @@
-vim.o.winborder = "rounded"
-
 vim.lsp.config["lua-language-server"] = {
     cmd = { "lua-language-server" },
     filetypes = { "lua" },
@@ -19,14 +17,51 @@ vim.lsp.config["lua-language-server"] = {
     },
 }
 
+vim.lsp.config["harper_ls"] = {
+    filetypes = {
+        "gitcommit",
+        "html",
+        "markdown",
+        "toml",
+        "typst",
+        "text",
+        -- "latex",
+        -- "tex",
+        -- "plaintex",
+    },
+}
+
+vim.lsp.config["ltex_plus"] = {
+
+    filetypes = {
+        "bib",
+        "plaintex",
+        "rst",
+        "rnoweb",
+        "tex",
+        -- "pandoc",
+        -- "quarto",
+        -- "rmd",
+        -- "context",
+        -- "html",
+        -- "xhtml",
+        -- "mail",
+        -- "text",
+    },
+}
+
 vim.lsp.enable("lua-language-server")
 vim.lsp.enable("pyright")
 vim.lsp.enable("clangd")
+vim.lsp.enable("texlab")
+vim.lsp.enable("harper_ls")
+vim.lsp.enable("ltex_plus")
 
 vim.diagnostic.config({
     underline = false,
     virtual_text = false,
 })
+
 vim.diagnostic.enable(false)
 
 require("blink.cmp").setup({
@@ -50,3 +85,35 @@ require("blink.cmp").setup({
     },
 })
 require("blink.cmp.config").completion.menu.auto_show = false
+
+vim.api.nvim_create_augroup("TextDiagnostics", { clear = true })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = "TextDiagnostics",
+    pattern = { "*.md", "*.tex", "*.txt", "*.typ" },
+    callback = function()
+        vim.diagnostic.enable(true)
+        vim.diagnostic.config({
+            underline = true,
+            virtual_text = false,
+            float = false,
+        })
+        vim.keymap.set("n", "K", function()
+            vim.diagnostic.open_float()
+        end, { desc = " Diagnostic" })
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufLeave", {
+    group = "TextDiagnostics",
+    pattern = { "*.md", "*.tex", "*.txt", "*.typ" },
+    callback = function()
+        vim.diagnostic.config({
+            underline = false,
+            virtual_text = false,
+        })
+        vim.keymap.set("n", "K", function()
+            vim.lsp.buf.hover()
+        end, { desc = " LSP Hover" })
+    end,
+})

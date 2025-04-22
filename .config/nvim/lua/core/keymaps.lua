@@ -1,6 +1,6 @@
 local wk = require("which-key")
--- local harpoon = require("harpoon")
 local conform = require("conform")
+local gs = require("gitsigns")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
 
@@ -168,9 +168,15 @@ end, { desc = " Mark list" })
 
 vim.keymap.set("n", "<leader>md", function()
     local char = vim.fn.getcharstr()
-    if char == string.upper(char) then
-        vim.api.nvim_del_mark(char)
-    else
+    local dfunc = function(char)
+        if char == string.upper(char) then
+            vim.api.nvim_del_mark(char)
+        else
+            local bufnr = vim.api.nvim_get_current_buf()
+            vim.api.nvim_buf_del_mark(bufnr, char)
+        end
+    end
+    if not pcall(dfunc, char) then
         local bufnr = vim.api.nvim_get_current_buf()
         vim.api.nvim_buf_del_mark(bufnr, char)
     end
@@ -204,22 +210,11 @@ end, { desc = " Diagnostics" })
 vim.keymap.set("n", "<leader>ld", function()
     Snacks.picker.diagnostics_buffer()
 end, { desc = " Buffer Diagnostics" })
+vim.keymap.set({ "n", "x" }, "<leader>la", function()
+    vim.lsp.buf.code_action()
+end, { desc = " Diagnostics" })
 
 -- later..
 vim.keymap.set("n", "<leader>z=", function()
     Snacks.picker.spelling()
 end, { desc = " Spell suggestions" })
-
--- Harpoon
--- vim.keymap.set("n", "<leader>ba", function()
---     harpoon:list():add()
--- end, { desc = " Append to harpoon list" })
--- vim.keymap.set("n", "<leader><", function()
---     harpoon.ui:toggle_quick_menu(harpoon:list())
--- end, { desc = " Toggle harpoon list" })
-
--- for i=1,9 do
---     vim.keymap.set("n", "<leader>" .. tostring(i), function()
---         harpoon:list():select(i)
---     end, { desc = " " })
--- end

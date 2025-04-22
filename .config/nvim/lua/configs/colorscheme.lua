@@ -13,6 +13,7 @@ local current_theme = "black-metal-gorgoroth"
 vim.opt.background = "dark"
 
 if current_theme == "oldworld" then
+    vim.o.winborder = "rounded"
     local c = require("oldworld.palette")
     c.bg = "#0D0D0D"
     c.fg = "#DDDDDD"
@@ -86,6 +87,7 @@ if current_theme == "oldworld" then
 end
 
 if current_theme == "black-metal-gorgoroth" then
+    vim.o.winborder = "rounded"
     require("base16-colorscheme").with_config({
         telescope = true,
         indentblankline = true,
@@ -114,11 +116,6 @@ if current_theme == "black-metal-gorgoroth" then
         Normal = { bg = nil },
         NormalFloat = { bg = nil },
         NormalNC = { bg = nil },
-        BlinkCmpMenu = { link = "Normal" },
-        BlinkCmpMenuBorder = { link = "Normal" },
-        BlinkCmpKind = { link = "TSNamespace" },
-        BlinkCmpLabelDetail = { link = "TSType" },
-        BlinkCmpScrollBarThumb = { bg = c.fg },
         SignColumn = { bg = nil },
         LineNr = { fg = c.gray3 },
         EndOfBuffer = { link = "LineNr" },
@@ -151,5 +148,42 @@ if current_theme == "black-metal-gorgoroth" then
         SnacksPickerPreview = { bg = c.bg },
         SnacksPickerToggle = { bg = c.blue, fg = c.bg },
         SnacksPickerDir = { fg = c.dark_yellow },
+
+        BlinkCmpMenu = { link = "Normal" },
+        BlinkCmpMenuBorder = { link = "Normal" },
+        BlinkCmpKind = { link = "TSNamespace" },
+        BlinkCmpLabelDetail = { link = "TSType" },
+        BlinkCmpScrollBarThumb = { bg = c.fg },
+        BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
+
+        GitSignsAdd = { link = "GitSignsStagedAdd" },
+        GitSignsDelete = { link = "GitSignsStagedDelete" },
+        GitSignsChange = { link = "GitSignsStagedChange" },
+        DiffAdd = { bg = get_color("GitSignsStagedAdd", "fg"), fg = c.bg },
+        DiffDelete = { bg = get_color("GitSignsStagedDelete", "fg"), fg = c.bg },
+        DiffText = { fg = get_color("GitSignsChange", "fg"), underline = true },
+        DiffChange = { bg = c.bg, fg = c.fg },
+    })
+
+    vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
+
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = "MarkdownEvent",
+        pattern = "*.md",
+        callback = function()
+            hl_overwrite({
+                RenderMarkdownCode = { bg = "#121212" },
+            })
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("BufLeave", {
+        group = "MarkdownEvent",
+        pattern = "*.md",
+        callback = function()
+            hl_overwrite({
+                RenderMarkdownCode = { bg = nil },
+            })
+        end,
     })
 end
