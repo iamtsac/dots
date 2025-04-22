@@ -8,7 +8,8 @@ Snacks.setup({
     explorer = { enabled = false },
     image = conf.image_opts,
     indent = conf.indent,
-    input = { enabled = true },
+    input = { enabled = false },
+    profiler = { enabled = false },
     notifier = {
         enabled = false,
         timeout = 3000,
@@ -18,7 +19,7 @@ Snacks.setup({
     scope = { enabled = true },
     scroll = conf.scroll,
     statuscolumn = conf.statuscolumn,
-    words = { enabled = true },
+    words = { enabled = false },
     styles = {
         notification = {
             -- wo = { wrap = true } -- Wrap notifications
@@ -27,6 +28,7 @@ Snacks.setup({
     picker = conf.picker,
     zen = conf.zen,
     toggle = { enabled = true },
+    rename = { enabled = false },
 })
 
 Snacks.config.style("snacks_image", conf.image_style)

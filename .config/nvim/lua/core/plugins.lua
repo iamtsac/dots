@@ -15,12 +15,6 @@ require("lazy").setup({
     {
         "folke/which-key.nvim",
         dependencies = { "echasnovski/mini.icons", version = false },
-        opts = {
-            preset = "classic",
-            filter = function(mapping)
-                return mapping.desc and mapping.desc ~= ""
-            end,
-        },
     },
     {
 
@@ -65,5 +59,12 @@ require("lazy").setup({
     },
     {
         "RRethy/base16-nvim",
+    },
+    {
+        "neovim/nvim-lspconfig",
+    },
+    {
+        "Saghen/blink.cmp",
+        build = "cargo +nightly build --release",
     },
 })
