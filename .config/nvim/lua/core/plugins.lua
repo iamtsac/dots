@@ -65,6 +65,6 @@ require("lazy").setup({
     },
     {
         "Saghen/blink.cmp",
-        build = "cargo +nightly build --release",
+        build = "cargo build --release",
     },
 })
