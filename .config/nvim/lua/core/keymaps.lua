@@ -138,6 +138,9 @@ vim.keymap.set("n", "<leader>ta", function()
     local blink = require("blink.cmp.config")
     blink.completion.menu.auto_show = not blink.completion.menu.auto_show
 end, { desc = " Toggle autocomplete" })
+vim.keymap.set("n", "<leader>tw", function()
+    vim.wo.wrap = not vim.wo.wrap
+end, { desc = " Toggle line wrap" })
 -- vim.keymap.set("n", "<leader>td", function() Snacks.dim.enable(snacks_opts.dim) end, { desc = " Toggle dim" })
 
 -- Git

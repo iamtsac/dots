@@ -7,7 +7,7 @@ function file_exists(name)
 end
 
 function custom_theme(name)
-    return dofile(os.getenv("HOME") .. "/.config/ghostty/themes/" .. name .. ".lua")
+    return dofile(os.getenv("HOME") .. "/.config/kitty/themes/" .. name .. ".lua")
 end
 
 if string.find(io.popen("uname"):read("*a"), "Darwin") then
@@ -30,9 +30,9 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     if main_resolution == 3840 then
         config.font_size = 16
     elseif main_resolution == 1920 then
-        config.font_size = 10
+        config.font_size = 12
     else
-        config.font_size = 10
+        config.font_size = 12
     end
     config.shell = "/usr/bin/fish"
 end
@@ -41,7 +41,7 @@ if not file_exists(os.getenv("HOME") .. "/.terminfo/x/xterm-kitty") then
     os.execute( "tempfile=$(mktemp) && curl -o $tempfile https://raw.githubusercontent.com/kovidgoyal/kitty/master/terminfo/x/xterm-kitty && tic -x -o ~/.terminfo $tempfile && rm $tempfile")
 end
 
-config.term = "kitty"
+config.term = "xterm-kitty"
 
 config.font_family = "Iosevka Nerd Font"
 config.bold_font = "auto"
@@ -49,7 +49,7 @@ config.italic_font = "auto"
 config.bold_italic_font = "auto"
 config.text_compositions_strategy = "platform"
 
-config.remember_window_size = "yes"
+config.remember_window_size = "no"
 config.hide_window_decorations = "yes"
 
 config.kitty_mod = "super"
@@ -62,8 +62,9 @@ config.map.paste_from_clipboard = "ctrl+shift+v"
 config.map.new_tab = "kitty_mod+t"
 config.map.close_tab = "kitty_mod+w"
 config.map.next_tab = "ctrl+tab"
-config.map["change_font_size all +1"] = "ctrl+shift+equal"
-config.map["change_font_size all -1"] = "ctrl+shift+minus"
+config.map.new_os_window = "kitty_mod+n"
+config.map["change_font_size all +2"] = "ctrl+shift+equal"
+config.map["change_font_size all -2"] = "ctrl+shift+minus"
 config.map["change_font_size all 0"] = "ctrl+shift+0"
 
 
