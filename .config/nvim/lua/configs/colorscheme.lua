@@ -161,8 +161,9 @@ if current_theme == "black-metal-gorgoroth" then
         GitSignsChange = { link = "GitSignsStagedChange" },
         DiffAdd = { bg = get_color("GitSignsStagedAdd", "fg"), fg = c.bg },
         DiffDelete = { bg = get_color("GitSignsStagedDelete", "fg"), fg = c.bg },
-        DiffText = { fg = get_color("GitSignsChange", "fg"), underline = true },
+        DiffText = { bg = get_color("GitSignsStagedChange", "fg"), fg = c.bg, underline = false },
         DiffChange = { bg = c.bg, fg = c.fg },
+        RenderMarkdownH1Bg = { bg = nil },
     })
 
     vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
