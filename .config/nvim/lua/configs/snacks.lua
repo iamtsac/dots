@@ -3,6 +3,7 @@ local conf = require("configs/snacks_configs").snacks_config()
 
 Snacks.setup({
     ---@type snacks.Config
+    terminal = { passthrough = true },
     bigfile = { enabled = true },
     dashboard = { enabled = false },
     explorer = { enabled = false },
