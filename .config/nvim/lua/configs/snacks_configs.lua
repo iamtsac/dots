@@ -357,12 +357,12 @@ function M.snacks_config()
             -- render the image inline in the buffer
             -- if your env doesn't support unicode placeholders, this will be disabled
             -- takes precedence over `opts.float` on supported terminals
-            inline = true,
+            inline = false,
             -- render the image in a floating window
             -- only used if `opts.inline` is disabled
             float = true,
-            max_width = 200,
-            max_height = 200,
+            max_width = 60,
+            max_height = 60,
             -- Set to `true`, to conceal the image text when rendering inline.
             -- (experimental)
             ---@param lang string tree-sitter language
@@ -431,7 +431,7 @@ function M.snacks_config()
         ${content}]],
             },
             latex = {
-                font_size = "Large", -- see https://www.sascha-frank.com/latex-font-size.html
+                font_size = "normalize", -- see https://www.sascha-frank.com/latex-font-size.html
                 -- for latex documents, the doc packages are included automatically,
                 -- but you can add more packages here. Useful for markdown documents.
                 packages = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools" },
@@ -449,12 +449,12 @@ function M.snacks_config()
     }
 
     conf.image_style = {
-        relative = "cursor",
-        border = "single",
+        relative = "win",
+        border = "none",
         focusable = false,
         backdrop = false,
-        row = 1,
-        col = 1,
+        row = 0,
+        col = -1,
     }
 
     return conf

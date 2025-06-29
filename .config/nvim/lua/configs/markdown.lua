@@ -1,8 +1,8 @@
 require("render-markdown").setup({
-    render_modes = true,
+    render_modes = { "n", "c", "t" },
     indent = {
-        enabled = true,
-        render_modes = false,
+        enabled = false,
+        -- render_modes = false,
         per_level = 2,
         skip_level = 1,
         skip_heading = false,
@@ -11,7 +11,7 @@ require("render-markdown").setup({
     },
     heading = {
         enabled = true,
-        render_modes = true,
+        -- render_modes = true,
         atx = true,
         setext = true,
         sign = true,
@@ -48,7 +48,7 @@ require("render-markdown").setup({
     },
     dash = {
         enabled = true,
-        render_modes = true,
+        -- render_modes = true,
         icon = "─",
         width = "full",
         left_margin = 0,
@@ -56,7 +56,7 @@ require("render-markdown").setup({
     },
     code = {
         enabled = true,
-        render_modes = false,
+        -- render_modes = false,
         sign = true,
         style = "full",
         position = "left",
@@ -83,7 +83,7 @@ require("render-markdown").setup({
     },
     pipe_table = {
         enabled = true,
-        render_modes = { "n", "c", "t" },
+        -- render_modes = { "n", "c", "t" },
         preset = "none",
         style = "full",
         cell = "padded",
@@ -109,7 +109,7 @@ require("render-markdown").setup({
     },
     latex = {
         enabled = false,
-        render_modes = false,
+        -- render_modes = false,
         converter = "latex2text",
         highlight = "RenderMarkdownMath",
         position = "above",
