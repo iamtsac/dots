@@ -12,7 +12,7 @@ if-shell '[ "#{TMUX_THEME}" = "simple" ]' {
 #[fg=colour0, bg=colour231] #S\
 #[bg=colour231, fg=colour235] \
 #[fg=colour253,bg=colour235] #H \
-#[bg=colour0,fg=colour238]#[bg=colour238,fg=default] \
+#[bg=colour235,fg=colour238]#[bg=colour238,fg=default] \
 #[fg=colour254,bg=colour239,bold]%H:%M:%S \
 #[bg=default,fg=colour239]
 '
