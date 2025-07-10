@@ -1,5 +1,3 @@
-vim.api.nvim_set_hl(0, "SPrimary", { fg = "#DDDDDD", italic = false })
-vim.api.nvim_set_hl(0, "SSecond", { fg = "#888888" })
 local function get_git_diff()
     local icons = { added = "󰐖", changed = "󰏬", removed = "" }
     local colors = { added = "%#GitSignsAdd#", changed = "%#GitSignsChange#", removed = "%#GitSignsDelete#" }
@@ -21,15 +19,15 @@ local function fname()
     local fname = vim.fn.fnamemodify(vim.fn.expand("%"), ":t")
     local modified = vim.fn.getbufvar("%", "&modified")
     if modified == 1 then
-        return "%#SPrimary#" .. fname .. " 󰧞"
+        return "%#StatusLineMain#" .. fname .. " 󰧞"
     else
-        return "%#SPrimary#" .. fname
+        return "%#StatusLineMain#" .. fname
     end
 end
 
 local function root_dir()
     local fpath = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-    return "%#SSecond#  " .. fpath
+    return "%#StatusLineSecondary#  " .. fpath
 end
 
 local function modes()
@@ -61,14 +59,14 @@ local function modes()
         ["v"] = "%#Keyword#",
         ["V"] = "%#Keyword#",
         [""] = "%#Keyword#",
-        ["s"] = "%#SSecond#",
-        ["S"] = "%#SSecond#",
-        [""] = "%#SSecond#",
+        ["s"] = "%#StatusLineSecondary#",
+        ["S"] = "%#StatusLineSecondary#",
+        [""] = "%#StatusLineSecondary#",
         ["i"] = "%#Error#",
         ["ic"] = "%#Error#",
         ["R"] = "%#Error#",
         ["Rv"] = "%#Error#",
-        ["c"] = "%#SSecond#",
+        ["c"] = "%#StatusLineSecondary#",
         ["cv"] = "%#Normal#",
         ["ce"] = "%#Normal#",
         ["r"] = "%#Normal#",
@@ -78,8 +76,8 @@ local function modes()
         ["t"] = "%#Normal#",
     }
     local current_mode = vim.api.nvim_get_mode().mode
-    -- mode = "%#SPrimary#" .. string.format("%s", string.sub(modes[current_mode], 1, 1)):upper()
-    mode = "%#SPrimary#" .. string.format("%s", modes[current_mode]):upper()
+    -- mode = "%#StatusLineMain#" .. string.format("%s", string.sub(modes[current_mode], 1, 1)):upper()
+    mode = "%#StatusLineMain#" .. string.format("%s", modes[current_mode]):upper()
     return mode
 end
 
@@ -88,21 +86,21 @@ local function ftype()
     local icon, color = require("nvim-web-devicons").get_icon_color(file_name, file_ext, { default = true })
     vim.api.nvim_set_hl(0, "SFtype", { fg = color })
     local ftype = vim.bo.filetype
-    return string.format("%%#SSecond#%s  %%#SSecond#%s", icon, ftype):lower()
+    return string.format("%%#StatusLineSecondary#%s  %%#StatusLineSecondary#%s", icon, ftype):lower()
 end
 
 local function progress()
     local cur = vim.fn.line(".")
     local total = vim.fn.line("$")
 
-    return "%#SPrimary#  " .. cur .. " / " .. total
+    return "%#StatusLineMain#  " .. cur .. " / " .. total
 end
 
 local function recording_macro()
     local reg = vim.fn.reg_recording()
 
     if not (reg == "") then
-        return "%#SPrimary#@" .. reg .. " recording  %S"
+        return "%#StatusLineMain#@" .. reg .. " recording  %S"
     else
         return "%S"
     end

@@ -10,9 +10,10 @@ end
 
 local current_theme = "black-metal-gorgoroth"
 
-vim.opt.background = "dark"
 
 if current_theme == "oldworld" then
+    theme_variant = os.getenv('THEME_VARIANT')
+    vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     local c = require("oldworld.palette")
     c.bg = "#0D0D0D"
@@ -84,9 +85,11 @@ if current_theme == "oldworld" then
         SnacksPickerToggle = { bg = c.green, fg = c.bg },
         SnacksPickerDir = { fg = c.purple },
     })
-end
-
-if current_theme == "black-metal-gorgoroth" then
+    vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
+    vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
+elseif current_theme == "black-metal-gorgoroth" then
+    theme_variant = os.getenv('THEME_VARIANT')
+    vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     require("base16-colorscheme").with_config({
         telescope = true,
@@ -104,50 +107,65 @@ if current_theme == "black-metal-gorgoroth" then
     require("base16-colorscheme").setup(c)
     c.bg = c.base00
     c.fg = c.base0C
-    c.gray0 = c.base01
-    c.gray1 = c.base02
-    c.gray2 = c.base03
-    c.gray3 = c.base0D
-    c.gray4 = c.base04
-    c.blue = c.base08
-    c.dark_yellow = c.base0B
+
+    c = {
+        base00 = "#000000",
+        base01 = "#121212",
+        base02 = "#222222",
+        base03 = "#333333",
+        base04 = "#999999",
+        base05 = "#c1c1c1",
+        base06 = "#999999",
+        base07 = "#c1c1c1",
+        base08 = "#5f7887",
+        base09 = "#aaaaaa",
+        base0A = "#8c7f70",
+        base0B = "#9b8d7f",
+        base0C = "#aaaaaa",
+        base0D = "#888888",
+        base0E = "#999999",
+        base0F = "#444444",
+    }
 
     hl_overwrite({
-        Normal = { bg = nil },
+        Normal = { bg = c.base00 },
         NormalFloat = { bg = nil },
         NormalNC = { bg = nil },
         SignColumn = { bg = nil },
-        LineNr = { fg = c.gray3 },
-        EndOfBuffer = { link = "LineNr" },
+        LineNr = { fg = c.base03, bg = c.base00 },
+        CurosrLineNr = { link = "LineNr" },
+        LineNrAbove = { link = "LineNr" },
+        LineNrBelow = { link = "LineNr" },
+        EndOfBuffer = { bg = nil, fg = c.base0F },
 
         RenderMarkdownCode = { bg = nil },
-        TabLine = { bg = nil, fg = c.gray2 },
+        TabLine = { bg = nil, fg = c.base03 },
         TabLineFill = { bg = nil, fg = nil },
-        TabLineSel = { bg = c.gray2, fg = c.fg },
+        TabLineSel = { bg = c.base03, fg = c.fg },
         SnacksImageMath = { bg = nil, fg = c.fg },
 
         TSFuncBuiltin = { italic = false },
         TSVariableBuiltin = { italic = false },
         TSPunctDelimiter = { link = "TSType" },
-        StatusLine = { fg = nil, bg = c.gray0 },
-        StatusLineNC = { fg = nil, bg = c.gray0 },
+        StatusLine = { fg = nil, bg = c.base01 },
+        StatusLineNC = { fg = nil, bg = c.base01 },
 
-        WhichKeyNormal = { bg = c.gray0 },
-        WhichKeyValue = { fg = c.gray3 },
+        WhichKeyNormal = { bg = c.base01 },
+        WhichKeyValue = { fg = c.base0D },
 
         SnacksPickerBorder = { fg = c.bg, bg = c.bg },
-        SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
+        SnacksPickerInput = { fg = c.fg, bg = c.base01 },
         SnacksPickerMatch = { link = "Type" },
-        SnacksPickerInputBorder = { fg = c.gray0, bg = c.gray0 },
-        SnacksPickerBoxBorder = { fg = c.gray0, bg = c.gray0 },
-        SnacksPickerTitle = { fg = c.bg, bg = c.blue },
-        SnacksPickerBoxTitle = { fg = c.gray0, bg = c.blue },
-        SnacksPickerList = { bg = c.gray0 },
-        SnacksPickerPrompt = { fg = c.gray2, bg = c.gray0 },
-        SnacksPickerPreviewTitle = { fg = c.bg, bg = c.gray0 },
+        SnacksPickerInputBorder = { fg = c.base01, bg = c.base01 },
+        SnacksPickerBoxBorder = { fg = c.base01, bg = c.base01 },
+        SnacksPickerTitle = { fg = c.bg, bg = c.base08 },
+        SnacksPickerBoxTitle = { fg = c.base01, bg = c.base08 },
+        SnacksPickerList = { bg = c.base01 },
+        SnacksPickerPrompt = { fg = c.base03, bg = c.base01 },
+        SnacksPickerPreviewTitle = { fg = c.bg, bg = c.base01 },
         SnacksPickerPreview = { bg = c.bg },
-        SnacksPickerToggle = { bg = c.blue, fg = c.bg },
-        SnacksPickerDir = { fg = c.dark_yellow },
+        SnacksPickerToggle = { bg = c.base08, fg = c.bg },
+        SnacksPickerDir = { fg = c.base0B },
 
         BlinkCmpMenu = { link = "Normal" },
         BlinkCmpMenuBorder = { link = "Normal" },
@@ -187,4 +205,6 @@ if current_theme == "black-metal-gorgoroth" then
             })
         end,
     })
+    vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
+    vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
 end

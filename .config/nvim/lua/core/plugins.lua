@@ -67,4 +67,10 @@ require("lazy").setup({
         "Saghen/blink.cmp",
         build = "cargo build --release",
     },
+    {
+        "catgoose/nvim-colorizer.lua",
+        opts = function()
+            require("colorizer").setup()
+        end,
+    },
 })

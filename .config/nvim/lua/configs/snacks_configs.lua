@@ -89,7 +89,7 @@ function M.snacks_config()
         },
         show_empty = true,
         hidden = false,
-        ignored = true,
+        ignored = false,
         follow = false,
         supports_live = true,
     }
