@@ -46,6 +46,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 set -U fish_greeting
 set -g COLORTERM truecolor
 set -g fish_term24bit 1
+set -g THEME_VARIANT dark
 export EDITOR=nvim
 export VISUAL=nvim
 
