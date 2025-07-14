@@ -88,18 +88,24 @@ config.tab_separator  = " | "
 config.tab_bar_align = "left"
 
 config.tab_bar_background = "none"
-config.active_tab_foreground = "#fff"
-config.active_tab_background = "#222"
-config.inactive_tab_foreground = "#555"
-config.inactive_tab_background = "#000"
 config.tab_fade = "1 1 1 1"
 
 -- local theme = custom_theme("black_metal_gorgoroth")
 local theme
 if  theme_variant == "dark" then
     theme = custom_theme("kanso_dark")
+    config.active_tab_foreground = "#fff"
+    config.active_tab_background = "#222"
+    config.active_tab_font_style = "bold"
+    config.inactive_tab_foreground = "#555"
+    config.inactive_tab_background = "#000"
 elseif theme_variant == "light" then
     theme = custom_theme("kanso_light")
+    config.active_tab_foreground = "#000"
+    config.active_tab_background = "#ccc"
+    config.active_tab_font_style = "bold"
+    config.inactive_tab_foreground = "#bbb"
+    config.inactive_tab_background = "#eee"
 end
 
 kitty_conf_file = io.open(os.getenv("HOME") .. "/.config/kitty/kitty.conf", "w")
