@@ -1,7 +1,7 @@
 # vim: ft=tmux
 
 # Use if-shell to check the variable and change settings accordingly
-if-shell '[ "#{TMUX_THEME}" = "simple" ]' {
+if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "dark" ]' {
 
     set-option -g status-style bg=default
     set -g status-fg colour15
@@ -25,6 +25,36 @@ if-shell '[ "#{TMUX_THEME}" = "simple" ]' {
 #[fg=colour235, bg=default]\
 #[bg=colour235, fg=default]#I: #W\
 #[bg=default, fg=colour235] \
+'
+    set -g status-right-length 100
+    set -g status-left-length 100
+    set -g status-justify left
+}
+
+if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "light" ]' {
+
+    set-option -g status-style bg=default
+    set -g status-fg colour0
+    set -g status-style bright
+
+    set -g status-left ''
+    set -g status-right '#[bg=default, fg=colour236]\
+#[fg=colour255, bg=colour236] #S\
+#[bg=colour236, fg=colour240] \
+#[fg=colour253,bg=colour240] #H \
+#[bg=colour240,fg=colour250]#[bg=colour250,fg=default] \
+#[fg=colour232,bg=colour250,bold]%H:%M:%S \
+#[bg=default,fg=colour250]
+'
+
+    setw -g window-status-format '\
+#[bg=default, fg=colour232, italics]#I: #W \
+'
+
+    setw -g window-status-current-format '\
+#[fg=colour234, bg=default]\
+#[bg=colour234, fg=colour251]#I: #W\
+#[bg=default, fg=colour234] \
 '
     set -g status-right-length 100
     set -g status-left-length 100
