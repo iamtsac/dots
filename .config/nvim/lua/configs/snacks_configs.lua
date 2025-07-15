@@ -412,7 +412,7 @@ function M.snacks_config()
             magick = {
                 default = { "{src}[0]", "-scale", "1920x1080>" }, -- default for raster images
                 vector = { "-density", 192, "{src}[0]" }, -- used by vector images like svg
-                math = { "-density", 192, "{src}[0]", "-trim", "-alpha", "off" },
+                math = { "-density", 192, "{src}[0]", "-trim" }, -- "-alpha", "off" },
                 pdf = { "-density", 192, "{src}[0]", "-background", "white", "-alpha", "remove", "-trim" },
             },
         },
@@ -434,7 +434,7 @@ function M.snacks_config()
                 font_size = "normalize", -- see https://www.sascha-frank.com/latex-font-size.html
                 -- for latex documents, the doc packages are included automatically,
                 -- but you can add more packages here. Useful for markdown documents.
-                packages = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools", "color"},
+                packages = { "amsmath", "amssymb", "amsfonts", "amscd", "mathtools", "color" },
                 tpl = [[
         \documentclass[preview,border=0pt,varwidth,12pt]{standalone}
         \usepackage{${packages}}
