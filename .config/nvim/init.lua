@@ -84,3 +84,19 @@ require("configs/tabline")
 require("configs/statusline")
 require("configs/markdown")
 require("configs/lsp")
+
+-- Auto reload theme on change
+local uv = vim.loop
+local stylerc = vim.fn.expand("~/.config/stylerc")
+local last_mtime
+
+vim.fn.timer_start(5000, function()
+    uv.fs_stat(stylerc, function(_, stat)
+        if stat and stat.mtime.sec ~= last_mtime then
+            last_mtime = stat.mtime.sec
+            vim.schedule(function()
+                dofile(vim.fn.stdpath("config") .. "/lua/configs/colorscheme.lua")
+            end)
+        end
+    end)
+end, { ["repeat"] = -1 })

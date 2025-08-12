@@ -8,21 +8,48 @@ local function get_color(group, attr)
     return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), attr)
 end
 
-local function read_style(path)
-    local file = io.open(path, "r")
-    if not file then
-        return nil
-    end
-    local variant = file:read("*l") -- read one line
-    file:close()
-    return variant
+local function hl_markdown_code(c1, c2)
+    hl_overwrite({RenderMarkdownCode = { bg = c1 }})
+    vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = "MarkdownEvent",
+        pattern = "*.md",
+        callback = function()
+            hl_overwrite({
+                RenderMarkdownCode = { bg = c2 },
+            })
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("BufLeave", {
+        group = "MarkdownEvent",
+        pattern = "*.md",
+        callback = function()
+            hl_overwrite({
+                RenderMarkdownCode = { bg = c1 },
+            })
+        end,
+    })
 end
-local theme_variant = read_style(os.getenv("HOME") .. "/.config/style")
 
--- local current_theme = "black-metal-gorgoroth"
-local current_theme = "kanso"
+local function read_args(path)
+    file = io.open(path, "r")
+    args = {}
+    for l in file:lines() do
+        content = {}
+        for m in l:gmatch("([^=]+)=?") do
+            table.insert(content, m)
+        end
+        args[content[1]] = content[2]
+    end
+    return args
+end
+args = read_args(os.getenv("HOME") .. "/.config/stylerc")
 
-if current_theme == "oldworld" then
+local theme_name = args.theme
+local style = args.style
+
+if theme_name == "oldworld" then
     vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     local c = require("oldworld.palette")
@@ -95,9 +122,10 @@ if current_theme == "oldworld" then
         SnacksPickerToggle = { bg = c.green, fg = c.bg },
         SnacksPickerDir = { fg = c.purple },
     })
+    hl_markdown_code(c.bg, c.gray1)
     vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
     vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
-elseif current_theme == "black-metal-gorgoroth" then
+elseif theme_name == "black-metal" then
     vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     require("base16-colorscheme").with_config({
@@ -147,7 +175,6 @@ elseif current_theme == "black-metal-gorgoroth" then
         LineNrBelow = { link = "LineNr" },
         EndOfBuffer = { bg = nil, fg = c.base0F },
 
-        RenderMarkdownCode = { bg = nil },
         TabLine = { bg = nil, fg = c.base03 },
         TabLineFill = { bg = nil, fg = nil },
         TabLineSel = { bg = c.base03, fg = c.fg },
@@ -192,33 +219,12 @@ elseif current_theme == "black-metal-gorgoroth" then
         DiffChange = { bg = c.bg, fg = c.fg },
         RenderMarkdownH1Bg = { bg = nil },
     })
-
-    vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
-
-    vim.api.nvim_create_autocmd("BufEnter", {
-        group = "MarkdownEvent",
-        pattern = "*.md",
-        callback = function()
-            hl_overwrite({
-                RenderMarkdownCode = { bg = "#121212" },
-            })
-        end,
-    })
-
-    vim.api.nvim_create_autocmd("BufLeave", {
-        group = "MarkdownEvent",
-        pattern = "*.md",
-        callback = function()
-            hl_overwrite({
-                RenderMarkdownCode = { bg = nil },
-            })
-        end,
-    })
+    hl_markdown_code(c.bg, c.base01)
     vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
     vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
-elseif current_theme == "kanso" then
+elseif theme_name == "kanso" then
     vim.o.winborder = "rounded"
-    vim.opt.background = theme_variant
+    vim.opt.background = style
     require("kanso").setup({
         bold = true, -- enable bold fonts
         italics = false, -- enable italics
@@ -232,7 +238,6 @@ elseif current_theme == "kanso" then
         transparent = true, -- do not set background color
         dimInactive = false, -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
-        theme = "zen", -- Load "zen" theme
         background = { -- map the value of 'background' option to a theme
             dark = "zen", -- try "ink" !
             light = "pearl", -- try "mist" !
@@ -245,6 +250,7 @@ elseif current_theme == "kanso" then
         pearlWhite1 = "#e2e1df",
         pearlWhite2 = "#dddddb",
         pearlViolet4 = "#624c83",
+        pearlYellow4 = "#f9d791",
         gray0 = "#111111",
         gray2 = "#181818",
         gray3 = "#282828",
@@ -253,8 +259,9 @@ elseif current_theme == "kanso" then
     -- setup must be called before loading
     vim.cmd("colorscheme kanso")
     c.fg = get_color("Normal", "fg")
-    c.bg = nil
-    if theme_variant == "dark" then
+    if style == "dark" then
+        c.bg = "#000000"
+        c.markdown_code = c.gray2
         hl_overwrite({
             SnacksPickerBorder = { fg = c.bg, bg = c.bg },
             SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
@@ -272,7 +279,7 @@ elseif current_theme == "kanso" then
             SnacksPickerDir = { fg = c.springViolet1 },
 
             StatusLine = { fg = nil, bg = c.gray2 },
-            CursorLine = { fg = nil, bg = c.gray2 },
+            CursorLine = { fg = nil, bg = c.gray0 },
             StatusLineNC = { fg = nil, bg = c.gray2 },
 
             Normal = { bg = nil },
@@ -284,34 +291,14 @@ elseif current_theme == "kanso" then
             BlinkCmpScrollBarThumb = { bg = c.fg },
             BlinkCmpMenuSelection = { bg = c.gray3 },
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
-            RenderMarkdownCode = { bg = "#000000" },
-        })
-
-        vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
-
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = "MarkdownEvent",
-            pattern = "*.md",
-            callback = function()
-                hl_overwrite({
-                    RenderMarkdownCode = { bg = c.gray2 },
-                })
-            end,
-        })
-
-        vim.api.nvim_create_autocmd("BufLeave", {
-            group = "MarkdownEvent",
-            pattern = "*.md",
-            callback = function()
-                hl_overwrite({
-                    RenderMarkdownCode = { bg = "#000000" },
-                })
-            end,
+            RenderMarkdownCode = { bg = c.bg },
         })
 
         vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
         vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
-    elseif theme_variant == "light" then
+    elseif style == "light" then
+        c.bg = "#EEEEEE"
+        c.markdown_code = c.pearlWhite2
         hl_overwrite({
             SnacksImageMath = { fg = c.fg, bg = c.bg },
             SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -331,32 +318,99 @@ elseif current_theme == "kanso" then
             SnacksPickerDir = { fg = c.pearlViolet4 },
             StatusLine = { fg = nil, bg = c.pearlWhite1 },
             StatusLineNC = { fg = nil, bg = c.pearlWhite1 },
-            RenderMarkdownCode = { bg = "#EEEEEE" },
+            RenderMarkdownCode = { bg = c.bg },
         })
-
-        vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
-
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = "MarkdownEvent",
-            pattern = "*.md",
-            callback = function()
-                hl_overwrite({
-                    RenderMarkdownCode = { bg = c.pearlWhite2 },
-                })
-            end,
-        })
-
-        vim.api.nvim_create_autocmd("BufLeave", {
-            group = "MarkdownEvent",
-            pattern = "*.md",
-            callback = function()
-                hl_overwrite({
-                    RenderMarkdownCode = { bg = "#EEEEEE" },
-                })
-            end,
-        })
-
         vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#000000", italic = false })
         vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
     end
+
+    hl_markdown_code(c.bg, c.markdown_code)
+elseif theme_name == "modus" then
+    c = {}
+    vim.o.winborder = "rounded"
+    vim.opt.background = style
+    require("modus-themes").setup({
+        style = "auto",
+        variant = "default", -- Theme comes in four variants `default`, `tinted`, `deuteranopia`, and `tritanopia`
+        transparent = true, -- Transparent background (as supported by the terminal)
+        dim_inactive = false, -- "non-current" windows are dimmed
+        hide_inactive_statusline = false, -- Hide statuslines on inactive windows. Works with the standard **StatusLine**, **LuaLine** and **mini.statusline**
+        line_nr_column_background = false, -- Distinct background colors in line number column. `false` will disable background color and fallback to Normal background
+        sign_column_background = false, -- Distinct background colors in sign column. `false` will disable background color and fallback to Normal background
+        styles = {
+            comments = { italic = false },
+            keywords = { italic = false },
+            functions = {},
+            variables = {},
+        },
+        on_colors = function(colors)
+            c = colors
+        end,
+    })
+    vim.cmd("colorscheme modus")
+    c.fg = get_color("Normal", "fg")
+    c.bg = nil
+    if style == "dark" then
+        hl_overwrite({
+            SnacksImageMath = { fg = c.bg, bg = c.fg },
+            SnacksPickerBorder = { fg = c.bg, bg = c.bg },
+            SnacksPickerInput = { fg = c.fg, bg = c.bg_dim },
+            SnacksPickerNormal = { fg = c.fg, bg = c.bg_dim },
+            SnacksPickerMatch = { fg = get_color("@comment.warning", "fg"), bg = nil },
+            SnacksPickerInputBorder = { fg = c.bg_dim, bg = c.bg_dim },
+            SnacksPickerBoxBorder = { fg = c.bg_dim, bg = c.bg_dim },
+            SnacksPickerTitle = { fg = c.bg_main, bg = c.red_faint },
+            SnacksPickerBoxTitle = { fg = c.bg_main, bg = c.red_cooler },
+            SnacksPickerListCursorLine = { fg = c.bg_main, bg = c.blue_warmer },
+            SnacksPickerList = { bg = c.bg_dim },
+            SnacksPickerPrompt = { fg = c.red_cooler, bg = c.bg_dim },
+            SnacksPickerPreviewTitle = { fg = c.bg, bg = c.red_cooler },
+            SnacksPickerPreview = { bg = c.bg },
+            SnacksPickerToggle = { bg = c.red_cooler, fg = c.bg },
+            SnacksPickerDir = { fg = c.pink },
+            StatusLine = { fg = nil, bg = c.bg_dim },
+            StatusLineNC = { fg = nil, bg = c.bg_dim },
+            BlinkCmpMenu = { link = "Normal" },
+            BlinkCmpMenuBorder = { link = "Normal" },
+            BlinkCmpLabelDetail = { link = "Type" },
+            PmenuKind = { bg = nil },
+            PmenuExtra = { bg = nil },
+            NormalFloat = { bg = nil },
+            CursorLine = { bg = c.bg_dim }
+        })
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+    end
+    if style == "light" then
+        hl_overwrite({
+            SnacksImageMath = { fg = c.fg, bg = c.bg },
+            SnacksPickerBorder = { fg = c.bg, bg = c.bg },
+            SnacksPickerInput = { fg = c.fg, bg = c.bg_dim },
+            SnacksPickerNormal = { fg = c.fg, bg = c.bg_dim },
+            SnacksPickerMatch = { link = "@diff.minus" },
+            SnacksPickerInputBorder = { fg = c.bg_dim, bg = c.bg_dim },
+            SnacksPickerBoxBorder = { fg = c.bg_dim, bg = c.bg_dim },
+            SnacksPickerTitle = { fg = c.bg, bg = c.bg_green_intense },
+            SnacksPickerBoxTitle = { fg = c.fg, bg = c.bg_green_intense },
+            SnacksPickerListCursorLine = { fg = c.fg, bg = c.bg_yellow_nuanced },
+            SnacksPickerList = { bg = c.bg_dim },
+            SnacksPickerPrompt = { fg = c.bg_red_intense, bg = c.bg_dim },
+            SnacksPickerPreviewTitle = { fg = c.bg, bg = c.bg_red_intense },
+            SnacksPickerPreview = { bg = c.bg },
+            SnacksPickerToggle = { bg = c.bg_green_intense, fg = c.bg },
+            SnacksPickerDir = { fg = c.bg_magenta_intense },
+            StatusLine = { fg = nil, bg = c.bg_dim },
+            StatusLineNC = { fg = nil, bg = c.bg_dim },
+            BlinkCmpMenu = { link = "Normal" },
+            BlinkCmpMenuBorder = { link = "Normal" },
+            BlinkCmpLabelDetail = { link = "Type" },
+            PmenuKind = { bg = nil },
+            PmenuExtra = { bg = nil },
+            NormalFloat = { bg = nil },
+        })
+
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+    end
+    hl_markdown_code(c.bg_main, c.bg_alt)
 end
