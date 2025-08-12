@@ -1,0 +1,101 @@
+#!/usr/bin/lua
+
+local os = require("os")
+
+local table_contains = function(t, value)
+    for _, v in ipairs(t) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
+local create_set = function(t1, t2)
+    local set = {}
+    for _, v in ipairs(t1) do
+        table.insert(set, v)
+    end
+    for _, v in ipairs(t2) do
+        if not table_contains(set, v) then
+            table.insert(set, v)
+        end
+    end
+    return set
+end
+
+function parse_args(args)
+    local i = 1
+    while i <= #arg do
+        local a = arg[i]
+        if a:sub(1, 2) == "--" then
+                local key = a:sub(3)
+                local value = arg[i + 1]
+                if value and value:sub(1, 2) ~= "--" then
+                    args[key] = value
+                    i = i + 1
+                else
+                    args[key] = true -- flag without value
+                end
+        else
+            table.insert(args, a)
+        end
+        i = i + 1
+    end
+    return args
+end
+
+local check_args = function(args, themes)
+    if not table_contains(create_set(themes.dark, themes.light), args.theme) then
+        print("Theme does not exist")
+        os.exit()
+    end
+    if args.style == "light" and not table_contains(themes.light, args.theme) then
+        print("Theme does not have light variant")
+        os.exit()
+    end
+    if args.style == "dark" and not table_contains(themes.dark, args.theme) then
+        print("Theme does not have dark variant")
+        os.exit()
+    end
+    if not table_contains(themes.tmux, args.tmux_theme) then
+        print("Tmux theme does not exit")
+        os.exit()
+    end
+end
+
+local function read_current_config(path, args)
+    file = io.open(path, "r")
+    for l in file:lines() do
+        content = {}
+        for m in l:gmatch("([^=]+)=?") do
+            table.insert(content, m)
+        end
+        args[content[1]] = content[2]
+    end
+    return args
+end
+
+local themes = {}
+themes.light = { "kanso", "modus" }
+themes.dark = { "oldworld", "black-metal", "kanso", "modus" }
+themes.tmux = { "simple", "bubbles" }
+
+local default_args = {
+    style = "dark",
+    theme = "kanso",
+    tmux_theme = "simple",
+}
+
+stylerc_path = os.getenv("HOME") .. "/.config/stylerc"
+args = read_current_config(stylerc_path, default_args)
+args = parse_args(args)
+check_args(args, themes)
+
+file = io.open(stylerc_path, "w")
+for k, v in pairs(args) do
+    file:write(k .. "=" .. v .. "\n")
+end
+
+file:close()
+dofile(os.getenv("HOME") .. "/.config/kitty/config.lua")
