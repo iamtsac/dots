@@ -102,3 +102,10 @@ end
 
 file:close()
 dofile(os.getenv("HOME") .. "/.config/kitty/config.lua")
+
+local handle
+if args.style == "light" then
+    handle = io.popen('fish -c "set -U fish_color_autosuggestion 606060"')
+elseif args.style == "dark" then
+    handle = io.popen('fish -c "set -U fish_color_autosuggestion 777777"')
+end
