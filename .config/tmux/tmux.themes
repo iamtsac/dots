@@ -1,7 +1,7 @@
 # vim: ft=tmux
 
 # Use if-shell to check the variable and change settings accordingly
-if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "dark" ]' {
+if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"simple\" ] && [ \"$(awk -F= '/style/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"dark\" ]" {
 
     set-option -g status-style bg=default
     set -g status-fg colour15
@@ -31,7 +31,7 @@ if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "dark
     set -g status-justify left
 }
 
-if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "light" ]' {
+if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"simple\" ] && [ \"$(awk -F= '/style/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"light\" ]" {
 
     set-option -g status-style bg=default
     set -g status-fg colour0
@@ -61,7 +61,7 @@ if-shell '[ "$TMUX_THEME" = "simple" ] && [ "$(cat $HOME/.config/style)" = "ligh
     set -g status-justify left
 }
 
-if-shell '[ "#{TMUX_THEME}" = "bubbles" ]' {
+if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"bubbles\" ] && [ \"$(awk -F= '/style/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"dark\" ]" {
     set-option -g status-style bg=default
     set -g status-fg colour15
     set -g status-style bright

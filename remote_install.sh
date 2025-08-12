@@ -34,6 +34,9 @@ cargo install --git https://github.com/eza-community/eza
 cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
 cargo install --locked zellij
 
+echo "Install Prompt"
+curl -s https://ohmyposh.dev/install.sh | bash -s
+
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 mkdir -p $HOME/.local/bin/
 cp bin/micromamba $HOME/.local/bin/micromamba

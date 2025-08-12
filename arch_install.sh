@@ -21,6 +21,9 @@ cargo install --git https://github.com/Morganamilo/paru
 cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
 cargo install --locked zellij
 
+echo "Install Prompt"
+curl -s https://ohmyposh.dev/install.sh | bash -s
+
 echo "Install neovim"
 paru -Sy neovim-git --noconfirm
 

@@ -10,14 +10,19 @@ function custom_theme(name)
     return dofile(os.getenv("HOME") .. "/.config/kitty/themes/" .. name .. ".lua")
 end
 
-local function read_style(path)
-  local file = io.open(path, "r")
-  if not file then return nil end
-  local variant = file:read("*l") -- read one line
-  file:close()
-  return variant
+local function read_args(path)
+    file = io.open(path, "r")
+    args = {}
+    for l in file:lines() do
+        content = {}
+        for m in l:gmatch("([^=]+)=?") do
+            table.insert(content, m)
+        end
+        args[content[1]] = content[2]
+    end
+    return args
 end
-local theme_variant = read_style(os.getenv("HOME") .. "/.config/style")
+args = read_args(os.getenv("HOME") .. "/.config/stylerc")
 
 if string.find(io.popen("uname"):read("*a"), "Darwin") then
     local main_resolution = tonumber(
@@ -34,7 +39,8 @@ if string.find(io.popen("uname"):read("*a"), "Darwin") then
 
 elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     local main_resolution = tonumber(
-        io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
+        -- io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
+        io.popen("xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1 | head -n 1"):read("*a")
     )
     if main_resolution == 3840 then
         config.font_size = 13.5
@@ -90,23 +96,8 @@ config.tab_bar_align = "left"
 config.tab_bar_background = "none"
 config.tab_fade = "1 1 1 1"
 
--- local theme = custom_theme("black_metal_gorgoroth")
-local theme
-if  theme_variant == "dark" then
-    theme = custom_theme("kanso_dark")
-    config.active_tab_foreground = "#fff"
-    config.active_tab_background = "#222"
-    config.active_tab_font_style = "bold"
-    config.inactive_tab_foreground = "#555"
-    config.inactive_tab_background = "#000"
-elseif theme_variant == "light" then
-    theme = custom_theme("kanso_light")
-    config.active_tab_foreground = "#000"
-    config.active_tab_background = "#ccc"
-    config.active_tab_font_style = "bold"
-    config.inactive_tab_foreground = "#bbb"
-    config.inactive_tab_background = "#eee"
-end
+local theme = custom_theme(args.theme)[args.style]
+config.active_tab_font_style = "bold"
 
 kitty_conf_file = io.open(os.getenv("HOME") .. "/.config/kitty/kitty.conf", "w")
 io.output(kitty_conf_file)

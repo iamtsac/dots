@@ -63,4 +63,5 @@ if test -e $HOME/.config/fish/conf.d/local_conf.fish
     source $HOME/.config/fish/conf.d/local_conf.fish
 end
 
-starship init fish | source
+# starship init fish | source
+oh-my-posh init fish --config "$HOME/.config/oh-my-posh.omp.toml" | source

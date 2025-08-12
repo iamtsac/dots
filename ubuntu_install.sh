@@ -45,40 +45,33 @@ if [ "$UPDATE" = false ]; then
     echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
     sudo apt update
     sudo apt install wezterm -y
-fi
 
-if [ "$UPDATE" = false ]; then
     echo "Setting up Rust"
     # rustup default stable
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     export PATH=$HOME/.cargo/bin:$PATH
-fi
 
-if [ "$UPDATE" = false ]; then
     echo "Install Rust apps"
     cargo install bat starship ripgrep cargo-update
     cargo install --git https://github.com/eza-community/eza
     cargo install --git https://github.com/sxyazi/yazi yazi-fm yazi-cli
     cargo install --locked tree-sitter-cli
     # cargo install --locked zellij
-fi
-
-if [ "$UPDATE" = true ]; then
-    cargo install-update -a
-fi
-
-if [ "$UPDATE" = false ]; then
     curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
     mkdir -p $HOME/.local/bin/
     cp bin/micromamba $HOME/.local/bin/micromamba
     $HOME/.local/bin/micromamba shell init -s fish -r ~/.mamba
-fi
 
-if [ "$UPDATE" = false ]; then
     echo "Install NPM"
     curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     sudo apt install nodejs -y
     echo "prefix=\"$HOME/.npm\"" > $HOME/.npmrc
+    echo "Install Prompt"
+    curl -s https://ohmyposh.dev/install.sh | bash -s
+fi
+
+if [ "$UPDATE" = true ]; then
+    cargo install-update -a
 fi
 
 cd ..
