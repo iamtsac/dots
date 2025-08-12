@@ -66,6 +66,9 @@ end
 
 local function read_current_config(path, args)
     file = io.open(path, "r")
+    if file == nil then 
+        return args
+    end
     for l in file:lines() do
         content = {}
         for m in l:gmatch("([^=]+)=?") do
