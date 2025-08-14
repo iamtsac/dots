@@ -84,6 +84,7 @@ require("configs/tabline")
 require("configs/statusline")
 require("configs/markdown")
 require("configs/lsp")
+require("configs/overseer")
 
 -- Auto reload theme on change
 local uv = vim.loop
