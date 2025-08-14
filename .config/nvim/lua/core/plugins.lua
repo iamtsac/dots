@@ -19,6 +19,7 @@ require("lazy").setup({
     {
 
         "nvim-treesitter/nvim-treesitter",
+        -- dependencies = { "OXY2DEV/markview.nvim" },
         version = false,
         build = ":TSUpdate",
     },
@@ -65,6 +66,7 @@ require("lazy").setup({
     },
     {
         "Saghen/blink.cmp",
+        dependencies = { "rafamadriz/friendly-snippets" },
         build = "cargo build --release",
     },
     {
@@ -79,4 +81,8 @@ require("lazy").setup({
         priority = 1000,
     },
     { "miikanissi/modus-themes.nvim", priority = 1000 },
+    {
+        "stevearc/overseer.nvim",
+        opts = {},
+    },
 })

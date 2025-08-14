@@ -99,7 +99,7 @@ function M.snacks_config()
         format = "buffer",
         hidden = false,
         unloaded = true,
-        current = false,
+        current = true,
         sort_lastused = true,
         win = {
             input = {

@@ -82,9 +82,14 @@ require("blink.cmp").setup({
         ["<C-k>"] = { "scroll_documentation_up", "fallback" },
         ["<C-j>"] = { "scroll_documentation_down", "fallback" },
         ["<C-s>"] = { "show_signature", "hide_signature", "fallback" },
+        ["<CR>"] = { "accept", "fallback" },
+        ["<Tab>"] = { "snippet_forward", "fallback" },
+        ["<S-Tab>"] = { "snippet_backward", "fallback" },
+        ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+        ["<C-n>"] = { "select_next", "fallback_to_mappings" },
     },
 })
-require("blink.cmp.config").completion.menu.auto_show = false
+-- require("blink.cmp.config").completion.menu.auto_show = false
 
 vim.api.nvim_create_augroup("TextDiagnostics", { clear = true })
 

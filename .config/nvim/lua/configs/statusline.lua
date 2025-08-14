@@ -30,6 +30,17 @@ local function root_dir()
     return "%#StatusLineSecondary#  " .. fpath
 end
 
+local function selected_compiler()
+    if vim.b.compiler or vim.g.compiler then
+        if vim.b.compiler then
+            return " [󰢻 " .. vim.b.compiler .. "]"
+        else
+            return " [󰢻 " .. vim.g.compiler .. "]"
+        end
+    end
+    return ""
+end
+
 local function modes()
     local modes = {
         ["n"] = "NORMAL",
@@ -121,6 +132,7 @@ Statusline.active = function()
         "   ",
         get_git_diff(),
         ftype(),
+        selected_compiler(),
         "   ",
         progress(),
         " ",
