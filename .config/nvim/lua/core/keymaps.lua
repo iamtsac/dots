@@ -142,7 +142,9 @@ vim.keymap.set("n", "<leader>tw", function()
     vim.wo.wrap = not vim.wo.wrap
 end, { desc = " Toggle line wrap" })
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", { desc = " Toggle line wrap" })
-vim.keymap.set("n", "<leader>tC", "<cmd>ColorizerToggle<CR>", { desc = " Toggle colorizer" })
+vim.keymap.set("n", "<leader>tC", function()
+    vim.cmd("ColorizerToggle")
+end, { desc = " Toggle colorizer" })
 -- vim.keymap.set("n", "<leader>td", function() Snacks.dim.enable(snacks_opts.dim) end, { desc = " Toggle dim" })
 
 -- Git

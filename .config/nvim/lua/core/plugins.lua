@@ -71,6 +71,8 @@ require("lazy").setup({
     },
     {
         "catgoose/nvim-colorizer.lua",
+        lazy = true, -- don't load at startup
+        cmd = { "ColorizerAttachToBuffer", "ColorizerToggle" }, -- load when these commands are used
         opts = function()
             require("colorizer").setup()
         end,
