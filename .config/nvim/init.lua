@@ -86,6 +86,16 @@ require("configs/markdown")
 require("configs/lsp")
 require("configs/overseer")
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "tex", "plaintex", "markdown", "typst" },
+  callback = function()
+    vim.opt_local.textwidth = 80
+    vim.opt_local.formatoptions:append("t")
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+  end,
+})
+
 -- Auto reload theme on change
 local uv = vim.loop
 local stylerc = vim.fn.expand("~/.config/stylerc")

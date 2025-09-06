@@ -63,6 +63,7 @@ wk.add({
     { "<leader>h", group = "Help/Misc" },
     { "<leader>m", group = "Marks" },
     { "<leader>t", group = "Toggle" },
+    { "<leader>c", group = "Compile (if applicaple)" },
     { "<leader><Tab>", group = "Tabs" },
 }, { prefix = "<leader>" })
 
@@ -139,7 +140,16 @@ vim.keymap.set("n", "<leader>ta", function()
     blink.completion.menu.auto_show = not blink.completion.menu.auto_show
 end, { desc = " Toggle autocomplete" })
 vim.keymap.set("n", "<leader>tw", function()
-    vim.wo.wrap = not vim.wo.wrap
+    if vim.opt.textwidth:get() == 0 then
+        vim.opt_local.textwidth = 80 -- enable auto line breaks at 80 chars
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true -- wrap at word boundaries
+        print("Wrapping Enabled")
+    else
+        vim.opt_local.textwidth = 0 -- disable auto line breaks
+        vim.opt_local.wrap = false
+        print("Wrapping disabled")
+    end
 end, { desc = " Toggle line wrap" })
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", { desc = " Toggle line wrap" })
 vim.keymap.set("n", "<leader>tC", function()
@@ -225,3 +235,7 @@ end, { desc = " Diagnostics" })
 vim.keymap.set("n", "<leader>z=", function()
     Snacks.picker.spelling()
 end, { desc = " Spell suggestions" })
+
+vim.keymap.set("n", "<leader>co", function()
+    vim.cmd("OverseerToggle")
+end, { desc = "Compilation Log" })

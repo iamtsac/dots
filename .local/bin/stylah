@@ -80,8 +80,8 @@ local function read_current_config(path, args)
 end
 
 local themes = {}
-themes.light = { "kanso", "modus" }
-themes.dark = { "oldworld", "black-metal", "kanso", "modus" }
+themes.light = { "kanso", "modus", "vscode" }
+themes.dark = { "oldworld", "black-metal", "kanso", "modus", "vscode" }
 themes.tmux = { "simple", "bubbles" }
 
 local default_args = {

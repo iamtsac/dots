@@ -66,6 +66,7 @@ config.text_compositions_strategy = "platform"
 
 config.remember_window_size = "no"
 config.hide_window_decorations = "yes"
+config.window_margin_width = 2
 
 config.kitty_mod = "super"
 config.cursor_trail = 0

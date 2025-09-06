@@ -83,6 +83,7 @@ require("lazy").setup({
         priority = 1000,
     },
     { "miikanissi/modus-themes.nvim", priority = 1000 },
+    { "Mofiqul/vscode.nvim", priority = 1000 },
     {
         "stevearc/overseer.nvim",
         opts = {},

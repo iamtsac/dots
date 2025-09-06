@@ -103,6 +103,10 @@ end
 local function progress()
     local cur = vim.fn.line(".")
     local total = vim.fn.line("$")
+    local wrapping = vim.opt_local.wrap:get()
+    if wrapping then
+        return "%#StatusLineMain#  " .. cur .. " / " .. total .. " %#StatusLineSecondary#[*W]"
+    end
 
     return "%#StatusLineMain#  " .. cur .. " / " .. total
 end
