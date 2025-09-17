@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+DOTDIR="${1:-.}"
+IGNORE_FILE=".stow-local-ignore"
+
+mapfile -t ignore < <(grep -v '^#' "$IGNORE_FILE" 2>/dev/null || true)
+
+shopt -s dotglob nullglob
+for src in "$DOTDIR"/*; do
+  rel="${src#./}"
+  skip=false
+  for pat in "${ignore[@]}"; do
+    [[ "$rel" == $pat ]] && skip=true && break
+  done
+  $skip && continue
+
+  dest="$HOME/$rel"
+  mkdir -p "$(dirname "$dest")"
+  ln -sfn "$PWD/$rel" "$dest"
+done

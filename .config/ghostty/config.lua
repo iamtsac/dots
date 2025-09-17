@@ -31,14 +31,14 @@ elseif string.find(io.popen("uname"):read("*a"), "Linux") then
     if main_resolution == 3840 then
         config.font_size = 13
     elseif main_resolution == 1920 then
-        config.font_size = 10
+        config.font_size = 12
     else
         config.font_size = 10
     end
 end
 
-config.font_family = "Iosevka Nerd Font"
-config.font_style = "Medium"
+config.font_family = "JetBrainsMono Nerd Font"
+config.font_style = "Regular"
 config.font_feature = "-calt, -liga, -dliga"
 config.freetype_load_flags = "true"
 

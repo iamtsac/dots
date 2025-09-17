@@ -24,32 +24,30 @@ local function read_args(path)
 end
 args = read_args(os.getenv("HOME") .. "/.config/stylerc")
 
+local main_resolution = nil
 if string.find(io.popen("uname"):read("*a"), "Darwin") then
-    local main_resolution = tonumber(
-        io.popen("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1"):read("*a")
-    )
     config.shell = "/opt/homebrew/bin/fish"
-    if main_resolution == 3840 then
-        config.font_size = 16
-    elseif main_resolution == 1920 then
-        config.font_size = 13
-    else
-        config.font_size = 9
-    end
+    main_resolution = io.popen("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1"):read("*a")
 
 elseif string.find(io.popen("uname"):read("*a"), "Linux") then
-    local main_resolution = tonumber(
-        -- io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
-        io.popen("xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1 | head -n 1"):read("*a")
-    )
-    if main_resolution == 3840 then
-        config.font_size = 13.5
-    elseif main_resolution == 1920 then
-        config.font_size = 11.0
-    else
-        config.font_size = 9
-    end
     config.shell = "/usr/bin/fish"
+    main_resolution = io.popen("xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1"):read("*a")
+    -- io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
+end
+
+local max_res = 0
+for v in string.gmatch(main_resolution, "[^%s]+") do
+    max_res = math.max(tonumber(v), max_res)
+end
+main_resolution = max_res
+if main_resolution == 3840 then
+    config.font_size = 13
+elseif main_resolution == 2560 then
+    config.font_size = 11
+elseif main_resolution == 1920 then
+    config.font_size = 10
+else
+    config.font_size = 9
 end
 
 if not file_exists(os.getenv("HOME") .. "/.terminfo/x/xterm-kitty") then
@@ -58,11 +56,10 @@ end
 
 config.term = "xterm-kitty"
 
-config.font_family = [[ family="VictorMono Nerd Font" style="Bold" ]]
+config.font_family = [[ family="Iosevka Nerd Font" style="SemiBold" ]]
 config.bold_font = "auto"
 config.italic_font = "auto"
 config.bold_italic_font = "auto"
-config.text_compositions_strategy = "platform"
 
 config.remember_window_size = "no"
 config.hide_window_decorations = "yes"
@@ -86,7 +83,7 @@ config.map[ [[load_config_file]] ]= "kitty_mod+r"
 
 config.line_spacing = 0
 config.letter_spacing = 0.25
-config.adjust_line_height = "105%"
+config.adjust_line_height = "100%"
 config.adjust_column_width = "100%"
 
 config.tab_bar_style = "fade"

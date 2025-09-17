@@ -29,10 +29,11 @@ M.dark.url_color = "#72A7BC"
 M.dark.cursor = "#C5C9C7"
 M.dark.cursor_text_color = "#000000"
 
-M.dark.active_tab_foreground = "#fff"
-M.dark.active_tab_background = "#222"
-M.dark.inactive_tab_foreground = "#555"
-M.dark.inactive_tab_background = "#000"
+M.dark.inactive_tab_foreground = "#444"
+M.dark.inactive_tab_background = "#131313"
+M.dark.active_tab_foreground = "#C5C9C7"
+M.dark.active_tab_background = "#000"
+M.dark.tab_bar_background = "#131313"
 
 
 M.light = {}

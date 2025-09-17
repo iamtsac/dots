@@ -40,6 +40,32 @@ function M.snacks_config()
         },
     }
 
+    conf.simple_layout = {
+        layout = {
+            box = "vertical",
+            backdrop = false,
+            row = -1,
+            width = 0,
+            height = 0.4,
+            border = "top",
+            title = " {title} {live} {flags}",
+            title_pos = "center",
+            {
+                win = "input",
+                height = 1,
+                border = "bottom",
+                width = 0.,
+            },
+            {
+                box = "horizontal",
+                {
+                    win = "list",
+                    border = "none",
+                },
+            },
+        },
+    }
+
     conf.explorer_layout = {
         preview = "main",
         layout = {
