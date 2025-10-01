@@ -232,7 +232,7 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 
 function get_compiler_args(chosen_compiler)
     if chosen_compiler == "latexmk" then
-        return { "-pdf", "main.tex" }
+        return { "-pdf", "-interaction=nonstopmode", "main.tex" }
     else
         return { "main.tex" }
     end
