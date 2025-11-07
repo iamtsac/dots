@@ -125,8 +125,8 @@ function M.snacks_config()
         format = "buffer",
         hidden = false,
         unloaded = true,
-        current = true,
-        sort_lastused = true,
+        current = false,
+        sort_lastused = false,
         win = {
             input = {
                 keys = {

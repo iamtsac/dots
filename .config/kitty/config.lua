@@ -41,13 +41,13 @@ for v in string.gmatch(main_resolution, "[^%s]+") do
 end
 main_resolution = max_res
 if main_resolution == 3840 then
-    config.font_size = 13
+    config.font_size = 14
 elseif main_resolution == 2560 then
-    config.font_size = 11
+    config.font_size = 12
 elseif main_resolution == 1920 then
-    config.font_size = 10
+    config.font_size = 12
 else
-    config.font_size = 9
+    config.font_size = 10
 end
 
 if not file_exists(os.getenv("HOME") .. "/.terminfo/x/xterm-kitty") then
@@ -56,12 +56,16 @@ end
 
 config.term = "xterm-kitty"
 
-config.font_family = [[ family="Iosevka Nerd Font" style="SemiBold" ]]
+font_weight = "SemiBold"
+if args.style == "light" then
+    font_weight = "Bold"
+end
+config.font_family = [[ family="Iosevka Nerd Font" style=]] .. font_weight
 config.bold_font = "auto"
 config.italic_font = "auto"
 config.bold_italic_font = "auto"
 
-config.remember_window_size = "no"
+config.remember_window_size = "yes"
 config.hide_window_decorations = "yes"
 config.window_margin_width = 2
 
@@ -75,14 +79,12 @@ config.map.new_tab = "kitty_mod+t"
 config.map.close_tab = "kitty_mod+w"
 config.map.next_tab = "ctrl+tab"
 config.map.new_os_window = "kitty_mod+n"
-config.map["change_font_size all +0.5"] = "ctrl+shift+equal"
-config.map["change_font_size all -0.5"] = "ctrl+shift+minus"
+config.map["change_font_size all +1.0"] = "ctrl+shift+equal"
+config.map["change_font_size all -1.0"] = "ctrl+shift+minus"
 config.map["change_font_size all 0"] = "ctrl+shift+0"
 -- config.map[ [[combine : launch --type=overlay bash -c "lua $HOME/.config/kitty/config.lua" : load_config_file]] ] = "kitty_mod+r"
 config.map[ [[load_config_file]] ]= "kitty_mod+r"
 
-config.line_spacing = 0
-config.letter_spacing = 0.25
 config.adjust_line_height = "100%"
 config.adjust_column_width = "100%"
 

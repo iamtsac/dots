@@ -26,8 +26,13 @@ local function fname()
 end
 
 local function root_dir()
-    local fpath = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+    local fpath = vim.fn.pathshorten(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
     return "%#StatusLineSecondary#  " .. fpath
+end
+
+local function branch()
+    local branch_name = vim.fn.system({'git', 'rev-parse', '--abbrev-ref', 'HEAD'})
+    return "%#StatusLineSecondary# " .. branch_name
 end
 
 local function selected_compiler()
@@ -131,6 +136,7 @@ Statusline.active = function()
         fname(),
         "   ",
         root_dir(),
+        -- branch(),
         "%=",
         recording_macro(),
         "   ",

@@ -203,6 +203,7 @@ elseif theme_name == "black-metal" then
         SnacksPickerToggle = { bg = c.base08, fg = c.bg },
         SnacksPickerDir = { fg = c.base0B },
         SnacksPickerSelected = { fg = c.fg },
+        SnacksPickerListFooter = { bg = nil },
 
         BlinkCmpMenu = { link = "Normal" },
         BlinkCmpMenuBorder = { link = "Normal" },
