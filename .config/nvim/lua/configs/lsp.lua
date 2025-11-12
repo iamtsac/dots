@@ -103,9 +103,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
             virtual_text = false,
             float = false,
         })
-        vim.keymap.set("n", "K", function()
-            vim.diagnostic.open_float()
-        end, { desc = " Diagnostic" })
     end,
 })
 
@@ -117,8 +114,5 @@ vim.api.nvim_create_autocmd("BufLeave", {
             underline = false,
             virtual_text = false,
         })
-        vim.keymap.set("n", "K", function()
-            vim.lsp.buf.hover()
-        end, { desc = " LSP Hover" })
     end,
 })
