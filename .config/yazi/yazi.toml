@@ -5,7 +5,7 @@ sort_sensitive = false
 sort_reverse   = false
 sort_dir_first = true
 sort_translit  = false
-linemode       = "size"
+linemode       = "custom"
 show_hidden    = false
 show_symlink   = true
 scrolloff      = 5
@@ -102,8 +102,8 @@ spotters = [
 ]
 preloaders = [
         # Image
-        { mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
-        { mime = "image/*", run = "image" },
+        # { mime = "image/{avif,hei?,jxl,svg+xml}", run = "magick" },
+        # { mime = "image/*", run = "image" },
         # Video
         { mime = "video/*", run = "video" },
         # PDF
