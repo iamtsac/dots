@@ -42,12 +42,17 @@ end
 main_resolution = max_res
 if main_resolution == 3840 then
     config.font_size = 14
+    font_weight = "SemiBold"
+    font_weight = args.style == "light" and "SemiBold" or "Regular"
 elseif main_resolution == 2560 then
     config.font_size = 12
+    font_weight = args.style == "light" and "SemiBold" or "Regular"
 elseif main_resolution == 1920 then
     config.font_size = 12
+    font_weight = args.style == "light" and "SemiBold" or "Regular"
 else
     config.font_size = 10
+    font_weight = args.style == "light" and "SemiBold" or "Regular"
 end
 
 if not file_exists(os.getenv("HOME") .. "/.terminfo/x/xterm-kitty") then
@@ -56,10 +61,6 @@ end
 
 config.term = "xterm-kitty"
 
-font_weight = "SemiBold"
-if args.style == "light" then
-    font_weight = "Bold"
-end
 config.font_family = [[ family="Iosevka Nerd Font" style=]] .. font_weight
 config.bold_font = "auto"
 config.italic_font = "auto"
@@ -78,6 +79,9 @@ config.map.paste_from_clipboard = "ctrl+shift+v"
 config.map.new_tab = "kitty_mod+t"
 config.map.close_tab = "kitty_mod+w"
 config.map.next_tab = "ctrl+tab"
+config.map.previous_tab = "ctrl+shift+tab"
+config.map.move_tab_forward = "ctrl+shift+right"
+config.map.move_tab_backward = "ctrl+shift+left"
 config.map.new_os_window = "kitty_mod+n"
 config.map["change_font_size all +1.0"] = "ctrl+shift+equal"
 config.map["change_font_size all -1.0"] = "ctrl+shift+minus"
