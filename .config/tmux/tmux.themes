@@ -1,6 +1,7 @@
 # vim: ft=tmux
 
 # Use if-shell to check the variable and change settings accordingly
+
 if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"simple\" ] && [ \"$(awk -F= '/style/ {print \$2}' \"$HOME/.config/stylerc\")\" = \"dark\" ]" {
 
     set-option -g status-style bg=default
@@ -18,12 +19,12 @@ if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" 
 '
 
     setw -g window-status-format '\
-#[bg=default, fg=colour246, italics]#I: #W \
+#[bg=default, fg=colour246, italics]#I: #W#{?window_zoomed_flag, [*],} \
 '
 
     setw -g window-status-current-format '\
 #[fg=colour235, bg=default]\
-#[bg=colour235, fg=default]#I: #W\
+#[bg=colour235, fg=default]#I: #W#{?window_zoomed_flag,#[bold] *,}\
 #[bg=default, fg=colour235] \
 '
     set -g status-right-length 100
@@ -48,12 +49,12 @@ if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" 
 '
 
     setw -g window-status-format '\
-#[bg=default, fg=colour232, italics]#I: #W \
+#[bg=default, fg=colour232, italics]#I: #W#{?window_zoomed_flag, [*],} \
 '
 
     setw -g window-status-current-format '\
 #[fg=colour234, bg=default]\
-#[bg=colour234, fg=colour251]#I: #W\
+#[bg=colour234, fg=colour251]#I: #W#{?window_zoomed_flag,#[bold] *,}\
 #[bg=default, fg=colour234] \
 '
     set -g status-right-length 100
@@ -81,18 +82,18 @@ if-shell "[ \"$(awk -F= '/tmux_theme/ {print \$2}' \"$HOME/.config/stylerc\")\" 
 #[bg=default, fg=colour15]\
 #[bg=colour15, fg=colour0]#I\
 #[bg=colour0, fg=colour15] \
-#[bg=colour0, fg=colour15]#W\
+#[bg=colour0, fg=colour15]#W#{?window_zoomed_flag, [*],}\
 #[fg=colour0, bg=default]\
 '
 
     setw -g window-status-current-format '\
 #[fg=colour3, bg=default]\
-#[bg=colour3, fg=colour0]#W \
+#[bg=colour3, fg=colour0]#W#{?window_zoomed_flag, *,} \
 #[bg=colour3, fg=colour0]\
 #[bg=default, fg=colour0]\
 '
 
-set -g status-right-length 100
-set -g status-left-length 100
-set -g status-justify left
+    set -g status-right-length 100
+    set -g status-left-length 100
+    set -g status-justify left
 }
