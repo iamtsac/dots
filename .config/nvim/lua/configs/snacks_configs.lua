@@ -9,7 +9,7 @@ function M.snacks_config()
             backdrop = false,
             row = -1,
             width = 0,
-            height = 0.4,
+            height = 0.5,
             border = "top",
             title = " {title} {live} {flags}",
             title_pos = "center",
@@ -137,6 +137,17 @@ function M.snacks_config()
         },
     }
 
+    conf.smart_opts = {
+      multi = { "buffers", "recent", "files" },
+      format = "file", -- use `file` format for all sources
+      matcher = {
+        cwd_bonus = true, -- boost cwd matches
+        frecency = true, -- use frecency boosting
+        sort_empty = true, -- sort even when the filter is empty
+      },
+      transform = "unique_file",
+    }
+
     conf.picker = {
         enabled = true,
         layout = conf.picker_layout,
@@ -252,7 +263,7 @@ function M.snacks_config()
             enter = true,
             fixbuf = false,
             minimal = false,
-            width = 0.5,
+            width = 0.7,
             height = 0,
             backdrop = { transparent = true, blend = 0 },
             keys = { q = false },
@@ -286,9 +297,9 @@ function M.snacks_config()
     }
 
     conf.scroll = {
-        enabled = false,
+        enabled = true,
         animate = {
-            duration = { step = 5, total = 250 },
+            duration = { step = 8, total = 200 },
             easing = "linear",
         },
     }

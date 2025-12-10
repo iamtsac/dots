@@ -65,14 +65,18 @@ wk.add({
     { "<leader>t", group = "Toggle" },
     { "<leader>c", group = "Compile (if applicaple)" },
     { "<leader><Tab>", group = "Tabs" },
+    { "<leader>tg", group = "Gitsigns" },
 }, { prefix = "<leader>" })
 
 -- Generic
 vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
 
 --Files specific
+-- vim.keymap.set("n", "<leader>ff", function()
+--     Snacks.picker.files(snacks_opts.files_opts)
+-- end, { desc = " Find file" })
 vim.keymap.set("n", "<leader>ff", function()
-    Snacks.picker.files(snacks_opts.files_opts)
+    Snacks.picker.smart(snacks_opts.smart_opts)
 end, { desc = " Find file" })
 vim.keymap.set("n", "<leader>/", function()
     Snacks.picker.grep()
@@ -126,10 +130,10 @@ vim.keymap.set("n", "<leader>hh", function()
 end, { desc = " Highlights" })
 
 -- Toggle
-vim.keymap.set("n", "<leader>tz", function()
+vim.keymap.set("n", "<leader>tZ", function()
     Snacks.zen()
 end, { desc = " Toggle zen mode" })
-vim.keymap.set("n", "<leader>tZ", function()
+vim.keymap.set("n", "<leader>tz", function()
     Snacks.zen.zoom()
 end, { desc = " Toggle zoom" })
 vim.keymap.set("n", "<leader>td", function()
@@ -170,16 +174,52 @@ end, { desc = " Branches" })
 vim.keymap.set("n", "<leader>gs", function()
     Snacks.picker.git_status()
 end, { desc = " Status" })
-vim.keymap.set("n", "<leader>gl", function()
+vim.keymap.set("n", "<leader>gH", function()
     Snacks.picker.git_log()
 end, { desc = " Commit history" })
-vim.keymap.set("n", "<leader>glf", function()
+vim.keymap.set("n", "<leader>gh", function()
     Snacks.picker.git_log_file()
 end, { desc = " File's commit history" })
 vim.keymap.set("n", "<leader>gd", custom_diff, { desc = " Diff file" })
 vim.keymap.set("n", "<leader>gb", function()
     Snacks.git.blame_line()
 end, { desc = " Line blame" })
+vim.keymap.set({ "n", "v", "x" }, "<leader>gR", function()
+  if vim.fn.mode() == "n" then
+    gs.reset_hunk()
+  else
+    gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end
+end, { desc = " Reset hunk" })
+vim.keymap.set("n", "<leader>gp", function()
+    gs.preview_hunk_inline()
+end, { desc = " Preview Hunk Blame" })
+vim.keymap.set({ "n", "v" }, "[g", function()
+    gs.nav_hunk("prev")
+end, { desc = " Previous Git Hunk" })
+vim.keymap.set({ "n", "v" }, "]g", function()
+    gs.nav_hunk("next")
+end, { desc = " Next Git Hunk" })
+vim.keymap.set("n", "<leader>gC", function()
+    gs.show_commit()
+end, { desc = " Show commit" })
+vim.keymap.set({ "n", "v" }, "<leader>gS", function()
+  if vim.fn.mode() == "n" then
+    gs.stage_hunk()
+  else
+    gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  end
+end, { desc = " Stage hunk" })
+
+vim.keymap.set("n", "<leader>tgn", function()
+    gs.toggle_numhl()
+end, { desc = " Toggle gitsigns numhl" })
+vim.keymap.set("n", "<leader>tgl", function()
+    gs.toggle_linehl()
+end, { desc = " Toggle gitsigns linehl" })
+vim.keymap.set("n", "<leader>tgs", function()
+    gs.toggle_signs()
+end, { desc = " Toggle gitsigns signs" })
 
 -- Marks
 vim.keymap.set("n", "<leader>ml", function()
@@ -235,7 +275,7 @@ vim.keymap.set({ "n", "x" }, "<leader>la", function()
 end, { desc = " Diagnostics" })
 
 -- later..
-vim.keymap.set("n", "<leader>z=", function()
+vim.keymap.set({ "n", "v" }, "<leader>z", function()
     Snacks.picker.spelling()
 end, { desc = " Spell suggestions" })
 
