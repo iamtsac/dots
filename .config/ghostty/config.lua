@@ -1,95 +1,151 @@
 local os = require("os")
+local io = require("io")
+
+local function read_args(path)
+    local args = {}
+    local file = io.open(path, "r")
+    if not file then return args end
+
+    for l in file:lines() do
+        local key, value = l:match("([^=]+)=(.+)")
+        if key and value then
+            args[key] = value:gsub("%s+", "")
+        end
+    end
+    file:close()
+    return args
+end
+
+local function get_output(cmd)
+    local handle = io.popen(cmd)
+    if not handle then return "" end
+    local result = handle:read("*a")
+    handle:close()
+    return result or ""
+end
+
 local config = {}
+local args = read_args(os.getenv("HOME") .. "/.config/stylerc")
+args.style = args.style or "dark"
+args.theme = args.theme or "default"
 
-function custom_theme(name)
-    return dofile(os.getenv("HOME") .. "/.config/ghostty/themes/" .. name .. ".lua")
-end
+local uname = get_output("uname"):gsub("%s+", "")
+local main_resolution = 0
 
-function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
-
-if string.find(io.popen("uname"):read("*a"), "Darwin") then
-    local main_resolution = tonumber(
-        io.popen("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1"):read("*a")
-    )
+if uname == "Darwin" then
     config.command = "/opt/homebrew/bin/fish"
-    if main_resolution == 3840 then
-        config.font_size = 16
-    elseif main_resolution == 1920 then
-        config.font_size = 13
-    else
-        config.font_size = 9
-    end
-
-elseif string.find(io.popen("uname"):read("*a"), "Linux") then
-    local main_resolution = tonumber(
-        io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
-    )
+    local raw_res = get_output("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1")
+    main_resolution = tonumber(raw_res) or 0
+elseif uname == "Linux" then
     config.command = "/usr/bin/fish"
-    if main_resolution == 3840 then
-        config.font_size = 13
-    elseif main_resolution == 1920 then
-        config.font_size = 12
-    else
-        config.font_size = 10
+    local raw_res = get_output("xrandr --current 2>/dev/null | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1")
+    if raw_res == "" then raw_res = "1920" end 
+    for v in string.gmatch(raw_res, "[^%s]+") do
+        main_resolution = math.max(tonumber(v) or 0, main_resolution)
     end
 end
 
-config.font_family = "JetBrainsMono Nerd Font"
-config.font_style = "Regular"
-config.font_feature = "-calt, -liga, -dliga"
-config.freetype_load_flags = "true"
+local font_config_map = {
+    [3840] = 14,
+    [2560] = 12,
+    [1920] = 12,
+}
+config.font_size = font_config_map[main_resolution] or 10
 
-config.window_decoration = "none"
+config.font_family = "IosevkaTerm Nerd Font"
+config.font_style = (args.style == "light") and "SemiBold" or "Regular"
+config.font_feature = "+feat, -calt"
+config.font_shaping_break = "cursor"
+
+config.window_decoration = true
+config.gtk_titlebar = false
 config.window_theme = "ghostty"
-config.window_vsync = "false"
-config.copy_on_select = "false"
-config.shell_integration_features = "true"
-config.bold_is_bright = "true"
-config.cursor_style_blink = "false"
-config.app_notifications = "no-clipboard-copy"
+config.copy_on_select = false
+config.shell_integration = "fish"
+config.shell_integration_features = true
+config.shell_integration_features = "ssh-env,ssh-terminfo,cursor,path"
+config.cursor_style = "block"
+config.cursor_style_blink = false
 
-config.keybind = {}
-config.keybind.reload_config = "cmd+r"
-config.keybind.new_tab = "cmd+t"
-config.keybind.close_tab = "cmd+w"
-config.keybind.unbind = {"ctrl+enter"}
+config.macos_option_as_alt = true
 
--- config.theme = "Jellybeans"
-local theme = custom_theme("black_metal_gorgoroth")
--- theme.background = "#050505"
--- theme.foreground = "#DDDDDD"
+local keybinds = {}
 
-ghostty_conf_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
-io.output(ghostty_conf_file)
-for k, v in pairs(config) do
-    if k == "keybind" then
-        for km, vm in pairs(v) do
-            if km == "unbind" then
-                for i=1,#vm do
-                    io.write(k .. " = " .. vm[i] .. "=unbind" .. "\n")
-                end
-            else
-                io.write(k .. " = " .. vm .. "=" .. km .. "\n")
-            end
+keybinds["copy_to_clipboard"] = "ctrl+shift+c"
+keybinds["paste_from_clipboard"] = "ctrl+shift+v"
+
+keybinds["new_tab"] = "super+t"
+keybinds["close_surface"] = "super+w"
+keybinds["next_tab"] = "ctrl+tab"
+keybinds["previous_tab"] = "ctrl+shift+tab"
+keybinds["move_tab:1"] = "ctrl+shift+right"
+keybinds["move_tab:-1"] = "ctrl+shift+left"
+
+keybinds["new_window"] = "super+n"
+keybinds["toggle_command_palette"] = "ctrl+shift+space"
+
+keybinds["increase_font_size:1"] = "ctrl+shift+equal"
+keybinds["decrease_font_size:1"] = "ctrl+shift+minus"
+keybinds["reset_font_size"] = "ctrl+shift+0"
+
+keybinds["reload_config"] = "super+r"
+
+local unbinds = { "ctrl+enter", "ctrl+shift+n", "ctrl+shift+p" }
+
+local theme_path = string.format("%s/.config/ghostty/themes/%s.lua", os.getenv("HOME"), args.theme)
+local theme_ok, theme_data = pcall(dofile, theme_path)
+local final_theme = {}
+
+if theme_ok then
+    local current_theme = theme_data[args.style] or {}
+    for k, v in pairs(current_theme) do
+        local palette_index = k:match("color(%d+)")
+        if palette_index then
+            table.insert(final_theme, { key = "palette", val = palette_index .. "=" .. v })
+        elseif k == "foreground" or k == "background" or k == "selection_foreground" or k == "selection_background" then
+            table.insert(final_theme, { key = k, val = v })
+        elseif k == "cursor" then
+            table.insert(final_theme, { key = "cursor-color", val = v })
+        end
+    end
+end
+
+local out_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
+if not out_file then error("Could not write to ghostty config") end
+
+out_file:write("# Generated by config_gen.lua\n\n")
+
+local function write_config_kv(k, v)
+    local key = k:gsub("_", "-")
+
+    if type(v) == "boolean" then
+        out_file:write(key .. " = " .. (v and "true" or "false") .. "\n")
+    elseif type(v) == "table" then
+        for _, item in ipairs(v) do
+            out_file:write(key .. " = " .. item .. "\n")
         end
     else
-        k = k:gsub("%_", "-")
-        io.write(k .. " = " .. v .. "\n")
+        out_file:write(key .. " = " .. v .. "\n")
     end
 end
 
-if not config.theme then
-    io.write("\n\n")
-    for k, v in pairs(theme) do
-        k = k:gsub("%_", "-")
-        k = k:gsub("color", "palette = ")
-        k = k:gsub("cursor.palette = ", "cursor-color")
-        io.write(k .. "=" .. v .. "\n")
-    end
+for k, v in pairs(config) do
+    write_config_kv(k, v)
 end
 
-io.close(ghostty_conf_file)
+out_file:write("\n# Keybindings\n")
+for action, trigger in pairs(keybinds) do
+    out_file:write("keybind = " .. trigger .. "=" .. action .. "\n")
+end
 
+for _, trigger in ipairs(unbinds) do
+    out_file:write("keybind = " .. trigger .. "=unbind\n")
+end
+
+out_file:write("\n# Theme\n")
+for _, item in ipairs(final_theme) do
+    local key = item.key:gsub("_", "-")
+    out_file:write(key .. " = " .. item.val .. "\n")
+end
+
+out_file:close()

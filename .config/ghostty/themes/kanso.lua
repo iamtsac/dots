@@ -1,0 +1,61 @@
+local M = {}
+
+M.dark = {}
+M.dark.color0 = "#0d0c0c"
+M.dark.color1 = "#c4746e"
+M.dark.color2 = "#8a9a7b"
+M.dark.color3 = "#c4b28a"
+M.dark.color4 = "#8ba4b0"
+M.dark.color5 = "#a292a3"
+M.dark.color6 = "#8ea4a2"
+M.dark.color7 = "#C8C093"
+
+M.dark.color8 = "#A4A7A4"
+M.dark.color9 = "#E46876"
+M.dark.color10 = "#87a987"
+M.dark.color11 = "#E6C384"
+M.dark.color12 = "#7FB4CA"
+M.dark.color13 = "#938AA9"
+M.dark.color14 = "#7AA89F"
+M.dark.color15 = "#C5C9C7"
+M.dark.color16 = "#b6927b"
+M.dark.color17 = "#b98d7b"
+
+M.dark.background = "#000000"
+M.dark.foreground = "#C5C9C7"
+M.dark.selection_background = "#393B44"
+M.dark.selection_foreground = "#C5C9C7"
+M.dark.cursor_color = "#C5C9C7"
+M.dark.cursor_text = "#000000"
+
+
+M.light = {}
+-- M.light.background = "#f2f1ef"
+-- M.light.foreground = "#22262D"
+M.light.background = "#EEEEEE"
+M.light.foreground = "#1E1E1E"
+M.light.selection_background = "#e2e1df"
+M.light.selection_foreground = "#22262D"
+M.light.cursor_color = "#22262D"
+M.light.cursor_text = "#f2f1ef"
+
+M.light.color0  = "#22262D"
+M.light.color1  = "#c84053"
+M.light.color2  = "#6f894e"
+M.light.color3  = "#77713f"
+M.light.color4  = "#4d699b"
+M.light.color5  = "#b35b79"
+M.light.color6  = "#597b75"
+M.light.color7  = "#545464"
+M.light.color8  = "#6d6f6e"
+M.light.color9  = "#d7474b"
+M.light.color10 = "#6e915f"
+M.light.color11 = "#836f4a"
+M.light.color12 = "#6693bf"
+M.light.color13 = "#624c83"
+M.light.color14 = "#5e857a"
+M.light.color15 = "#43436c"
+M.light.color16 = "#cc6d00"
+M.light.color17 = "#e82424"
+
+return M
