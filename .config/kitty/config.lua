@@ -1,122 +1,142 @@
 local os = require("os")
-local config = {}
+local io = require("io")
 
-function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
-
-function custom_theme(name)
-    return dofile(os.getenv("HOME") .. "/.config/kitty/themes/" .. name .. ".lua")
+local function file_exists(name)
+    local f = io.open(name, "r")
+    if f ~= nil then io.close(f) return true else return false end
 end
 
 local function read_args(path)
-    file = io.open(path, "r")
-    args = {}
+    local args = {} -- Make local
+    local file = io.open(path, "r")
+    if not file then return args end -- Handle missing file gracefully
+
     for l in file:lines() do
-        content = {}
-        for m in l:gmatch("([^=]+)=?") do
-            table.insert(content, m)
+        local key, value = l:match("([^=]+)=(.+)")
+        if key and value then
+            args[key] = value:gsub("%s+", "")
         end
-        args[content[1]] = content[2]
     end
+    file:close()
     return args
 end
-args = read_args(os.getenv("HOME") .. "/.config/stylerc")
 
-local main_resolution = nil
-if string.find(io.popen("uname"):read("*a"), "Darwin") then
+local function get_output(cmd)
+    local handle = io.popen(cmd)
+    if not handle then return "" end
+    local result = handle:read("*a")
+    handle:close()
+    return result or ""
+end
+
+local config = {}
+local args = read_args(os.getenv("HOME") .. "/.config/stylerc")
+args.style = args.style or "dark" 
+args.theme = args.theme or "default"
+
+local uname = get_output("uname"):gsub("%s+", "") -- Trim newline
+local main_resolution = 0
+
+if uname == "Darwin" then
     config.shell = "/opt/homebrew/bin/fish"
-    main_resolution = io.popen("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1"):read("*a")
-
-elseif string.find(io.popen("uname"):read("*a"), "Linux") then
+    local raw_res = get_output("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1")
+    main_resolution = tonumber(raw_res) or 0
+elseif uname == "Linux" then
     config.shell = "/usr/bin/fish"
-    main_resolution = io.popen("xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1"):read("*a")
-    -- io.popen("xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}'"):read("*a")
+    local raw_res = get_output("xrandr --current 2>/dev/null | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1")
+    for v in string.gmatch(raw_res, "[^%s]+") do
+        main_resolution = math.max(tonumber(v) or 0, main_resolution)
+    end
 end
 
-local max_res = 0
-for v in string.gmatch(main_resolution, "[^%s]+") do
-    max_res = math.max(tonumber(v), max_res)
-end
-main_resolution = max_res
-if main_resolution == 3840 then
-    config.font_size = 14
-    font_weight = "SemiBold"
-    font_weight = args.style == "light" and "SemiBold" or "Regular"
-elseif main_resolution == 2560 then
-    config.font_size = 12
-    font_weight = args.style == "light" and "SemiBold" or "Regular"
-elseif main_resolution == 1920 then
-    config.font_size = 12
-    font_weight = args.style == "light" and "SemiBold" or "Regular"
-else
-    config.font_size = 10
-    font_weight = args.style == "light" and "SemiBold" or "Regular"
-end
+local font_config_map = {
+    [3840] = 14,
+    [2560] = 12,
+    [1920] = 12,
+}
+config.font_size = font_config_map[main_resolution] or 10
 
-if not file_exists(os.getenv("HOME") .. "/.terminfo/x/xterm-kitty") then
-    os.execute( "tempfile=$(mktemp) && curl -o $tempfile https://raw.githubusercontent.com/kovidgoyal/kitty/master/terminfo/x/xterm-kitty && tic -x -o ~/.terminfo $tempfile && rm $tempfile")
+local font_weight = (args.style == "light") and "SemiBold" or "Regular"
+
+local terminfo_path = os.getenv("HOME") .. "/.terminfo/x/xterm-kitty"
+if not file_exists(terminfo_path) then
+    print("Terminfo missing, downloading...")
+    os.execute("tempfile=$(mktemp) && curl -s -o $tempfile https://raw.githubusercontent.com/kovidgoyal/kitty/master/terminfo/x/xterm-kitty && tic -x -o ~/.terminfo $tempfile && rm $tempfile")
 end
 
 config.term = "xterm-kitty"
-
-config.font_family = [[ family="Iosevka Nerd Font" style=]] .. font_weight
+config.font_family = [[ family="IosevkaTerm Nerd Font" style=]] ..  font_weight
 config.bold_font = "auto"
 config.italic_font = "auto"
 config.bold_italic_font = "auto"
-
+config.text_composition_strategy = "legacy"
 config.remember_window_size = "yes"
 config.hide_window_decorations = "yes"
 config.window_margin_width = 2
-
 config.kitty_mod = "super"
 config.cursor_trail = 0
-
-config.map = {}
-config.map.copy_to_clipboard = "ctrl+shift+c"
-config.map.paste_from_clipboard = "ctrl+shift+v"
-config.map.new_tab = "kitty_mod+t"
-config.map.close_tab = "kitty_mod+w"
-config.map.next_tab = "ctrl+tab"
-config.map.previous_tab = "ctrl+shift+tab"
-config.map.move_tab_forward = "ctrl+shift+right"
-config.map.move_tab_backward = "ctrl+shift+left"
-config.map.new_os_window = "kitty_mod+n"
-config.map["change_font_size all +1.0"] = "ctrl+shift+equal"
-config.map["change_font_size all -1.0"] = "ctrl+shift+minus"
-config.map["change_font_size all 0"] = "ctrl+shift+0"
--- config.map[ [[combine : launch --type=overlay bash -c "lua $HOME/.config/kitty/config.lua" : load_config_file]] ] = "kitty_mod+r"
-config.map[ [[load_config_file]] ]= "kitty_mod+r"
-
-config.adjust_line_height = "100%"
-config.adjust_column_width = "100%"
 
 config.tab_bar_style = "fade"
 config.tab_bar_edge = "top"
 config.tab_separator  = " | "
 config.tab_bar_align = "left"
-
 config.tab_bar_background = "none"
 config.tab_fade = "1 1 1 1"
-
-local theme = custom_theme(args.theme)[args.style]
 config.active_tab_font_style = "bold"
 
-kitty_conf_file = io.open(os.getenv("HOME") .. "/.config/kitty/kitty.conf", "w")
-io.output(kitty_conf_file)
-io.write("clear_all_shortcuts yes\n")
-for k, v in pairs(config) do
-    if k == "map" then
-        for km, vm in pairs(v) do
-            io.write(k .. " " .. vm .. " " .. km .. "\n")
+-- Mappings
+local mappings = {
+    copy_to_clipboard = "ctrl+shift+c",
+    paste_from_clipboard = "ctrl+shift+v",
+    new_tab = "kitty_mod+t",
+    close_tab = "kitty_mod+w",
+    next_tab = "ctrl+tab",
+    previous_tab = "ctrl+shift+tab",
+    move_tab_forward = "ctrl+shift+right",
+    move_tab_backward = "ctrl+shift+left",
+    new_os_window = "kitty_mod+n",
+    ["change_font_size all +1.0"] = "ctrl+shift+equal",
+    ["change_font_size all -1.0"] = "ctrl+shift+minus",
+    ["change_font_size all 0"] = "ctrl+shift+0",
+    load_config_file = "kitty_mod+r"
+}
+
+local theme_path = string.format("%s/.config/kitty/themes/%s.lua", os.getenv("HOME"), args.theme)
+local theme_ok, theme_data = pcall(dofile, theme_path)
+
+if not theme_ok then
+    print("Warning: Could not load theme: " .. theme_path)
+    theme_data = {} -- Empty table fallback
+else
+    -- Assuming the theme file returns a table like { dark = {...}, light = {...} }
+    theme_data = theme_data[args.style] or {}
+end
+
+local out_file = io.open(os.getenv("HOME") .. "/.config/kitty/kitty.conf", "w")
+if not out_file then error("Could not write to kitty.conf") end
+
+out_file:write("# Generated by config_gen.lua\n")
+out_file:write("clear_all_shortcuts yes\n\n")
+
+-- Helper to write sorted tables
+local function write_sorted_table(tbl, prefix)
+    local keys = {}
+    for k in pairs(tbl) do table.insert(keys, k) end
+    table.sort(keys)
+
+    for _, k in ipairs(keys) do
+        if prefix == "map" then
+             out_file:write(string.format("map %s %s\n", tbl[k], k))
+        else
+             out_file:write(string.format("%s %s\n", k, tbl[k]))
         end
-    else
-        io.write(k .. " " .. v .. "\n")
     end
 end
 
-for k, v in pairs(theme) do
-    io.write(k .. " " .. v .. "\n")
-end
-io.close(kitty_conf_file)
+write_sorted_table(config)
+out_file:write("\n# Mappings\n")
+write_sorted_table(mappings, "map")
+out_file:write("\n# Theme\n")
+write_sorted_table(theme_data)
+
+out_file:close()
