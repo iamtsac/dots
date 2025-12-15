@@ -102,6 +102,7 @@ end
 
 file:close()
 dofile(os.getenv("HOME") .. "/.config/kitty/config.lua")
+dofile(os.getenv("HOME") .. "/.config/ghostty/config.lua")
 
 local handle
 if args.style == "light" then
