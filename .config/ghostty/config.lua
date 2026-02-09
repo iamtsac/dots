@@ -46,14 +46,14 @@ elseif uname == "Linux" then
 end
 
 local font_config_map = {
-    [3840] = 14,
+    [3840] = 15,
     [2560] = 12,
     [1920] = 12,
 }
 config.font_size = font_config_map[main_resolution] or 10
 
-config.font_family = "IosevkaTerm Nerd Font"
-config.font_style = (args.style == "light") and "SemiBold" or "Regular"
+config.font_family = "Iosevka Nerd Font Propo"
+config.font_style = (args.style == "light") and "SemiBold" or "Medium"
 config.font_feature = "+feat, -calt"
 config.font_shaping_break = "cursor"
 
@@ -66,6 +66,7 @@ config.shell_integration_features = true
 config.shell_integration_features = "ssh-env,ssh-terminfo,cursor,path"
 config.cursor_style = "block"
 config.cursor_style_blink = false
+config.app_notifications = "no-clipboard-copy"
 
 config.macos_option_as_alt = true
 
