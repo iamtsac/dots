@@ -65,3 +65,6 @@ end
 
 # starship init fish | source
 oh-my-posh init fish --config "$HOME/.config/oh-my-posh.omp.toml" | source
+
+# In case pixi is available
+set -gx PATH "$HOME/.pixi/bin" $PATH
