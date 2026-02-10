@@ -12,57 +12,19 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    {
-        "folke/which-key.nvim",
-        dependencies = { "echasnovski/mini.icons", version = false },
-    },
-    {
-
-        "nvim-treesitter/nvim-treesitter",
-        -- dependencies = { "OXY2DEV/markview.nvim" },
-        version = false,
-        build = ":TSUpdate",
-    },
-    {
-        "folke/snacks.nvim",
-        priority = 1000,
-        lazy = false,
-    },
-    {
-        "nvim-tree/nvim-web-devicons",
-    },
-    {
-        "lewis6991/gitsigns.nvim",
-    },
-    {
-        "numToStr/Comment.nvim",
-    },
-    {
-        "stevearc/conform.nvim",
-    },
-    {
-        "williamboman/mason.nvim",
-    },
-    {
-        "stevearc/oil.nvim",
-        opts = {},
-        -- Optional dependencies
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
+    { "folke/which-key.nvim", dependencies = { "echasnovski/mini.icons", version = false } },
+    { "nvim-treesitter/nvim-treesitter", version = false, build = ":TSUpdate" },
+    { "folke/snacks.nvim", priority = 1000, lazy = false },
+    { "nvim-tree/nvim-web-devicons" },
+    { "lewis6991/gitsigns.nvim" },
+    { "numToStr/Comment.nvim" },
+    { "stevearc/conform.nvim" },
+    { "williamboman/mason.nvim" },
+    { "neovim/nvim-lspconfig" },
+    { "stevearc/oil.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     {
         "MeanderingProgrammer/render-markdown.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
-    },
-    {
-        "dgox16/oldworld.nvim",
-        lazy = false,
-        priority = 1000,
-    },
-    {
-        "RRethy/base16-nvim",
-    },
-    {
-        "neovim/nvim-lspconfig",
     },
     {
         "Saghen/blink.cmp",
@@ -77,15 +39,13 @@ require("lazy").setup({
             require("colorizer").setup()
         end,
     },
-    {
-        "webhooked/kanso.nvim",
-        lazy = false,
-        priority = 1000,
-    },
+    { "stevearc/overseer.nvim" },
+    { "webhooked/kanso.nvim", lazy = false, priority = 1000 },
     { "miikanissi/modus-themes.nvim", priority = 1000 },
-    { "Mofiqul/vscode.nvim", priority = 1000 },
-    {
-        "stevearc/overseer.nvim",
-        opts = {},
-    },
+    { "Mofiqul/vscode.nvim", lazy = false, priority = 1000 },
+    { "vague-theme/vague.nvim", lazy = false, priority = 1000 },
+    { "dgox16/oldworld.nvim", lazy = false, priority = 1000 },
+    { "RRethy/base16-nvim", lazy = false, priority = 1000 },
+    { "oskarnurm/koda.nvim", lazy = false, priority = 1000 },
+    { "casedami/neomodern.nvim", lazy = false, priority = 1000 },
 })
