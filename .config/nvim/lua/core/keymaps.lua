@@ -72,10 +72,10 @@ wk.add({
 vim.keymap.set({ "i", "n" }, "<Esc>", "<Esc>:nohls<CR>", { silent = true })
 
 --Files specific
--- vim.keymap.set("n", "<leader>ff", function()
---     Snacks.picker.files(snacks_opts.files_opts)
--- end, { desc = " Find file" })
 vim.keymap.set("n", "<leader>ff", function()
+    Snacks.picker.files(snacks_opts.files_opts)
+end, { desc = " Find file" })
+vim.keymap.set("n", "<leader>fF", function()
     Snacks.picker.smart(snacks_opts.smart_opts)
 end, { desc = " Find file" })
 vim.keymap.set("n", "<leader>/", function()
