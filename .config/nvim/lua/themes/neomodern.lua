@@ -58,6 +58,9 @@ function M.setup(style, utils)
         StatusLineNC = { fg = nil, bg = c.alt },
         WinSeparator = { fg = c.fg, bg = nil },
         FloatBorder = { fg = c.fg, bg = nil },
+        BlinkCmpMenu = { link = "Normal" },
+        BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
+        RenderMarkdownCode = { bg = c.bg },
     })
 
     vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })

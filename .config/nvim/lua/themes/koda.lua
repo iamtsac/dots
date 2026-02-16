@@ -45,6 +45,7 @@ function M.setup(style, utils)
             StatusLineNC = { fg = nil, bg = c.pickerbg },
             CursorLine = { bg = c.pickerbg },
             WinSeparator = { fg = c.fg, bg = nil },
+            RenderMarkdownCode = { bg = c.bg },
         })
         vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
         vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
