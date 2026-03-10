@@ -13,7 +13,7 @@ function M.setup(style, utils)
             dark = false,
         },
         diagnostics = {
-            darker = true,
+            darker = false,
             undercurl = true,
             background = true,
         },
@@ -25,9 +25,18 @@ function M.setup(style, utils)
 
     -- 3. Now we can safely extract the colors from the loaded theme
     local c = {}
+    if style == "dark" then
+        c.alt = "#151515"
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+    elseif style == "light" then
+        c.alt = "#f0f0f0"
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+
+    end
     c.bg = utils.get_color("Normal", "bg")
     c.fg = utils.get_color("Normal", "fg")
-    c.alt = "#151515"
     c.line = utils.get_color("CursorLine", "bg")
     c.func = utils.get_color("Function", "fg")
     c.string = utils.get_color("String", "fg")
@@ -62,9 +71,6 @@ function M.setup(style, utils)
         BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
         RenderMarkdownCode = { bg = c.bg },
     })
-
-    vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-    vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
 end
 
 return M

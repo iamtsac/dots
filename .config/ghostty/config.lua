@@ -38,22 +38,25 @@ if uname == "Darwin" then
     main_resolution = tonumber(raw_res) or 0
 elseif uname == "Linux" then
     config.command = "/usr/bin/fish"
-    local raw_res = get_output("xrandr --current 2>/dev/null | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1")
-    if raw_res == "" then raw_res = "1920" end 
-    for v in string.gmatch(raw_res, "[^%s]+") do
-        main_resolution = math.max(tonumber(v) or 0, main_resolution)
+    local cmd = "xrandr --current | grep -oE '[0-9]+x[0-9]+' | sort -rn | head -n 1"
+    local raw_res = get_output(cmd)
+    if raw_res == "" or raw_res == nil then 
+        raw_res = "1920x1080" -- A safer default format
     end
+    main_resolution = string.gsub(raw_res, "%s+", "")
+
 end
 
 local font_config_map = {
-    [3840] = 15,
-    [2560] = 12,
-    [1920] = 12,
+    ["3840x2160"] = { size = 14, style = (args.style == "light") and "Bold" or "Regular" },
+    ["2560x1440"] = { size = 12, style = (args.style == "light") and "Bold" or "Regular" },
+    ["1920x1200"] = { size = 10.5, style = (args.style == "light") and "Bold" or "Regular" },
+    ["1920x1080"] = { size = 10.5, style = "Bold" },
 }
-config.font_size = font_config_map[main_resolution] or 10
+config.font_size = font_config_map[main_resolution].size or 10
 
-config.font_family = "Iosevka Nerd Font Propo"
-config.font_style = (args.style == "light") and "SemiBold" or "Medium"
+config.font_family = "AdwaitaMono Nerd Font"
+config.font_style = font_config_map[main_resolution].style
 config.font_feature = "+feat, -calt"
 config.font_shaping_break = "cursor"
 
@@ -67,6 +70,7 @@ config.shell_integration_features = "ssh-env,ssh-terminfo,cursor,path"
 config.cursor_style = "block"
 config.cursor_style_blink = false
 config.app_notifications = "no-clipboard-copy"
+config.background_opacity = 1.0
 
 config.macos_option_as_alt = true
 
@@ -85,8 +89,8 @@ keybinds["move_tab:-1"] = "ctrl+shift+left"
 keybinds["new_window"] = "super+n"
 keybinds["toggle_command_palette"] = "ctrl+shift+space"
 
-keybinds["increase_font_size:1"] = "ctrl+shift+equal"
-keybinds["decrease_font_size:1"] = "ctrl+shift+minus"
+keybinds["increase_font_size:0.5"] = "ctrl+shift+equal"
+keybinds["decrease_font_size:0.5"] = "ctrl+shift+minus"
 keybinds["reset_font_size"] = "ctrl+shift+0"
 
 keybinds["reload_config"] = "super+r"
