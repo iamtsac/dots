@@ -144,28 +144,28 @@ M.sync_system_theme = function()
         f:close()
     end
 
-    -- Fish Sync
-    local fish_path = vim.fn.expand("~/.config/fish/conf.d/theme.fish")
-    local fish_f = io.open(fish_path, "w")
-    if fish_f then
-        fish_f:write("# Auto-generated Fish colors\n")
-        local fish_map = {
-            fish_color_normal = c.foreground,
-            fish_color_command = c.color4,
-            fish_color_quote = c.color2,
-            fish_color_error = c.color1,
-            fish_color_param = c.foreground,
-            fish_color_comment = c.color8,
-            fish_color_selection = "--background=" .. (c.selection_background:gsub("#", "") or ""),
-        }
-        for var, val in pairs(fish_map) do
-            if val then
-                local clean_val = val:gsub("#", "")
-                fish_f:write(string.format("set -g %s %s\n", var, clean_val))
-            end
-        end
-        fish_f:close()
-    end
+    -- -- Fish Sync
+    -- local fish_path = vim.fn.expand("~/.config/fish/conf.d/theme.fish")
+    -- local fish_f = io.open(fish_path, "w")
+    -- if fish_f then
+    --     fish_f:write("# Auto-generated Fish colors\n")
+    --     local fish_map = {
+    --         fish_color_normal = c.foreground,
+    --         fish_color_command = c.color4,
+    --         fish_color_quote = c.color2,
+    --         fish_color_error = c.color1,
+    --         fish_color_param = c.foreground,
+    --         fish_color_comment = c.color8,
+    --         fish_color_selection = "--background=" .. (c.selection_background:gsub("#", "") or ""),
+    --     }
+    --     for var, val in pairs(fish_map) do
+    --         if val then
+    --             local clean_val = val:gsub("#", "")
+    --             fish_f:write(string.format("set -g %s %s\n", var, clean_val))
+    --         end
+    --     end
+    --     fish_f:close()
+    -- end
 
     -- Execute config script if it exists
     local config_script = vim.fn.expand("~/.config/ghostty/config.lua")
