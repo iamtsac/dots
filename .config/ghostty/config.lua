@@ -97,7 +97,7 @@ keybinds["reload_config"] = "super+r"
 
 local unbinds = { "ctrl+enter", "ctrl+shift+n", "ctrl+shift+p" }
 
-local theme_path = string.format("%s/.config/ghostty/themes/%s.lua", os.getenv("HOME"), args.theme)
+local theme_path = string.format("%s/.config/ghostty/themes/current_theme.lua", os.getenv("HOME"))
 local theme_ok, theme_data = pcall(dofile, theme_path)
 local final_theme = {}
 

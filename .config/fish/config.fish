@@ -50,7 +50,8 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # Aliases
-alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+alias bat="bat --theme='base16'"
+alias fzf="fzf --preview 'bat --theme=base16 --color=always --style=numbers --line-range=:500 {}'"
 alias ls="eza --icons -l --group-directories-first"
 
 # Funcs
@@ -61,6 +62,10 @@ end
 
 if test -e $HOME/.config/fish/conf.d/local_conf.fish
     source $HOME/.config/fish/conf.d/local_conf.fish
+end
+
+if test -e $HOME/.config/fish/conf.d/theme.fish
+    source $HOME/.config/fish/conf.d/theme.fish
 end
 
 # starship init fish | source

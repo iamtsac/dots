@@ -24,53 +24,54 @@ function M.setup(style, utils)
     require("neomodern").load()
 
     -- 3. Now we can safely extract the colors from the loaded theme
-    local c = {}
-    if style == "dark" then
-        c.alt = "#151515"
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
-    elseif style == "light" then
-        c.alt = "#f0f0f0"
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
-        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+    vim.schedule(function()
+        local c = {}
+        if style == "dark" then
+            c.alt = "#151515"
+            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+        elseif style == "light" then
+            c.alt = "#f0f0f0"
+            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
 
-    end
-    c.bg = utils.get_color("Normal", "bg")
-    c.fg = utils.get_color("Normal", "fg")
-    c.line = utils.get_color("CursorLine", "bg")
-    c.func = utils.get_color("Function", "fg")
-    c.string = utils.get_color("String", "fg")
-    c.operator = utils.get_color("Operator", "fg")
-    c.constant = utils.get_color("Constant", "fg")
-    c.warning = utils.get_color("@comment.warning", "fg") -- This works now!
+        end
+        c.bg = utils.get_color("Normal", "bg")
+        c.fg = utils.get_color("Normal", "fg")
+        c.line = utils.get_color("CursorLine", "bg")
+        c.func = utils.get_color("Function", "fg")
+        c.string = utils.get_color("String", "fg")
+        c.operator = utils.get_color("Operator", "fg")
+        c.constant = utils.get_color("Constant", "fg")
+        c.warning = utils.get_color("@comment.warning", "fg") -- This works now!
 
-    -- 4. Apply the highlights using your consistent utility
-    utils.hl_overwrite({
-        SnacksImageMath = { fg = c.constant, bg = c.bg },
-        SnacksPickerBorder = { fg = c.bg, bg = c.bg },
-        SnacksPickerInput = { fg = c.fg, bg = c.alt },
-        SnacksPickerNormal = { fg = c.fg, bg = c.alt },
-        SnacksPickerMatch = { fg = c.warning, bg = nil },
-        SnacksPickerInputBorder = { fg = c.alt, bg = c.alt },
-        SnacksPickerBoxBorder = { fg = c.alt, bg = c.alt },
-        SnacksPickerTitle = { fg = c.bg, bg = c.operator },
-        SnacksPickerBoxTitle = { fg = c.bg, bg = c.string },
-        SnacksPickerListCursorLine = { fg = nil, bg = c.line },
-        SnacksPickerList = { bg = c.alt, fg = c.fg },
-        SnacksPickerPrompt = { fg = c.func, bg = c.alt },
-        SnacksPickerPreviewTitle = { fg = c.bg, bg = c.func },
-        SnacksPickerPreview = { bg = c.bg },
-        SnacksPickerToggle = { bg = c.func, fg = c.bg },
-        SnacksPickerDir = { fg = c.operator },
-        SnacksPickerSelected = { link = "Type" },
-        StatusLine = { fg = nil, bg = c.alt },
-        StatusLineNC = { fg = nil, bg = c.alt },
-        WinSeparator = { fg = c.fg, bg = nil },
-        FloatBorder = { fg = c.fg, bg = nil },
-        BlinkCmpMenu = { link = "Normal" },
-        BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
-        RenderMarkdownCode = { bg = c.bg },
-    })
+        -- 4. Apply the highlights using your consistent utility
+        utils.hl_overwrite({
+            SnacksImageMath = { fg = c.constant, bg = c.bg },
+            SnacksPickerBorder = { fg = c.bg, bg = c.bg },
+            SnacksPickerInput = { fg = c.fg, bg = c.alt },
+            SnacksPickerNormal = { fg = c.fg, bg = c.alt },
+            SnacksPickerMatch = { fg = c.warning, bg = nil },
+            SnacksPickerInputBorder = { fg = c.alt, bg = c.alt },
+            SnacksPickerBoxBorder = { fg = c.alt, bg = c.alt },
+            SnacksPickerTitle = { fg = c.bg, bg = c.operator },
+            SnacksPickerBoxTitle = { fg = c.bg, bg = c.string },
+            SnacksPickerListCursorLine = { fg = nil, bg = c.line },
+            SnacksPickerList = { bg = c.alt, fg = c.fg },
+            SnacksPickerPrompt = { fg = c.func, bg = c.alt },
+            SnacksPickerPreviewTitle = { fg = c.bg, bg = c.func },
+            SnacksPickerPreview = { bg = c.bg },
+            SnacksPickerToggle = { bg = c.func, fg = c.bg },
+            SnacksPickerDir = { fg = c.operator },
+            SnacksPickerSelected = { link = "Type" },
+            StatusLine = { fg = nil, bg = c.alt },
+            StatusLineNC = { fg = nil, bg = c.alt },
+            WinSeparator = { fg = c.fg, bg = nil },
+            FloatBorder = { fg = c.fg, bg = nil },
+            BlinkCmpMenu = { link = "Normal" },
+            BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
+        })
+    end)
 end
 
 return M

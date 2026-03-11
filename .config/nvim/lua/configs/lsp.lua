@@ -116,3 +116,20 @@ vim.api.nvim_create_autocmd("BufLeave", {
         })
     end,
 })
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    callback = function(args)
+        if vim.bo[args.buf].buftype == "nofile" then
+            local winid = vim.fn.bufwinid(args.buf)
+            if winid ~= -1 then
+                -- 1. Ensure conceal is active
+                vim.wo[winid].conceallevel = 2
+                vim.wo[winid].concealcursor = "nc"
+                -- 2. Manually define a syntax match to conceal the backticks
+                -- This targets the backticks and the language name (e.g., ```python)
+                vim.fn.matchadd('Conceal', [[^```\w*]], 10, -1, { conceal = '' })
+                vim.fn.matchadd('Conceal', [[^```$]], 10, -1, { conceal = '' })
+            end
+        end
+    end,
+})

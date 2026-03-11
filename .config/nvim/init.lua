@@ -79,7 +79,9 @@ require("configs/oil")
 require("core/keymaps")
 require("configs/comment")
 
-require("configs/colorscheme")
+local theme_utils = require("utils.theme")
+theme_utils.load_theme()
+
 require("configs/tabline")
 require("configs/statusline")
 require("configs/markdown")
@@ -87,16 +89,15 @@ require("configs/lsp")
 require("configs/overseer")
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "tex", "plaintex", "markdown", "typst" },
-  callback = function()
-    vim.opt_local.textwidth = 120
-    vim.opt_local.formatoptions:append("t")
-    vim.opt_local.wrap = true
-    vim.opt_local.linebreak = true
-  end,
+    pattern = { "tex", "plaintex", "markdown", "typst" },
+    callback = function()
+        vim.opt_local.textwidth = 120
+        vim.opt_local.formatoptions:append("t")
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+    end,
 })
 
--- Auto reload theme on change
 local uv = vim.loop
 local stylerc = vim.fn.expand("~/.config/stylerc")
 local last_mtime
@@ -105,8 +106,9 @@ vim.fn.timer_start(5000, function()
     uv.fs_stat(stylerc, function(_, stat)
         if stat and stat.mtime.sec ~= last_mtime then
             last_mtime = stat.mtime.sec
+            -- 1. Jump back to the main thread to load the theme
             vim.schedule(function()
-                dofile(vim.fn.stdpath("config") .. "/lua/configs/colorscheme.lua")
+                theme_utils.load_theme()
             end)
         end
     end)

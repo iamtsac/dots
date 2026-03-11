@@ -72,8 +72,8 @@ require("render-markdown").setup({
         border = "hide",
         above = "▄",
         below = "▀",
-        inline_left = "",
-        inline_right = "",
+        inline_left = "-",
+        inline_right = "-",
         inline_pad = 0,
         highlight = "RenderMarkdownCode",
         highlight_language = nil,
@@ -116,4 +116,16 @@ require("render-markdown").setup({
         top_pad = 0,
         bottom_pad = 0,
     },
+     document = {
+        -- Turn on / off document rendering.
+        enabled = false,
+    },
+    overrides = {
+        buftype = {
+            nofile = {
+                enabled = false, -- This is the master switch for hover windows
+            },
+        },
+    },
 })
+
