@@ -1,7 +1,52 @@
 local M = {}
 
+
+M.color_changer = {}
+local WHITE = "#FFFFFF"
+local BLACK = "#000000"
+
+local function hexToRgb(color)
+    local hex = "[abcdef0-9][abcdef0-9]"
+    local pat = "^#(" .. hex .. ")(" .. hex .. ")(" .. hex .. ")$"
+    color = string.lower(color)
+
+    assert(
+        string.find(color, pat) ~= nil,
+        "hex_to_rgb: invalid hex_str: " .. tostring(color)
+    )
+
+    local r, g, b = string.match(color, pat)
+    return { tonumber(r, 16), tonumber(g, 16), tonumber(b, 16) }
+end
+
+function M.color_changer.blend(a, coeff, b)
+    local A = hexToRgb(a)
+    local B = hexToRgb(b)
+    local alpha = math.abs(coeff)
+
+    local blendChannel = function(i)
+        local ret = ((1 - alpha) * B[i] + alpha * A[i])
+        return math.floor(math.min(math.max(0, ret), 255) + 0.5)
+    end
+
+    return string.format(
+        "#%02X%02X%02X",
+        blendChannel(1),
+        blendChannel(2),
+        blendChannel(3)
+    )
+end
+
+function M.color_changer.lighten(a, coeff)
+    return M.color_changer.blend(WHITE, coeff, a)
+end
+
+function M.color_changer.darken(a, coeff)
+    return M.color_changer.blend(BLACK, coeff, a)
+end
+
 M.get_color = function(group, attr)
-    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = true })
     local color = hl[attr]
     if not color then
         return nil
@@ -54,13 +99,13 @@ M.read_args = function(path)
     return args
 end
 
-M.update_stylerc = function(theme, style)
+M.update_stylerc = function(theme, style, variant)
     local path = vim.fn.expand("~/.config/stylerc")
     local lines = {}
     local f = io.open(path, "r")
     if f then
         for line in f:lines() do
-            if not line:match("^theme=") and not line:match("^style=") then
+            if not line:match("^theme=") and not line:match("^style=") and not line:match("^variant=") then
                 table.insert(lines, line)
             end
         end
@@ -68,6 +113,7 @@ M.update_stylerc = function(theme, style)
     end
     table.insert(lines, "theme=" .. theme)
     table.insert(lines, "style=" .. style)
+    table.insert(lines, "variant=" .. variant)
     local out = io.open(path, "w")
     if out then
         out:write(table.concat(lines, "\n") .. "\n")
@@ -99,7 +145,6 @@ M.sync_system_theme = function()
         local color = vim.g[var]
 
         if not color or color == "" or color == "NONE" then
-            -- Backups mapped strictly to the Neomodern Moon syntax palette
             local fallbacks = {
                 [0] = { "Normal", "bg" }, -- black (M.base.black)
                 [1] = { "Number", "fg" }, -- red (palette.number)
@@ -175,8 +220,12 @@ M.sync_system_theme = function()
 end
 
 M.load_theme = function()
+    for i = 0, 15 do
+        vim.g["terminal_color_" .. i] = nil
+    end
     local args = M.read_args(os.getenv("HOME") .. "/.config/stylerc")
     local theme_name = args.theme
+    local variant = args.variant
     local style = args.style
     if not theme_name then
         vim.notify("No theme defined in ~/.config/stylerc", vim.log.levels.WARN)
@@ -184,7 +233,7 @@ M.load_theme = function()
     end
     local ok, theme_module = pcall(require, "themes." .. theme_name)
     if ok then
-        theme_module.setup(style, M)
+        theme_module.setup(style, variant, M)
     else
         vim.notify("Could not load theme: " .. theme_name, vim.log.levels.ERROR)
     end

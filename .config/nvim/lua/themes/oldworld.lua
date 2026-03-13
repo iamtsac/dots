@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
     vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     local c = require("oldworld.palette")
@@ -31,10 +31,10 @@ function M.setup(style, utils)
 
     vim.schedule(function()
         utils.hl_overwrite({
-            NormalFloat = { bg = nil },
-            NormalNC = { bg = nil },
-            SignColumn = { bg = nil },
-            LineNr = { fg = "#999999" },
+            NormalFloat = { bg = c.bg },
+            NormalNC = { bg = c.bg },
+            SignColumn = { bg = c.bg },
+            LineNr = { fg = utils.color_changer.darken(c.fg, 0.7) },
             EndOfBuffer = { link = "LineNr" },
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpMenuBorder = { link = "Normal" },

@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
     local c = {}
     vim.o.winborder = "rounded"
     vim.opt.background = style

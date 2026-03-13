@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
     vim.opt.background = "dark"
     vim.o.winborder = "rounded"
     require("base16-colorscheme").with_config({
@@ -8,23 +8,15 @@ function M.setup(style, utils)
         cmp = true, illuminate = true, dapui = true,
     })
 
-    vim.cmd.colorscheme("base16-black-metal-immortal")
+    vim.print(variant)
+    vim.cmd.colorscheme("base16-black-metal" .. (variant == "default" and "" or "-" .. variant))
     local c = require("base16-colorscheme").colors
-    -- c.base08 = "#5f7887"
-    c.base08 = "#bfbfbf"
+    -- c.base08 = "#bfbfbf"
+    c.base08 = utils.color_changer.lighten(c.base0C, 0.8)
     require("base16-colorscheme").setup(c)
     vim.schedule(function()
         c.bg = c.base00
         c.fg = c.base0C
-
-        -- Override c with explicit palette from config
-        c = {
-            base00 = "#000000", base01 = "#121212", base02 = "#222222", base03 = "#333333",
-            base04 = "#999999", base05 = "#c1c1c1", base06 = "#999999", base07 = "#c1c1c1",
-            base08 = "#5f7887", base09 = "#aaaaaa", base0A = "#8c7f70", base0B = "#9b8d7f",
-            base0C = "#aaaaaa", base0D = "#888888", base0E = "#999999", base0F = "#444444",
-            bg = "#000000", fg = "#aaaaaa" 
-        }
 
         utils.hl_overwrite({
             Normal = { bg = c.base00 },
@@ -45,8 +37,8 @@ function M.setup(style, utils)
             TSFuncBuiltin = { italic = false },
             TSVariableBuiltin = { italic = false },
             TSPunctDelimiter = { link = "TSType" },
-            StatusLine = { fg = nil, bg = c.base01 },
-            StatusLineNC = { fg = nil, bg = c.base01 },
+            StatusLine = { fg = nil, bg = utils.color_changer.lighten(c.base01, 0.03) },
+            StatusLineNC = { fg = nil, bg = utils.color_changer.lighten(c.base01, 0.03) },
 
             WhichKeyNormal = { bg = c.base01 },
             WhichKeyValue = { fg = c.base0D },
@@ -85,8 +77,8 @@ function M.setup(style, utils)
         })
 
         -- utils.hl_markdown_code(c.bg, c.base01)
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
-        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.base08, italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.05) })
     end)
 end
 

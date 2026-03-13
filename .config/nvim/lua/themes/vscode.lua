@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
     vim.o.winborder = "rounded"
     vim.opt.background = style
     local c = require("vscode.colors").get_colors()
@@ -12,7 +12,7 @@ function M.setup(style, utils)
 
     vim.schedule(function()
         if style == "dark" then
-            c.bg_dim = "#252525"
+            c.bg_dim = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.03)
             c.fg = c.vscFront
             c.bg = c.vscBack
             utils.hl_overwrite({
@@ -46,7 +46,7 @@ function M.setup(style, utils)
         end
 
         if style == "light" then
-            c.bg_dim = "#f3f3f3"
+            c.bg_dim = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.03)
             c.fg = c.vscFront
             c.bg = c.vscBack
             utils.hl_overwrite({

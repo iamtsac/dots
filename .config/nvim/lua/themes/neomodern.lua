@@ -1,13 +1,13 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
+
     vim.o.winborder = "rounded"
     vim.opt.background = style
 
-    -- 1. Setup the theme without the complex overrides first
     require("neomodern").setup({
         bg = "default",
-        theme = "moon", -- 'moon' | 'iceclimber' | 'gyokuro' | 'hojicha' | 'roseprime'
+        theme = variant, -- 'moon' | 'iceclimber' | 'gyokuro' | 'hojicha' | 'roseprime'
         gutter = {
             cursorline = false,
             dark = false,
@@ -17,35 +17,32 @@ function M.setup(style, utils)
             undercurl = true,
             background = true,
         },
-        -- We remove the overrides from here to handle them safely below
     })
 
-    -- 2. Load the theme (This creates the highlight groups)
     require("neomodern").load()
 
-    -- 3. Now we can safely extract the colors from the loaded theme
     vim.schedule(function()
         local c = {}
         if style == "dark" then
-            c.alt = "#151515"
+            c.alt = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.015)
+            c.line = utils.color_changer.lighten(utils.get_color("CursorLine", "bg"), 0.03)
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
         elseif style == "light" then
-            c.alt = "#f0f0f0"
+            c.alt = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.05)
+            c.line = utils.color_changer.darken(utils.get_color("CursorLine", "bg"), 0.08)
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
 
         end
         c.bg = utils.get_color("Normal", "bg")
         c.fg = utils.get_color("Normal", "fg")
-        c.line = utils.get_color("CursorLine", "bg")
         c.func = utils.get_color("Function", "fg")
         c.string = utils.get_color("String", "fg")
         c.operator = utils.get_color("Operator", "fg")
         c.constant = utils.get_color("Constant", "fg")
-        c.warning = utils.get_color("@comment.warning", "fg") -- This works now!
+        c.warning = utils.get_color("@comment.warning", "fg")
 
-        -- 4. Apply the highlights using your consistent utility
         utils.hl_overwrite({
             SnacksImageMath = { fg = c.constant, bg = c.bg },
             SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -70,6 +67,7 @@ function M.setup(style, utils)
             FloatBorder = { fg = c.fg, bg = nil },
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
+            CursorLine = { bg = c.line },
         })
     end)
 end

@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup(style, utils)
+function M.setup(style, variant, utils)
     vim.o.winborder = "rounded"
     vim.opt.background = style
     local koda = require("koda")
@@ -17,11 +17,11 @@ function M.setup(style, utils)
         },
     })
 
-    local c = koda.get_palette()
-    c.pickerbg = "#151515"
-
     vim.cmd("colorscheme koda")
     vim.schedule(function()
+        local c = koda.get_palette()
+        c.pickerbg = utils.color_changer.lighten(c.bg, 0.03)
+
         if style == "dark" then
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.emphasis, bg = c.bg },
