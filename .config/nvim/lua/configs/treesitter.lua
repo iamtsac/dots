@@ -67,8 +67,8 @@ require("treesitter-context").setup({
     max_lines = 2,
     min_window_height = 0,
     line_numbers = true,
-    multiline_threshold = 20,
+    multiline_threshold = 2,
     trim_scope = "inner",
     mode = "cursor",
-    separator = '',
+    separator = '—',
 })

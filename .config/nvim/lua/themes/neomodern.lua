@@ -69,8 +69,9 @@ function M.setup(style, variant, utils)
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
             CursorLine = { bg = c.line },
-            TreesitterContextBottom = { underline=true },
-            TreesitterContextLineNumberBottom = { underline=true },
+            TreesitterContext = { link="Normal" },
+            TreesitterContextLineNumber = { link="LineNr" },
+            TreesitterContextSeparator = { link="Comment" },
         })
     end)
 end

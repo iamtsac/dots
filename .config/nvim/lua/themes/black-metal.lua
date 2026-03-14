@@ -74,8 +74,9 @@ function M.setup(style, variant, utils)
             DiffDelete = { bg = utils.get_color("GitSignsStagedDelete", "fg"), fg = c.bg },
             DiffText = { bg = utils.get_color("GitSignsStagedChange", "fg"), fg = c.bg, underline = false },
             DiffChange = { bg = c.bg, fg = c.fg },
-            TreesitterContextBottom = { underline=true },
-            TreesitterContextLineNumberBottom = { underline=true },
+            TreesitterContext = { link="Normal" },
+            TreesitterContextLineNumber = { link="LineNr" },
+            TreesitterContextSeparator = { link="Comment" },
             -- RenderMarkdownH1Bg = { bg = "none" },
         })
 

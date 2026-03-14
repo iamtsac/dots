@@ -47,6 +47,7 @@ function M.setup(style, variant, utils)
                 CursorLine = { bg = c.bg_dim },
                 TreesitterContextBottom = { underline=true },
                 TreesitterContextLineNumberBottom = { underline=true },
+                TreesitterContextSeparator = { link="Comment" },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
@@ -80,8 +81,9 @@ function M.setup(style, variant, utils)
                 PmenuKind = { bg = "none" },
                 PmenuExtra = { bg = "none" },
                 NormalFloat = { bg = "none" },
-                TreesitterContextBottom = { underline=true },
-                TreesitterContextLineNumberBottom = { underline=true },
+                TreesitterContext = { link="Normal" },
+                TreesitterContextLineNumber = { link="LineNr" },
+                TreesitterContextSeparator = { link="Comment" },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
