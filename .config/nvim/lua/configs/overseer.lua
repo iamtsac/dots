@@ -54,6 +54,7 @@ require("overseer").setup({
       ["p"] = "keymap.toggle_preview",
       ["{"] = "keymap.prev_task",
       ["}"] = "keymap.next_task",
+      ["w"] = "Watch",
       ["<C-k>"] = "keymap.scroll_output_up",
       ["<C-j>"] = "keymap.scroll_output_down",
       ["g."] = "keymap.toggle_show_wrapped",

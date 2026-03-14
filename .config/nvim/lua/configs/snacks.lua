@@ -9,7 +9,7 @@ Snacks.setup({
     explorer = { enabled = false },
     image = conf.image_opts,
     indent = conf.indent,
-    input = { enabled = false },
+    input = { enabled = true },
     profiler = { enabled = false },
     notifier = {
         enabled = false,

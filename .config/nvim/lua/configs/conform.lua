@@ -201,10 +201,9 @@ meta_cpp_format_opts = [[{
 conform.setup({
     formatters_by_ft = {
         lua = { "stylua" },
-        -- Conform will run multiple formatters sequentially
-        python = { "black" },
-        -- Use a sub-list to run only the first available formatter
+        python = { "ruff_organize_imports", "ruff_format", "isort", "black" },
         cpp = { "clang_format" },
+        markdown = { "injected" },
         ["*"] = { "trim_whitespace" },
     },
     formatters = {
@@ -213,6 +212,12 @@ conform.setup({
                 "--style",
                 cpp_format_opts,
             },
+        },
+        ruff_format = {
+            prepend_args = { "format", "--line-length", "100", },
+        },
+        black = {
+            prepend_args = { "--line-length", "100" },
         },
     },
 })

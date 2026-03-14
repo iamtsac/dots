@@ -67,6 +67,7 @@ vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.g.mapleader = " "
 
 require("core/plugins")
 require("configs/treesitter")
@@ -78,15 +79,15 @@ require("configs/conform")
 require("configs/oil")
 require("core/keymaps")
 require("configs/comment")
-
-local theme_utils = require("utils.theme")
-theme_utils.load_theme()
-
 require("configs/tabline")
 require("configs/statusline")
 require("configs/markdown")
 require("configs/lsp")
 require("configs/overseer")
+
+local theme_utils = require("utils.theme")
+theme_utils.load_theme()
+
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "tex", "plaintex", "markdown", "typst" },

@@ -138,19 +138,30 @@ function M.snacks_config()
     }
 
     conf.smart_opts = {
-      multi = { "buffers", "recent", "files" },
-      format = "file", -- use `file` format for all sources
-      matcher = {
-        cwd_bonus = true, -- boost cwd matches
-        frecency = true, -- use frecency boosting
-        sort_empty = true, -- sort even when the filter is empty
-      },
-      transform = "unique_file",
+        multi = { "buffers", "recent", "files" },
+        format = "file", -- use `file` format for all sources
+        matcher = {
+            cwd_bonus = true, -- boost cwd matches
+            frecency = true, -- use frecency boosting
+            sort_empty = true, -- sort even when the filter is empty
+        },
+        transform = "unique_file",
     }
 
     conf.picker = {
         enabled = true,
         layout = conf.picker_layout,
+        previewers = {
+            diff = {
+                style = "fancy",
+                hide_sidebar = true,
+            },
+        },
+        sources = {
+            git_diff = {
+                layout = { preview = true },
+            },
+        },
         formatters = {
             file = {
                 filename_first = true,
@@ -492,6 +503,23 @@ function M.snacks_config()
         backdrop = false,
         row = 0,
         col = -1,
+    }
+
+    conf.git_diff = {
+        group = false,
+        finder = "git_diff",
+        format = "git_status",
+        preview = "diff",
+        matcher = { sort_empty = true },
+        sort = { fields = { "score:desc", "file", "idx" } },
+        win = {
+            input = {
+                keys = {
+                    ["<Tab>"] = { "git_stage", mode = { "n", "i" } },
+                    ["<c-r>"] = { "git_restore", mode = { "n", "i" }, nowait = true },
+                },
+            },
+        },
     }
 
     return conf

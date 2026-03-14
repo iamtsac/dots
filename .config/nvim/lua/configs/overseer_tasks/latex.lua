@@ -61,6 +61,10 @@ overseer.register_template({
     return {
       cmd = { chosen_compiler },
       args = cmd_args,
+        components = {
+        { "restart_on_save", paths = { vim.fn.expand("%:p") } },
+        "default",
+      },
     }
   end,
 })

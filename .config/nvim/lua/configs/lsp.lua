@@ -50,12 +50,38 @@ vim.lsp.config["ltex_plus"] = {
     },
 }
 
-vim.lsp.enable("lua-language-server")
-vim.lsp.enable("pyright")
-vim.lsp.enable("clangd")
-vim.lsp.enable("texlab")
-vim.lsp.enable("harper_ls")
-vim.lsp.enable("ltex_plus")
+vim.lsp.config["ruff"] = {
+    init_options = {
+        settings = {
+            -- Any extra CLI arguments for `ruff` go here.
+            args = {},
+        },
+    },
+    on_attach = function(client, bufnr)
+        if client.name == "ruff" then
+            -- Disable hover in favor of Pyright (if you use it)
+            client.server_capabilities.hoverProvider = false
+        end
+    end,
+}
+
+local blink = require("blink.cmp")
+local capabilities = blink.get_lsp_capabilities()
+vim.lsp.config("*", { capabilities = capabilities })
+vim.lsp.config("pyright", {
+    root_markers = { "pyproject.toml", "setup.py", "requirements.txt", ".git" },
+    on_init = function(client)
+        client.config.settings.python.pythonPath = vim.fn.exepath("python")
+    end,
+})
+vim.lsp.config("clangd", {
+    root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
+})
+
+local servers = { "lua-language-server", "pyright", "clangd", "texlab", "harper_ls", "ruff" }
+for _, server in ipairs(servers) do
+    vim.lsp.enable(server)
+end
 
 vim.diagnostic.config({
     underline = false,
@@ -127,8 +153,8 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
                 vim.wo[winid].concealcursor = "nc"
                 -- 2. Manually define a syntax match to conceal the backticks
                 -- This targets the backticks and the language name (e.g., ```python)
-                vim.fn.matchadd('Conceal', [[^```\w*]], 10, -1, { conceal = '' })
-                vim.fn.matchadd('Conceal', [[^```$]], 10, -1, { conceal = '' })
+                vim.fn.matchadd("Conceal", [[^```\w*]], 10, -1, { conceal = "" })
+                vim.fn.matchadd("Conceal", [[^```$]], 10, -1, { conceal = "" })
             end
         end
     end,

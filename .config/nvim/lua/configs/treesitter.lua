@@ -1,5 +1,19 @@
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "cpp", "python", "lua", "typst", "regex", "markdown", "markdown_inline", "html", "css", "javascript", "scss", "svelte", "vue" },
+    ensure_installed = {
+        "cpp",
+        "python",
+        "lua",
+        "typst",
+        "regex",
+        "markdown",
+        "markdown_inline",
+        "html",
+        "css",
+        "javascript",
+        "scss",
+        "svelte",
+        "vue",
+    },
     auto_install = false,
     sync_install = true,
     ignore_install = { "tmux" },
@@ -17,12 +31,47 @@ require("nvim-treesitter.configs").setup({
     },
     incremental_selection = {
         enable = true,
-    },
-    textobjects = {
-        enable = true,
+        keymaps = {
+            init_selection = "<C-space>",
+            node_incremental = "<C-space>",
+            scope_incremental = false,
+            node_decremental = "<bs>",
+        },
     },
     indent = {
-        enable = false,
-        -- disable = { "cpp" },
+        enable = true,
     },
 })
+
+require("nvim-treesitter-textobjects").setup({
+    select = {
+        lookahead = true,
+        selection_modes = {
+            ["@parameter.outer"] = "v", -- charwise
+            ["@function.outer"] = "V", -- linewise
+        },
+        include_surrounding_whitespace = false,
+    },
+    move = {
+        enable = true,
+        set_jumps = true, -- Records jumps in the jumplist
+    },
+    select = {
+        enable = true,
+        lookahead = true,
+    },
+})
+
+require("treesitter-context").setup({
+    enable = true,
+    max_lines = 3,
+    min_window_height = 0,
+    line_numbers = true,
+    multiline_threshold = 20,
+    trim_scope = "outer",
+    mode = "cursor",
+})
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99

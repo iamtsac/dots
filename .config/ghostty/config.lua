@@ -95,7 +95,7 @@ keybinds["reset_font_size"] = "ctrl+shift+0"
 
 keybinds["reload_config"] = "super+r"
 
-local unbinds = { "ctrl+enter", "ctrl+shift+n", "ctrl+shift+p" }
+local unbinds = { "ctrl+enter", "ctrl+shift+n", "ctrl+shift+p", "ctrl+shift+j"}
 
 local theme_path = string.format("%s/.config/ghostty/themes/current_theme.lua", os.getenv("HOME"))
 local theme_ok, theme_data = pcall(dofile, theme_path)

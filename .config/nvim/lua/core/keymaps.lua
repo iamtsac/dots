@@ -52,20 +52,20 @@ local oil_custom = function()
     vim.cmd("Oil")
 end
 
-vim.g.mapleader = " "
-
 -- Regster categories in which_key
 wk.add({
-    { "<leader>z", group = "Spelling", hidden = true },
-    { "<leader>b", group = "Buffer" },
-    { "<leader>f", group = "Files" },
-    { "<leader>g", group = "Git" },
-    { "<leader>h", group = "Help/Misc" },
-    { "<leader>m", group = "Marks" },
-    { "<leader>t", group = "Toggle" },
-    { "<leader>c", group = "Compile (if applicaple)" },
-    { "<leader><Tab>", group = "Tabs" },
-    { "<leader>tg", group = "Gitsigns" },
+    { "<leader>b", group = "Buffer", icon = "󰓩" },
+    { "<leader>f", group = "Files", icon = "󰈔" },
+    { "<leader>g", group = "Git", icon = "󰊢" },
+    { "<leader>h", group = "Help/Misc", icon = "󰋖" },
+    { "<leader>l", group = "LSP", icon = "󰄲" },
+    { "<leader>m", group = "Marks", icon = "󰶰" },
+    { "<leader>t", group = "Toggle", icon = "󰔡" },
+    { "<leader>c", group = "Compile", icon = "󰄲" },
+    { "<leader><Tab>", group = "Tabs", icon = "󰓩" },
+    { "<leader>tg", group = "Gitsigns", icon = "󰊢" },
+    { "[", group = "Prev (Structural)", icon = "󰮳" },
+    { "]", group = "Next (Structural)", icon = "󰮵" },
 }, { prefix = "<leader>" })
 
 -- Generic
@@ -81,6 +81,9 @@ end, { desc = " Find file" })
 vim.keymap.set("n", "<leader>/", function()
     Snacks.picker.grep()
 end, { desc = " Grep in file" })
+vim.keymap.set("n", "<leader>fp", function()
+    Snacks.picker.projects()
+end, { desc = "Projects" })
 -- vim.keymap.set("n", "<leader>fE", function() Snacks.picker.explorer(snacks_opts.explorer_opts) end, { desc = " Grep in file" })
 
 vim.keymap.set({ "n", "v" }, "=", function()
@@ -108,12 +111,15 @@ vim.keymap.set("n", "<leader><Tab>p", "<cmd>tabprevious<CR>", { silent = true, d
 vim.keymap.set("n", "<leader><Tab>c", "<cmd>tabclose<CR>", { silent = true, desc = " Tab Close" })
 
 -- Help/Misc
+vim.keymap.set("n", "<leader>hu", function()
+    Snacks.picker.undo()
+end, { desc = "Undo History" })
 vim.keymap.set("n", "<leader>hl", function()
     Snacks.picker.help()
 end, { desc = " Help entries" })
 vim.keymap.set("n", "<leader>ht", function()
     -- Snacks.picker.colorschemes()
-    require("utils.theme_picker").theme_picker() 
+    require("utils.theme_picker").theme_picker()
 end, { desc = " Choose optimized colorscheme" })
 vim.keymap.set("n", "<leader>hT", function()
     Snacks.picker.colorschemes()
@@ -124,7 +130,7 @@ end, { desc = " Show keybindings" })
 vim.keymap.set("n", "<leader>hm", function()
     Snacks.picker.man()
 end, { desc = " Show Manpages" })
-vim.keymap.set("n", "<leader>hrt", "<cmd>so $HOME/.config/nvim/lua/configs/colorscheme.lua<cr>", { desc = " Reload Theme" })
+vim.keymap.set("n", "<leader>hr", "<cmd>so $HOME/.config/nvim/init.lua<cr>", { desc = " Reload Config" })
 vim.keymap.set("n", "<leader>hp", "<cmd>Lazy<cr>", { desc = " Plugin Manager" })
 vim.keymap.set("n", "<leader>hk", function()
     Snacks.picker.keymaps()
@@ -188,12 +194,15 @@ vim.keymap.set("n", "<leader>gd", custom_diff, { desc = " Diff file" })
 vim.keymap.set("n", "<leader>gb", function()
     Snacks.git.blame_line()
 end, { desc = " Line blame" })
+vim.keymap.set("n", "<leader>gD", function()
+    Snacks.picker.git_diff(snacks_opts.git_diff)
+end, { desc = " Line blame" })
 vim.keymap.set({ "n", "v", "x" }, "<leader>gr", function()
-  if vim.fn.mode() == "n" then
-    gs.reset_hunk()
-  else
-    gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-  end
+    if vim.fn.mode() == "n" then
+        gs.reset_hunk()
+    else
+        gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+    end
 end, { desc = " Reset hunk" })
 vim.keymap.set({ "n" }, "<leader>gR", function()
     gs.reset_buffer_index()
@@ -211,11 +220,11 @@ vim.keymap.set("n", "<leader>gC", function()
     gs.show_commit()
 end, { desc = " Show commit" })
 vim.keymap.set({ "n", "v" }, "<leader>gs", function()
-  if vim.fn.mode() == "n" then
-    gs.stage_hunk({ 1, vim.api.nvim_buf_line_count(0) })
-  else
-    gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-  end
+    if vim.fn.mode() == "n" then
+        gs.stage_hunk({ 1, vim.api.nvim_buf_line_count(0) })
+    else
+        gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+    end
 end, { desc = " Stage hunk" })
 
 vim.keymap.set("n", "<leader>tgn", function()
@@ -266,20 +275,109 @@ vim.keymap.set("n", "gy", function()
     Snacks.picker.lsp_type_definitions()
 end, { desc = " Goto T[y]pe Definition" })
 vim.keymap.set("n", "<leader>ls", function()
-    Snacks.picker.lsp_symbols({layout = snacks_opts.simple_layout})
+    Snacks.picker.lsp_symbols({ layout = snacks_opts.simple_layout })
 end, { desc = " LSP Symbols" })
 vim.keymap.set("n", "<leader>lS", function()
-    Snacks.picker.lsp_workspace_symbols({layout = snacks_opts.simple_layout})
+    Snacks.picker.lsp_workspace_symbols({ layout = snacks_opts.simple_layout })
 end, { desc = " LSP Workspace Symbols" })
 vim.keymap.set("n", "<leader>lD", function()
-    Snacks.picker.diagnostics({layout = snacks_opts.simple_layout})
+    Snacks.picker.diagnostics({ layout = snacks_opts.simple_layout })
 end, { desc = " Diagnostics" })
 vim.keymap.set("n", "<leader>ld", function()
-    Snacks.picker.diagnostics_buffer({layout = snacks_opts.simple_layout})
+    Snacks.picker.diagnostics_buffer({ layout = snacks_opts.simple_layout })
 end, { desc = " Buffer Diagnostics" })
 vim.keymap.set({ "n", "x" }, "<leader>la", function()
     vim.lsp.buf.code_action()
 end, { desc = " Diagnostics" })
+
+-- Tree-sitter
+vim.keymap.set({ "x", "o" }, "af", function()
+    require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+end, { desc = "Select outer function" })
+
+vim.keymap.set({ "x", "o" }, "if", function()
+    require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+end, { desc = "Select inner function" })
+
+vim.keymap.set({ "x", "o" }, "ac", function()
+    require("nvim-treesitter-textobjects.select").select_textobject("@class.outer", "textobjects")
+end, { desc = "Select outer class" })
+
+vim.keymap.set({ "x", "o" }, "ic", function()
+    require("nvim-treesitter-textobjects.select").select_textobject("@class.inner", "textobjects")
+end, { desc = "Select inner class" })
+
+-- Tree-sitter Textobjects: Parameter Swapping
+vim.keymap.set("n", "<C-S-J>", function()
+    require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
+end, { desc = "Swap next parameter" })
+
+vim.keymap.set("n", "<C-S-K>", function()
+    require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner")
+end, { desc = "Swap previous parameter" })
+
+-- Tree-sitter Textobjects: Structural Movement
+vim.keymap.set({ "n", "x", "o" }, "]f", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+end, { desc = "Next function start" })
+
+vim.keymap.set({ "n", "x", "o" }, "]m", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+end, { desc = "Next function start" })
+
+vim.keymap.set({ "n", "x", "o" }, "]]", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@class.outer", "textobjects")
+end, { desc = "Next class start" })
+
+vim.keymap.set({ "n", "x", "o" }, "]o", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start({ "@loop.inner", "@loop.outer" }, "textobjects")
+end, { desc = "Next loop start" })
+
+vim.keymap.set({ "n", "x", "o" }, "]s", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@local.scope", "locals")
+end, { desc = "Next local scope" })
+
+vim.keymap.set({ "n", "x", "o" }, "]z", function()
+    require("nvim-treesitter-textobjects.move").goto_next_start("@fold", "folds")
+end, { desc = "Next fold start" })
+
+vim.keymap.set({ "n", "x", "o" }, "]M", function()
+    require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
+end, { desc = "Next function end" })
+
+vim.keymap.set({ "n", "x", "o" }, "][", function()
+    require("nvim-treesitter-textobjects.move").goto_next_end("@class.outer", "textobjects")
+end, { desc = "Next class end" })
+
+-- Jump to Previous
+vim.keymap.set({ "n", "x", "o" }, "[f", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+end, { desc = "Previous function start" })
+
+vim.keymap.set({ "n", "x", "o" }, "[m", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+end, { desc = "Previous function start" })
+
+vim.keymap.set({ "n", "x", "o" }, "[[", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects")
+end, { desc = "Previous class start" })
+
+vim.keymap.set({ "n", "x", "o" }, "[M", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_end("@function.outer", "textobjects")
+end, { desc = "Previous function end" })
+
+vim.keymap.set({ "n", "x", "o" }, "[]", function()
+    require("nvim-treesitter-textobjects.move").goto_previous_end("@class.outer", "textobjects")
+end, { desc = "Previous class end" })
+
+-- Conditional specific jumps
+vim.keymap.set({ "n", "x", "o" }, "]d", function()
+    require("nvim-treesitter-textobjects.move").goto_next("@conditional.outer", "textobjects")
+end, { desc = "Next conditional" })
+
+vim.keymap.set({ "n", "x", "o" }, "[d", function()
+    require("nvim-treesitter-textobjects.move").goto_previous("@conditional.outer", "textobjects")
+end, { desc = "Previous conditional" })
 
 -- later..
 vim.keymap.set({ "n", "v" }, "<leader>z", function()

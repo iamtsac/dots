@@ -20,25 +20,25 @@ function M.setup(style, variant, utils)
 
         utils.hl_overwrite({
             Normal = { bg = c.base00 },
-            NormalFloat = { bg = nil },
-            NormalNC = { bg = nil },
-            SignColumn = { bg = nil },
+            NormalFloat = { bg = "none" },
+            NormalNC = { bg = "none" },
+            SignColumn = { bg = "none" },
             LineNr = { fg = c.base03, bg = c.base00 },
             CurosrLineNr = { link = "LineNr" },
             LineNrAbove = { link = "LineNr" },
             LineNrBelow = { link = "LineNr" },
-            EndOfBuffer = { bg = nil, fg = c.base0F },
+            EndOfBuffer = { bg = "none", fg = c.base0F },
 
-            TabLine = { bg = nil, fg = c.base03 },
-            TabLineFill = { bg = nil, fg = nil },
+            TabLine = { bg = "none", fg = c.base03 },
+            TabLineFill = { bg = "none", fg = "none" },
             TabLineSel = { bg = c.base03, fg = c.fg },
-            SnacksImageMath = { bg = nil, fg = c.fg },
+            SnacksImageMath = { bg = "none", fg = c.fg },
 
             TSFuncBuiltin = { italic = false },
             TSVariableBuiltin = { italic = false },
             TSPunctDelimiter = { link = "TSType" },
-            StatusLine = { fg = nil, bg = utils.color_changer.lighten(c.base01, 0.03) },
-            StatusLineNC = { fg = nil, bg = utils.color_changer.lighten(c.base01, 0.03) },
+            StatusLine = { fg = "none", bg = utils.color_changer.lighten(c.base01, 0.03) },
+            StatusLineNC = { fg = "none", bg = utils.color_changer.lighten(c.base01, 0.03) },
 
             WhichKeyNormal = { bg = c.base01 },
             WhichKeyValue = { fg = c.base0D },
@@ -57,7 +57,8 @@ function M.setup(style, variant, utils)
             SnacksPickerToggle = { bg = c.base08, fg = c.bg },
             SnacksPickerDir = { fg = c.base0B },
             SnacksPickerSelected = { fg = c.fg },
-            SnacksPickerListFooter = { bg = nil },
+            SnacksPickerListFooter = { bg = "none" },
+            Directory = { bg = "none" },
 
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpMenuBorder = { link = "Normal" },
@@ -73,7 +74,7 @@ function M.setup(style, variant, utils)
             DiffDelete = { bg = utils.get_color("GitSignsStagedDelete", "fg"), fg = c.bg },
             DiffText = { bg = utils.get_color("GitSignsStagedChange", "fg"), fg = c.bg, underline = false },
             DiffChange = { bg = c.bg, fg = c.fg },
-            -- RenderMarkdownH1Bg = { bg = nil },
+            -- RenderMarkdownH1Bg = { bg = "none" },
         })
 
         -- utils.hl_markdown_code(c.bg, c.base01)

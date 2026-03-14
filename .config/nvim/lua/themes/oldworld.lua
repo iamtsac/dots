@@ -40,12 +40,12 @@ function M.setup(style, variant, utils)
             BlinkCmpMenuBorder = { link = "Normal" },
 
             TabLine = { bg = c.gray2, fg = c.fg },
-            TabLineFill = { bg = nil, fg = nil },
+            TabLineFill = { bg = "none", fg = "none" },
             TabLineSel = { bg = c.blue, fg = c.bg },
             ["@module.python"] = { link = "Type" },
             ["@constructor"] = { link = "@variable" },
 
-            SnacksImageMath = { bg = nil, fg = c.fg },
+            SnacksImageMath = { bg = "none", fg = c.fg },
             SnacksPickerBorder = { fg = c.bg, bg = c.bg },
             SnacksPickerInput = { fg = c.fg, bg = c.gray0 },
             SnacksPickerMatch = { link = "Type" },
@@ -57,6 +57,7 @@ function M.setup(style, variant, utils)
             SnacksPickerPrompt = { fg = c.red, bg = c.gray0 },
             SnacksPickerPreviewTitle = { fg = c.bg, bg = c.red },
             SnacksPickerPreview = { bg = c.bg },
+            Directory = { bg = "none" },
             SnacksPickerToggle = { bg = c.green, fg = c.bg },
             SnacksPickerDir = { fg = c.purple },
         })

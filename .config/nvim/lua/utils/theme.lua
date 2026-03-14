@@ -56,7 +56,11 @@ end
 
 M.hl_overwrite = function(hls)
     for k, v in pairs(hls) do
-        vim.api.nvim_set_hl(0, k, v)
+        local hl = vim.api.nvim_get_hl(0, { name = k, link = false })
+        for attr, color in pairs(v) do
+            hl[attr] = color
+        end
+        vim.api.nvim_set_hl(0, k, hl)
     end
 end
 
