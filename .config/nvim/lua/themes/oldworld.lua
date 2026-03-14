@@ -60,6 +60,8 @@ function M.setup(style, variant, utils)
             Directory = { bg = "none" },
             SnacksPickerToggle = { bg = c.green, fg = c.bg },
             SnacksPickerDir = { fg = c.purple },
+            TreesitterContextBottom = { underline=true },
+            TreesitterContextLineNumberBottom = { underline=true },
         })
         
         -- utils.hl_markdown_code(c.bg, c.gray1)

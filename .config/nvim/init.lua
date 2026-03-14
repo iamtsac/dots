@@ -88,6 +88,11 @@ require("configs/overseer")
 local theme_utils = require("utils.theme")
 theme_utils.load_theme()
 
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "tex", "plaintex", "markdown", "typst" },

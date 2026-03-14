@@ -65,6 +65,8 @@ function M.setup(style, variant, utils)
                 StatusLineNC = { fg = "none", bg = c.pickerBg },
                 CursorLine = { bg = c.line },
                 LineNr = { fg = c.floatBorder, bg = c.bg },
+                TreesitterContextBottom = { underline=true },
+                TreesitterContextLineNumberBottom = { underline=true },
                 -- RenderMarkdownCode = { bg = c.bg },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })

@@ -64,14 +64,11 @@ require("nvim-treesitter-textobjects").setup({
 
 require("treesitter-context").setup({
     enable = true,
-    max_lines = 3,
+    max_lines = 2,
     min_window_height = 0,
     line_numbers = true,
     multiline_threshold = 20,
-    trim_scope = "outer",
+    trim_scope = "inner",
     mode = "cursor",
+    separator = '',
 })
-
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevel = 99
