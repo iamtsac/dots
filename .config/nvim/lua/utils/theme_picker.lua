@@ -19,7 +19,7 @@ local theme_data = {
         { name = "Zen (Dark)", theme = "kanso", style = "dark", variant = "zen" },
         { name = "Mist (Dark)", theme = "kanso", style = "dark", variant = "mist" },
         { name = "Ink (Dark)", theme = "kanso", style = "dark", variant = "ink" },
-        { name = "Pearl (Light)", theme = "kanso", style = "dark", variant = "pearl" },
+        { name = "Pearl (Light)", theme = "kanso", style = "light", variant = "pearl" },
     },
     ["Modus"] = {
         { name = "Dark", theme = "modus", style = "dark", variant = "default" },
