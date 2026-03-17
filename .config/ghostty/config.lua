@@ -50,8 +50,8 @@ end
 local font_config_map = {
     ["3840x2160"] = { size = 14, style = (args.style == "light") and "Bold" or "Regular" },
     ["2560x1440"] = { size = 12, style = (args.style == "light") and "Bold" or "Regular" },
-    ["1920x1200"] = { size = 10.5, style = (args.style == "light") and "Bold" or "Regular" },
-    ["1920x1080"] = { size = 10.5, style = "Bold" },
+    ["1920x1200"] = { size = 9.0, style = "Bold"},
+    ["1920x1080"] = { size = 9.0, style = "Bold" },
 }
 config.font_size = font_config_map[main_resolution].size or 10
 
