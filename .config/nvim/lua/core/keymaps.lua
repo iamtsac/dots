@@ -371,11 +371,11 @@ vim.keymap.set({ "n", "x", "o" }, "[]", function()
 end, { desc = "Previous class end" })
 
 -- Conditional specific jumps
-vim.keymap.set({ "n", "x", "o" }, "]d", function()
+vim.keymap.set({ "n", "x", "o" }, "]c", function()
     require("nvim-treesitter-textobjects.move").goto_next("@conditional.outer", "textobjects")
 end, { desc = "Next conditional" })
 
-vim.keymap.set({ "n", "x", "o" }, "[d", function()
+vim.keymap.set({ "n", "x", "o" }, "[c", function()
     require("nvim-treesitter-textobjects.move").goto_previous("@conditional.outer", "textobjects")
 end, { desc = "Previous conditional" })
 

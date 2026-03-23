@@ -31,6 +31,7 @@ function M.setup(style, variant, utils)
                 SnacksPickerPreviewTitle = { fg = c.bg, bg = c.vscLightRed },
                 SnacksPickerPreview = { bg = c.bg },
                 SnacksPickerTree = { bg = "none" },
+                SnacksPickerCol = { bg = "none" },
                 Directory = { bg = "none" },
                 TreesitterContext = { link="CursorLine" },
                 WhichKeyIcon = { link = "WhichKeyValue" },
@@ -48,7 +49,7 @@ function M.setup(style, variant, utils)
                 -- LineNrBelow = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) })
             -- utils.hl_markdown_code(c.bg, c.bg_dim)
         end
 
@@ -88,6 +89,7 @@ function M.setup(style, variant, utils)
                 TreesitterContext = { link="Normal" },
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
+                SnacksPickerCol = { bg = "none" },
                 LineNr = { fg = c.vscCursorDark },
                 WhichKeyIcon = { link = "WhichKeyValue" },
                 -- RenderMarkdownH1Bg = { bg = "none" },
@@ -99,7 +101,7 @@ function M.setup(style, variant, utils)
             })
 
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) })
         end
     end)
 end
