@@ -26,13 +26,13 @@ function M.setup(style, variant, utils)
         if style == "dark" then
             c.alt = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.015)
             c.line = utils.color_changer.lighten(utils.get_color("CursorLine", "bg"), 0.03)
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = utils.get_color("Normal", "fg"), italic = false })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) })
         elseif style == "light" then
             c.alt = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.05)
             c.line = utils.color_changer.darken(utils.get_color("CursorLine", "bg"), 0.08)
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
+            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = utils.get_color("Normal", "fg"), italic = false })
+            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) })
 
         end
         c.bg = utils.get_color("Normal", "bg")

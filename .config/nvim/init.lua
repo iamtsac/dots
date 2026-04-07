@@ -93,6 +93,8 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+vim.opt.wildmode = "longest:full,full"
+vim.opt.wildoptions = "pum"
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "tex", "plaintex", "markdown", "typst" },
