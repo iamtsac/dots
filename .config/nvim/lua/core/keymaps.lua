@@ -143,6 +143,12 @@ end, { desc = " Highlights" })
 vim.keymap.set("n", "<leader>tZ", function()
     Snacks.zen()
 end, { desc = " Toggle zen mode" })
+vim.keymap.set("n", "<leader>tc", "<cmd>TSContext toggle<cr>", { desc = " Toggle TS Context mode" })
+vim.keymap.set("n", "<leader>ts", function()
+    local new_state = not (vim.g.snacks_scroll ~= false)
+    vim.g.snacks_scroll = new_state
+    local status = new_state and "Enabled" or "Disabled"
+end, { desc = "Toggle Smooth Scroll (Global)" })
 vim.keymap.set("n", "<leader>tz", function()
     Snacks.zen.zoom()
 end, { desc = " Toggle zoom" })
