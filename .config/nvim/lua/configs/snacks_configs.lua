@@ -308,7 +308,7 @@ function M.snacks_config()
     }
 
     conf.scroll = {
-        enabled = false,
+        enabled = true,
         animate = {
             duration = { step = 8, total = 200 },
             easing = "linear",
