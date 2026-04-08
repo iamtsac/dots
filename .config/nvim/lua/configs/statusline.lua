@@ -169,7 +169,7 @@ end
 
 local function buffer_state()
     -- local mod = vim.bo.modified and "**" or "--"
-    local mod = vim.bo.modified and "%#Boolean#" or "%#Normal#󰧞"
+    local mod = vim.bo.modified and "%#Boolean#" or "%#Statusline#󰧞"
     local read = vim.bo.readonly and "%#Exception#" or mod
     return read
 end
