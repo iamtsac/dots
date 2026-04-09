@@ -68,17 +68,47 @@ vim.lsp.config["ruff"] = {
 local blink = require("blink.cmp")
 local capabilities = blink.get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })
-vim.lsp.config("pyright", {
+vim.lsp.config("basedpyright", {
     root_markers = { "pyproject.toml", "setup.py", "requirements.txt", ".git" },
     on_init = function(client)
         client.config.settings.python.pythonPath = vim.fn.exepath("python")
     end,
-})
-vim.lsp.config("clangd", {
-    root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
+    settings = {
+      python = {
+        analysis = {
+          diagnosticMode = "workspace",
+          indexing = true,
+          useLibraryCodeForTypes = true,
+        },
+      },
+    }
 })
 
-local servers = { "lua-language-server", "pyright", "clangd", "texlab", "harper_ls", "ruff" }
+vim.lsp.config("ty", {
+    cmd = { "ty", "server" },
+    filetypes = { "python" },
+    root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "ty.toml", ".git" },
+    capabilities = capabilities,
+    on_init = function(client)
+        client.config.settings.python.pythonPath = vim.fn.exepath("python")
+    end,
+    settings = {
+        python = {
+            analysis = {
+                indexing = true,
+                diagnosticMode = "workspace",
+                useLibraryCodeForTypes = true,
+            },
+        },
+    },
+})
+
+vim.lsp.config("clangd", {
+    root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
+
+})
+
+local servers = { "lua-language-server", "basedpyright", "clangd", "texlab", "harper_ls", "ruff" }
 for _, server in ipairs(servers) do
     vim.lsp.enable(server)
 end
