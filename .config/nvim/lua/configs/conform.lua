@@ -201,7 +201,7 @@ meta_cpp_format_opts = [[{
 conform.setup({
     formatters_by_ft = {
         lua = { "stylua" },
-        python = { "ruff_organize_imports", "ruff_format", "isort", "black" },
+        python = { "ruff_organize_imports", "ruff_format", },
         cpp = { "clang_format" },
         markdown = { "injected" },
         ["*"] = { "trim_whitespace" },

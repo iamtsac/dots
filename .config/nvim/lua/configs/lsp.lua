@@ -1,3 +1,9 @@
+local blink = require("blink.cmp")
+local capabilities = blink.get_lsp_capabilities()
+capabilities.general = capabilities.general or {}
+capabilities.general.positionEncodings = { "utf-8" }
+vim.lsp.config("*", { capabilities = capabilities })
+
 vim.lsp.config["lua-language-server"] = {
     cmd = { "lua-language-server" },
     filetypes = { "lua" },
@@ -65,23 +71,20 @@ vim.lsp.config["ruff"] = {
     end,
 }
 
-local blink = require("blink.cmp")
-local capabilities = blink.get_lsp_capabilities()
-vim.lsp.config("*", { capabilities = capabilities })
 vim.lsp.config("basedpyright", {
     root_markers = { "pyproject.toml", "setup.py", "requirements.txt", ".git" },
     on_init = function(client)
         client.config.settings.python.pythonPath = vim.fn.exepath("python")
     end,
     settings = {
-      python = {
-        analysis = {
-          diagnosticMode = "workspace",
-          indexing = true,
-          useLibraryCodeForTypes = true,
+        python = {
+            analysis = {
+                diagnosticMode = "workspace",
+                indexing = true,
+                useLibraryCodeForTypes = true,
+            },
         },
-      },
-    }
+    },
 })
 
 vim.lsp.config("ty", {
@@ -105,7 +108,6 @@ vim.lsp.config("ty", {
 
 vim.lsp.config("clangd", {
     root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
-
 })
 
 local servers = { "lua-language-server", "basedpyright", "clangd", "texlab", "harper_ls", "ruff" }
@@ -125,14 +127,13 @@ require("blink.cmp").setup({
         nerd_font_variant = "normal",
     },
     fuzzy = { implementation = "prefer_rust" },
+    keymap = { preset = "cmdline" },
     completion = {
         keyword = { range = "full" },
-        -- menu = {
-        --     auto_show = false,
-        -- },
         list = { selection = { preselect = false, auto_insert = true } },
+        menu = { auto_show = true },
+        ghost_text = { enabled = true },
     },
-    cmdline = { enabled = false },
     signature = { enabled = true },
     keymap = {
         ["<C-k>"] = { "scroll_documentation_up", "fallback" },
@@ -144,6 +145,7 @@ require("blink.cmp").setup({
         ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
         ["<C-n>"] = { "select_next", "fallback_to_mappings" },
     },
+    cmdline = { enabled=true, completion = { ghost_text = { enabled = true } } }
 })
 -- require("blink.cmp.config").completion.menu.auto_show = false
 

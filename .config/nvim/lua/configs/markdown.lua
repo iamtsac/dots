@@ -105,7 +105,6 @@ require("render-markdown").setup({
         alignment_indicator = "━",
         head = "RenderMarkdownTableHead",
         row = "RenderMarkdownTableRow",
-        filler = "RenderMarkdownTableFill",
     },
     latex = {
         enabled = false,

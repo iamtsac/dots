@@ -97,15 +97,15 @@ vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "pum"
 
 vim.g.clipboard = {
-  name = 'OSC 52',
-  copy = {
-    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-  },
-  paste = {
-    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-  },
+    name = "OSC 52",
+    copy = {
+        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
 }
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -120,16 +120,21 @@ vim.api.nvim_create_autocmd("FileType", {
 
 local uv = vim.loop
 local stylerc = vim.fn.expand("~/.config/stylerc")
-local last_mtime
+local handle = vim.uv.new_fs_event()
 
-vim.fn.timer_start(5000, function()
-    uv.fs_stat(stylerc, function(_, stat)
-        if stat and stat.mtime.sec ~= last_mtime then
-            last_mtime = stat.mtime.sec
-            -- 1. Jump back to the main thread to load the theme
-            vim.schedule(function()
+local function watch_theme()
+    handle:start(
+        stylerc,
+        {},
+        vim.schedule_wrap(function(err, filename, events)
+            if err then
+                vim.notify("Theme watcher error: " .. err, vim.log.levels.ERROR)
+                return
+            end
+            if events.change then
                 theme_utils.load_theme()
-            end)
-        end
-    end)
-end, { ["repeat"] = -1 })
+            end
+        end)
+    )
+end
+watch_theme()

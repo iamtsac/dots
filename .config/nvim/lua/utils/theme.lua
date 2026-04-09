@@ -1,6 +1,5 @@
 local M = {}
 
-
 M.color_changer = {}
 local WHITE = "#FFFFFF"
 local BLACK = "#000000"
@@ -10,10 +9,7 @@ local function hexToRgb(color)
     local pat = "^#(" .. hex .. ")(" .. hex .. ")(" .. hex .. ")$"
     color = string.lower(color)
 
-    assert(
-        string.find(color, pat) ~= nil,
-        "hex_to_rgb: invalid hex_str: " .. tostring(color)
-    )
+    assert(string.find(color, pat) ~= nil, "hex_to_rgb: invalid hex_str: " .. tostring(color))
 
     local r, g, b = string.match(color, pat)
     return { tonumber(r, 16), tonumber(g, 16), tonumber(b, 16) }
@@ -29,12 +25,7 @@ function M.color_changer.blend(a, coeff, b)
         return math.floor(math.min(math.max(0, ret), 255) + 0.5)
     end
 
-    return string.format(
-        "#%02X%02X%02X",
-        blendChannel(1),
-        blendChannel(2),
-        blendChannel(3)
-    )
+    return string.format("#%02X%02X%02X", blendChannel(1), blendChannel(2), blendChannel(3))
 end
 
 function M.color_changer.lighten(a, coeff)
@@ -227,19 +218,28 @@ M.load_theme = function()
     for i = 0, 15 do
         vim.g["terminal_color_" .. i] = nil
     end
-    local args = M.read_args(os.getenv("HOME") .. "/.config/stylerc")
+
+    local stylerc_path = os.getenv("HOME") .. "/.config/stylerc"
+    local args = M.read_args(stylerc_path)
     local theme_name = args.theme
-    local variant = args.variant
-    local style = args.style
     if not theme_name then
-        vim.notify("No theme defined in ~/.config/stylerc", vim.log.levels.WARN)
         return
     end
+
+    package.loaded["themes." .. theme_name] = nil
+
     local ok, theme_module = pcall(require, "themes." .. theme_name)
     if ok then
-        theme_module.setup(style, variant, M)
+        vim.cmd("highlight clear")
+        if vim.fn.exists("syntax_on") then
+            vim.cmd("syntax reset")
+        end
+
+        theme_module.setup(args.style, args.variant, M)
+        vim.api.nvim_exec_autocmds("ColorScheme", { modeline = false })
+        vim.opt.termguicolors = true
     else
-        vim.notify("Could not load theme: " .. theme_name, vim.log.levels.ERROR)
+        vim.notify("Theme Refresh Failed: " .. theme_name, vim.log.levels.ERROR)
     end
 end
 
