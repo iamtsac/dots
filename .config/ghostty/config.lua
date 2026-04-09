@@ -47,16 +47,20 @@ elseif uname == "Linux" then
 
 end
 
+local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular"  }
+
 local font_config_map = {
-    ["3840x2160"] = { size = 14, style = (args.style == "light") and "Bold" or "Regular" },
-    ["2560x1440"] = { size = 12, style = (args.style == "light") and "Bold" or "Regular" },
+    ["3840x2160"] = { size = 16, style = (args.style == "light") and "Bold" or "Regular" },
+    ["2560x1440"] = { size = 14, style = (args.style == "light") and "Bold" or "Regular" },
     ["1920x1200"] = { size = 13, style = "Regular"},
     ["1920x1080"] = { size = 13, style = "Regular" },
 }
 
-config.font_size = font_config_map[main_resolution].size or 10
+local selected_config = font_config_map[main_resolution] or default_config
+
+config.font_size = selected_config.size
 config.font_family = "InputMono Nerd Font"
-config.font_style = font_config_map[main_resolution].style
+config.font_style = selected_config.style
 config.font_feature = "+feat, -calt"
 config.font_shaping_break = "cursor"
 
@@ -71,6 +75,9 @@ config.cursor_style = "block"
 config.cursor_style_blink = false
 config.app_notifications = "no-clipboard-copy"
 config.background_opacity = 1.0
+config.clipboard_read = "allow"
+config.clipboard_write = "allow"
+config.clipboard_trim_trailing_spaces = true
 
 config.macos_option_as_alt = true
 
