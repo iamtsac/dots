@@ -15,12 +15,12 @@ title_format   = "Yazi: {cwd}"
 [preview]
 wrap            = "yes"
 tab_size        = 4
-max_width       = 900
-max_height      = 900
+max_width       = 600
+max_height      = 600
 cache_dir       = ""
 image_delay     = 100
 image_filter    = "catmull-rom"
-image_quality   = 70
+image_quality   = 50
 sixel_fraction  = 12
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
