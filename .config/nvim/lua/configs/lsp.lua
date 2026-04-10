@@ -132,7 +132,7 @@ require("blink.cmp").setup({
         keyword = { range = "full" },
         list = { selection = { preselect = false, auto_insert = true } },
         menu = { auto_show = true },
-        ghost_text = { enabled = true },
+        ghost_text = { enabled = false },
     },
     signature = { enabled = true },
     keymap = {
