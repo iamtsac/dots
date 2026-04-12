@@ -153,7 +153,7 @@ vim.keymap.set("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc
 vim.keymap.set({ "n", "v" }, "<leader>gs", gs.stage_hunk, { desc = "Stage Hunk" })
 vim.keymap.set({ "n", "v" }, "<leader>gr", gs.reset_hunk, { desc = "Reset Hunk" })
 vim.keymap.set("n", "<leader>gp", gs.preview_hunk_inline, { desc = "Preview Hunk" })
-vim.keymap.set("n", "]g", gs.nav_hunk, { desc = "Next Hunk" })
+vim.keymap.set("n", "]g", function() gs.nav_hunk("next") end, { desc = "Next Hunk" })
 vim.keymap.set("n", "[g", function() gs.nav_hunk("prev") end, { desc = "Prev Hunk" })
 
 -- =============================================================================
@@ -215,3 +215,23 @@ vim.keymap.set("n", "<leader>ht", function() require("utils.theme_picker").theme
 vim.keymap.set("n", "<leader>hT", function() Snacks.picker.colorschemes() end, { desc = " Change colorscheme" })
 vim.keymap.set("n", "<leader>hm", function() Snacks.picker.man() end, { desc = " Show Manpages" })
 vim.keymap.set("n", "<leader>hM", "<cmd>Mason<CR>", { desc = " Mason" })
+
+vim.keymap.set("n", "<leader>ml", function()
+    Snacks.picker.marks()
+end, { desc = " Mark list" })
+
+vim.keymap.set("n", "<leader>md", function()
+    local char = vim.fn.getcharstr()
+    local dfunc = function(char)
+        if char == string.upper(char) then
+            vim.api.nvim_del_mark(char)
+        else
+            local bufnr = vim.api.nvim_get_current_buf()
+            vim.api.nvim_buf_del_mark(bufnr, char)
+        end
+    end
+    if not pcall(dfunc, char) then
+        local bufnr = vim.api.nvim_get_current_buf()
+        vim.api.nvim_buf_del_mark(bufnr, char)
+    end
+end, { desc = " Delete mark" })

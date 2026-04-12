@@ -92,6 +92,7 @@ function M.setup(style, variant, utils)
                 BlinkCmpLabelDetail = { link = "Type" },
                 PmenuKind = { bg = "none" },
                 PmenuExtra = { bg = "none" },
+                LineNr = { bg = "none" },
                 NormalFloat = { bg = "none" },
                 CursorLine = { bg = c.bg_dim },
                 TreesitterContext = { link="Normal" },

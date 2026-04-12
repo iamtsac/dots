@@ -90,7 +90,7 @@ function M.setup(style, variant, utils)
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
                 SnacksPickerCol = { bg = "none" },
-                LineNr = { fg = c.vscCursorDark },
+                LineNr = { fg = c.vscCursorDark, bg = "none"},
                 WhichKeyIcon = { link = "WhichKeyValue" },
                 -- RenderMarkdownH1Bg = { bg = "none" },
                 -- RenderMarkdownH2Bg = { bg = "none" },

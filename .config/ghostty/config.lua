@@ -50,16 +50,16 @@ end
 local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular"  }
 
 local font_config_map = {
-    ["3840x2160"] = { size = 16, style = (args.style == "light") and "Bold" or "Regular" },
-    ["2560x1440"] = { size = 14, style = (args.style == "light") and "Bold" or "Regular" },
-    ["1920x1200"] = { size = 13, style = "Regular"},
-    ["1920x1080"] = { size = 13, style = "Regular" },
+    ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Medium" },
+    ["2560x1440"] = { size = 16, style = (args.style == "light") and "SemiBold" or "Medium" },
+    ["1920x1200"] = { size = 13.5, style = "Medium"},
+    ["1920x1080"] = { size = 13.5, style = "Medium" },
 }
 
 local selected_config = font_config_map[main_resolution] or default_config
 
 config.font_size = selected_config.size
-config.font_family = "InputMono Nerd Font"
+config.font_family = "Monaspace Neon Var"
 config.font_style = selected_config.style
 config.font_feature = "+feat, -calt"
 config.font_shaping_break = "cursor"

@@ -23,7 +23,7 @@ function M.setup(style, variant, utils)
             NormalFloat = { bg = "none" },
             NormalNC = { bg = "none" },
             SignColumn = { bg = "none" },
-            LineNr = { fg = c.base03, bg = c.base00 },
+            LineNr = { fg = c.base03, bg = "none" },
             CurosrLineNr = { link = "LineNr" },
             LineNrAbove = { link = "LineNr" },
             LineNrBelow = { link = "LineNr" },

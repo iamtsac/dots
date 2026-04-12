@@ -30,6 +30,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerNormal = { fg = c.fg, bg = c.pickerbg },
                 SnacksPickerMatch = { fg = utils.get_color("@comment.warning", "fg"), bg = "none" },
                 SnacksPickerInputBorder = { fg = c.pickerbg, bg = c.pickerbg },
+                NormalFloat = { bg = "none" },
+                LineNr = { bg = "none" },
                 Directory = { bg = "none" },
                 SnacksPickerBoxBorder = { fg = c.pickerbg, bg = c.pickerbg },
                 SnacksPickerTitle = { fg = c.bg, bg = c.orange },

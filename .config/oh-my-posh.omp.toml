@@ -26,7 +26,7 @@ final_space = true
     style = 'plain'
 
     [blocks.segments.properties]
-      branch_icon = ''
+      branch_icon = ' '
       cache_duration = 'none'
       commit_icon = '@'
       fetch_status = true
@@ -63,7 +63,8 @@ final_space = true
         # display_default = false
 
   [[blocks.segments]]
-    template = ''
+    # template = '{{if gt .Code 0}}🥀{{else}}🌹{{end}}'
+    template = '{{if gt .Code 0}}⨘{{else}}∫{{end}}'
     background = 'transparent'
     type = 'text'
     style = 'plain'

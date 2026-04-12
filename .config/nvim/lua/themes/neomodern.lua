@@ -66,6 +66,8 @@ function M.setup(style, variant, utils)
             WinSeparator = { fg = c.fg, bg = "none" },
             Directory = { bg = "none" },
             FloatBorder = { fg = c.fg, bg = "none" },
+            LineNr = { bg = "none" },
+            NormalFloat = { bg = "none" },
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
             CursorLine = { bg = c.line },

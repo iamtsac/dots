@@ -169,7 +169,7 @@ end
 
 local function buffer_state()
     -- local mod = vim.bo.modified and "**" or "--"
-    local mod = vim.bo.modified and "%#Boolean#" or "%#Statusline#󰧞"
+    local mod = vim.bo.modified and "%#Exception#𜷄" or "%#String#█"
     local read = vim.bo.readonly and "%#Exception#" or mod
     return read
 end
@@ -193,7 +193,8 @@ local function lsp_status()
     for _, client in ipairs(clients) do
         table.insert(names, client.name)
     end
-    return "%#StatusLineSecondary#  <" .. table.concat(names, ",") .. ">"
+    -- return "%#StatusLineSecondary#  <" .. table.concat(names, ",") .. ">"
+    return "%#StatusLineSecondary# " .. table.concat(names, " ")
 end
 
 local function search_count()
@@ -225,7 +226,6 @@ Statusline = {}
 
 Statusline.active = function()
     return table.concat({
-        " ",
         buffer_state(),
         "  ",
         fname(),

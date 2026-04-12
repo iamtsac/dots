@@ -84,6 +84,7 @@ function M.setup(style, variant, utils)
                 TreesitterContext = { link="Normal" },
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
+                LineNr = { bg = "none" },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
