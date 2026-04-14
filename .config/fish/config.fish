@@ -1,14 +1,11 @@
 # ~ / .config/fish/config.fish
 
-# Environment Variables
 set -gx EDITOR nvim
 set -gx VISUAL nvim
 set -gx COLORTERM truecolor
 set -gx fish_term24bit 1
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
-# Path and Library Management
-# fish_add_path automatically handles deduplication and existence checks
 fish_add_path $HOME/.cargo/bin \
               $HOME/.npm/bin \
               $HOME/.pixi/bin \
@@ -39,7 +36,6 @@ function force_split_command
             set out "$token"
             set first 0
         else if string match -rq '^--|^[a-zA-Z0-9_-]+:' -- $token
-            # real newline here ↓
             set out "$out \\
   $token"
         else
