@@ -38,6 +38,7 @@ if uname == "Darwin" then
     main_resolution = tonumber(raw_res) or 0
 elseif uname == "Linux" then
     config.command = "/usr/bin/fish"
+    -- config.command = os.getenv("HOME") .. "/.cargo/bin/nu"
     local cmd = "xrandr --current | grep -oE '[0-9]+x[0-9]+' | sort -rn | head -n 1"
     local raw_res = get_output(cmd)
     if raw_res == "" or raw_res == nil then 
@@ -50,8 +51,8 @@ end
 local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular"  }
 
 local font_config_map = {
-    ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Medium" },
-    ["2560x1440"] = { size = 16, style = (args.style == "light") and "SemiBold" or "Medium" },
+    ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Regular" },
+    ["2560x1440"] = { size = 16, style = (args.style == "light") and "SemiBold" or "Regular" },
     ["1920x1200"] = { size = 13.5, style = "Medium"},
     ["1920x1080"] = { size = 13.5, style = "Medium" },
 }

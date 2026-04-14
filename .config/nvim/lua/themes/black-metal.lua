@@ -8,7 +8,6 @@ function M.setup(style, variant, utils)
         cmp = true, illuminate = true, dapui = true,
     })
 
-    vim.print(variant)
     vim.cmd.colorscheme("base16-black-metal" .. (variant == "default" and "" or "-" .. variant))
     local c = require("base16-colorscheme").colors
     -- c.base08 = "#bfbfbf"
