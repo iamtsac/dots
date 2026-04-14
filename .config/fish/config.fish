@@ -75,9 +75,9 @@ if status is-interactive
     alias ls="eza --icons -l --group-directories-first"
 
     # Skim Settings
-    set -gx SKIM_DEFAULT_OPTIONS "--height 40% --layout=reverse"
+    set -gx SKIM_DEFAULT_OPTIONS "--height 40% --layout=reverse --color=16"
     set -gx SKIM_CTRL_T_COMMAND "fd --type f --hidden --follow --exclude .git"
-    set -gx SKIM_CTRL_T_OPTS "--preview 'bat --color=always --line-range :500 {}'"
+    set -gx SKIM_CTRL_T_OPTS "--preview 'bat --color=always --theme='base16' --line-range :500 {}'"
 
     bind -M insert \ce forward-char
     bind -M insert \cx edit_command_buffer
