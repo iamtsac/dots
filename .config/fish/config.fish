@@ -54,8 +54,13 @@ if status is-interactive
 
     function fish_user_key_bindings
         bind -M insert \cp up-or-search
+        bind -M default \cp up-or-search
+
         bind -M insert \cn down-or-search
+        bind -M default \cn down-or-search
+
         bind -M insert \c] force_split_command
+        bind -M default \c] force_split_command
     end
 
     # Plugin Initialization
