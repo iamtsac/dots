@@ -29,6 +29,27 @@ switch (uname)
         set -gx LDFLAGS -L/opt/homebrew/lib $LDFLAGS
 end
 
+function force_split_command
+    set -l cmd (commandline)
+    set -l out ""
+    set -l first 1
+
+    for token in (string split ' ' -- $cmd)
+        if test $first -eq 1
+            set out "$token"
+            set first 0
+        else if string match -rq '^--|^[a-zA-Z0-9_-]+:' -- $token
+            # real newline here ↓
+            set out "$out \\
+  $token"
+        else
+            set out "$out $token"
+        end
+    end
+
+    commandline -r $out
+end
+
 # Interactive Settings
 if status is-interactive
     # Key Bindings
@@ -38,6 +59,7 @@ if status is-interactive
     function fish_user_key_bindings
         bind -M insert \cp up-or-search
         bind -M insert \cn down-or-search
+        bind -M insert \c] force_split_command
     end
 
     # Plugin Initialization
@@ -74,6 +96,11 @@ function gdiff
     git diff --name-only --relative --diff-filter=d | xargs -r bat --diff --theme='base16'
 end
 complete -c gdiff -w 'git diff'
+
+function format_before_exec --on-event fish_postexec
+    # This doesn't change the execution, but it's a 
+    # common way to trigger cleanup scripts.
+end
 
 for file in $HOME/.config/fish/conf.d/{local_conf,theme}.fish
     if test -f $file
