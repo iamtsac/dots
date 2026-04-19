@@ -91,12 +91,6 @@ function fish_mode_prompt
     # Leave empty to remove [n], [i], [v] indicators
 end
 
-function fish_title
-    set -l host $hostname
-    set -l command (status current-command)
-    echo "[$host] $command" (prompt_pwd)
-end
-
 function skrg
     sk --ansi -i -c 'rg --color=always --line-number {q}'
 

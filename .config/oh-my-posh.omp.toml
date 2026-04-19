@@ -1,4 +1,5 @@
-console_title_template = "{{.Folder}}{{if .Root}} :: root{{end}} :: {{.Shell}}"
+# Added .HostName here so your terminal tab shows it always
+console_title_template = "[{{ .HostName }}] {{ .Folder }}{{ if .Root }} :: root{{ end }} :: {{ .Shell }}"
 version = 3
 final_space = true
 
@@ -8,12 +9,11 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
-    template = '{{ .Path }} '#red{{if eq (.Writable) 0}}  {{end}}'
+    template = '{{ .Path }} '
     foreground = 'blue'
     background = 'transparent'
     type = 'path'
     style = 'plain'
-
     [blocks.segments.properties]
       cache_duration = 'none'
       style = 'full'
@@ -24,7 +24,6 @@ final_space = true
     background = 'transparent'
     type = 'git'
     style = 'plain'
-
     [blocks.segments.properties]
       branch_icon = ' '
       cache_duration = 'none'
@@ -35,13 +34,22 @@ final_space = true
   type = 'rprompt'
   overflow = 'hidden'
 
+  # Python Venv moved here to the right side
+  [[blocks.segments]]
+    template = '({{ .Venv }}) '
+    foreground = 'default'
+    background = 'transparent'
+    type = 'python'
+    style = "plain"
+    [blocks.segments.properties]
+      home_enabled = true
+
   [[blocks.segments]]
     template = '{{ .FormattedMs }}'
     foreground = 'lightYellow'
     background = 'transparent'
     type = 'executiontime'
     style = 'plain'
-
     [blocks.segments.properties]
       cache_duration = 'none'
       threshold = 5000
@@ -52,24 +60,18 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
-    template = '({{ .Venv }}) '
-    foreground = 'default'
-    background = 'transparent'
-    type = 'python'
+    type = "session"
     style = "plain"
-
-    [blocks.segments.properties]
-        home_enabled = true
-        # display_default = false
+    foreground = "blue"
+    background = "transparent"
+    # Removed the 'if SSH' check so it shows the hostname everywhere as requested
+    template = " {{ .HostName }} "
 
   [[blocks.segments]]
-    # template = '{{if gt .Code 0}}🥀{{else}}🌹{{end}}'
     template = '{{if gt .Code 0}}⨘{{else}}∫{{end}}'
     background = 'transparent'
     type = 'text'
     style = 'plain'
     foreground_templates = ['{{if gt .Code 0}}red{{end}}', '{{if eq .Code 0}}lightGreen{{end}}']
-
     [blocks.segments.properties]
       cache_duration = 'none'
-
