@@ -11,6 +11,8 @@ fish_add_path $HOME/.cargo/bin \
               $HOME/.pixi/bin \
               $HOME/.local/bin \
               $HOME/.conda/bin \
+              $HOME/.zvm/bin \
+              $ZVM_INSTALL \
               /opt/bin
 
 switch (uname)
@@ -20,6 +22,7 @@ switch (uname)
         set -gx LDFLAGS -L/usr/local/lib -L/opt/lib $LDFLAGS
         set -gx LD_LIBRARY_PATH /usr/local/lib /opt/lib /opt/cuda/lib64 $LD_LIBRARY_PATH
         set -gx CUDA_HOME /opt/cuda
+        set -gx ZVM_INSTALL $HOME/.zvm/self
     case Darwin
         fish_add_path /opt/homebrew/bin
         set -gx CPPFLAGS -I/opt/homebrew/include $CPPFLAGS
@@ -88,6 +91,12 @@ function fish_mode_prompt
     # Leave empty to remove [n], [i], [v] indicators
 end
 
+function fish_title
+    set -l host $hostname
+    set -l command (status current-command)
+    echo "[$host] $command" (prompt_pwd)
+end
+
 function skrg
     sk --ansi -i -c 'rg --color=always --line-number {q}'
 
@@ -99,7 +108,7 @@ end
 complete -c gdiff -w 'git diff'
 
 function format_before_exec --on-event fish_postexec
-    # This doesn't change the execution, but it's a 
+    # This doesn't change the execution, but it's a
     # common way to trigger cleanup scripts.
 end
 

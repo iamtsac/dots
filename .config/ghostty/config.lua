@@ -38,17 +38,15 @@ if uname == "Darwin" then
     main_resolution = tonumber(raw_res) or 0
 elseif uname == "Linux" then
     config.command = "/usr/bin/fish"
-    -- config.command = os.getenv("HOME") .. "/.cargo/bin/nu"
     local cmd = "xrandr --current | grep -oE '[0-9]+x[0-9]+' | sort -rn | head -n 1"
     local raw_res = get_output(cmd)
     if raw_res == "" or raw_res == nil then 
-        raw_res = "1920x1080" -- A safer default format
+        raw_res = "1920x1080"
     end
     main_resolution = string.gsub(raw_res, "%s+", "")
-
 end
 
-local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular"  }
+local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular" }
 
 local font_config_map = {
     ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Regular" },
@@ -70,7 +68,6 @@ config.gtk_titlebar = false
 config.window_theme = "ghostty"
 config.copy_on_select = false
 config.shell_integration = "fish"
-config.shell_integration_features = true
 config.shell_integration_features = "ssh-env,ssh-terminfo,cursor,path"
 config.cursor_style = "block"
 config.cursor_style_blink = false
@@ -79,32 +76,98 @@ config.background_opacity = 1.0
 config.clipboard_read = "allow"
 config.clipboard_write = "allow"
 config.clipboard_trim_trailing_spaces = true
-
 config.macos_option_as_alt = true
 
-local keybinds = {}
+-- KEYBINDINGS: Refactored to [KEY] = ACTION
+local keybinds = {
+    ["ctrl+shift+c"] = "copy_to_clipboard",
+    ["ctrl+shift+v"] = "paste_from_clipboard",
+    ["super+t"] = "new_tab",
+    ["super+w"] = "close_surface",
+    ["ctrl+tab"] = "next_tab",
+    ["ctrl+shift+tab"] = "previous_tab",
+    ["ctrl+shift+right"] = "move_tab:1",
+    ["ctrl+shift+left"] = "move_tab:-1",
+    ["super+n"] = "new_window",
+    ["ctrl+shift+space"] = "toggle_command_palette",
+    ["ctrl+shift+equal"] = "increase_font_size:0.5",
+    ["ctrl+shift+minus"] = "decrease_font_size:0.5",
+    ["ctrl+shift+0"] = "reset_font_size",
+    ["super+r"] = "reload_config",
+    ["ctrl+b"] = "activate_key_table_once:mux"
+}
 
-keybinds["copy_to_clipboard"] = "ctrl+shift+c"
-keybinds["paste_from_clipboard"] = "ctrl+shift+v"
+-- MUX TABLE
+keybinds.mux = {
+    ["c"] = "new_tab",
+    ["x"] = "close_surface",
+    ["n"] = "next_tab",
+    ["p"] = "previous_tab",
+    ["a"] = "last_tab",
+    ["ctrl+shift+p"] = "move_tab:-1",
+    ["ctrl+shift+n"] = "move_tab:1",
+    ["/"] = "start_search",
+    ["s"] = "toggle_tab_overview",
+    ["shift+3"] = "prompt_tab_title",
+    ["shift+semicolon"] = "toggle_command_palette",
+    
+    -- Sequences: Select next and zoom
+    -- ["semicolon"] = "goto_split:next,toggle_split_zoom",
+    ["o"] = "goto_split:next",
 
-keybinds["new_tab"] = "super+t"
-keybinds["close_surface"] = "super+w"
-keybinds["next_tab"] = "ctrl+tab"
-keybinds["previous_tab"] = "ctrl+shift+tab"
-keybinds["move_tab:1"] = "ctrl+shift+right"
-keybinds["move_tab:-1"] = "ctrl+shift+left"
+    ["shift+5"] = "new_split:right",
+    ["shift+quote"] = "new_split:down",
+    ["z"] = "toggle_split_zoom",
 
-keybinds["new_window"] = "super+n"
-keybinds["toggle_command_palette"] = "ctrl+shift+space"
+    ["h"] = "goto_split:left",
+    ["j"] = "goto_split:bottom",
+    ["k"] = "goto_split:top",
+    ["l"] = "goto_split:right",
 
-keybinds["increase_font_size:0.5"] = "ctrl+shift+equal"
-keybinds["decrease_font_size:0.5"] = "ctrl+shift+minus"
-keybinds["reset_font_size"] = "ctrl+shift+0"
+    ["r"] = "activate_key_table:resize",
+    ["]"] = "activate_key_table:visual",
+    
+    -- ESCAPE and CTRL+[
+    ["escape"] = "deactivate_key_table",
+    ["ctrl+["] = "deactivate_key_table"
+}
 
-keybinds["reload_config"] = "super+r"
+-- RESIZE TABLE
+keybinds.resize = {
+    ["h"] = "resize_split:left,10",
+    ["j"] = "resize_split:down,10",
+    ["k"] = "resize_split:up,10",
+    ["l"] = "resize_split:right,10",
+    ["="] = "equalize_splits",
+    ["escape"] = "deactivate_key_table",
+    ["ctrl+["] = "deactivate_key_table",
+    ["catch_all"] = "ignore"
+}
+
+-- VISUAL TABLE
+keybinds.visual = {
+    ["/"] = "start_search",
+    ["j"] = "scroll_page_lines:1",
+    ["k"] = "scroll_page_lines:-1",
+    ["ctrl+u"] = "scroll_page_up",
+    ["ctrl+d"] = "scroll_page_down",
+    ["shift+g"] = "scroll_to_bottom",
+    ["g>g"] = "scroll_to_top",
+    ["ctrl+n"] = "navigate_search:next",
+    ["ctrl+p"] = "navigate_search:previous",
+    ["escape"] = "deactivate_key_table",
+    ["ctrl+["] = "deactivate_key_table",
+    ["catch_all"] = "ignore"
+}
+
+-- Digit bindings
+for i = 1, 9 do
+    keybinds.mux[tostring(i)] = "goto_tab:" .. i
+end
 
 local unbinds = { "ctrl+enter", "ctrl+shift+n", "ctrl+shift+p", "ctrl+shift+j"}
 
+-- Theme Logic
 local theme_path = string.format("%s/.config/ghostty/themes/current_theme.lua", os.getenv("HOME"))
 local theme_ok, theme_data = pcall(dofile, theme_path)
 local final_theme = {}
@@ -123,6 +186,7 @@ if theme_ok then
     end
 end
 
+-- Write to file
 local out_file = io.open(os.getenv("HOME") .. "/.config/ghostty/config", "w")
 if not out_file then error("Could not write to ghostty config") end
 
@@ -130,13 +194,10 @@ out_file:write("# Generated by config_gen.lua\n\n")
 
 local function write_config_kv(k, v)
     local key = k:gsub("_", "-")
-
     if type(v) == "boolean" then
         out_file:write(key .. " = " .. (v and "true" or "false") .. "\n")
     elseif type(v) == "table" then
-        for _, item in ipairs(v) do
-            out_file:write(key .. " = " .. item .. "\n")
-        end
+        for _, item in ipairs(v) do out_file:write(key .. " = " .. item .. "\n") end
     else
         out_file:write(key .. " = " .. v .. "\n")
     end
@@ -147,8 +208,15 @@ for k, v in pairs(config) do
 end
 
 out_file:write("\n# Keybindings\n")
-for action, trigger in pairs(keybinds) do
-    out_file:write("keybind = " .. trigger .. "=" .. action .. "\n")
+for key_or_table, val in pairs(keybinds) do
+    if type(val) == "table" then
+        for key, action in pairs(val) do
+            out_file:write(string.format("keybind = %s/%s=%s\n", key_or_table, key, action))
+        end
+    else
+        -- Global Binds
+        out_file:write(string.format("keybind = %s=%s\n", key_or_table, val))
+    end
 end
 
 for _, trigger in ipairs(unbinds) do
