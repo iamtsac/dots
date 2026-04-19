@@ -30,6 +30,14 @@ final_space = true
       commit_icon = '@'
       fetch_status = true
 
+  [[blocks.segments]]
+    template = "{{ if .Env.ZMX_SESSION }}|  {{ .Env.ZMX_SESSION }}{{ end }} "
+    foreground = "green"
+    background = "transparent"
+    type = 'text'
+    style = 'plain'
+
+
 [[blocks]]
   type = 'rprompt'
   overflow = 'hidden'
@@ -62,7 +70,7 @@ final_space = true
   [[blocks.segments]]
     type = "session"
     style = "plain"
-    foreground = "blue"
+    foreground = "default"
     background = "transparent"
     template = "{{ if .SSHSession }} {{ .HostName }}{{ end }} "
 
