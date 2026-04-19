@@ -64,8 +64,7 @@ final_space = true
     style = "plain"
     foreground = "blue"
     background = "transparent"
-    # Removed the 'if SSH' check so it shows the hostname everywhere as requested
-    template = " {{ .HostName }} "
+    template = "{{ if .SSHSession }} {{ .HostName }}{{ end }} "
 
   [[blocks.segments]]
     template = '{{if gt .Code 0}}⨘{{else}}∫{{end}}'
