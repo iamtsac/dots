@@ -68,8 +68,6 @@ if status is-interactive
 
     # Plugin Initialization
     skim_key_bindings
-    oh-my-posh init fish --config "$HOME/.config/oh-my-posh.omp.toml" | source
-
     # Greeting
     set -g fish_greeting ""
 
@@ -78,7 +76,7 @@ if status is-interactive
     alias ls="eza --icons -l --group-directories-first"
 
     # Skim Settings
-    set -gx SKIM_DEFAULT_OPTIONS "--height 40% --layout=reverse --color=16"
+    set -gx SKIM_DEFAULT_OPTIONS "--height 40% --color=16"
     set -gx SKIM_CTRL_T_COMMAND "fd --type f --hidden --follow --exclude .git"
     set -gx SKIM_CTRL_T_OPTS "--preview 'bat --color=always --theme='base16' --line-range :500 {}'"
 
