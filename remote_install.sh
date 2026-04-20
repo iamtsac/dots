@@ -65,7 +65,7 @@ cargo install --force yazi-build
 cargo install skim
 
 # Rest of the essentials
-cargo install bat ripgrep eza fd-find
+cargo install bat ripgrep eza fd-find tree-sitter-cli
 
 cargo install tuckr
 
