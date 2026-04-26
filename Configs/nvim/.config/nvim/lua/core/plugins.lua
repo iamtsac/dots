@@ -30,6 +30,7 @@ require("lazy").setup({
     },
     {
         "Saghen/blink.cmp",
+        version = 'v1.10.2',
         dependencies = { "rafamadriz/friendly-snippets" },
         build = "cargo build --release",
     },

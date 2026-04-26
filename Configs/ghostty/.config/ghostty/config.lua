@@ -101,7 +101,7 @@ local keybinds_global = {
     { "ctrl+shift+minus", "decrease_font_size:0.5" },
     { "ctrl+shift+0", "reset_font_size" },
     { "super+r", "reload_config" },
-    { "ctrl+b", "activate_key_table_once:mux" },
+    -- { "ctrl+b", "activate_key_table_once:mux" },
 }
 
 local keybinds_mux = {
@@ -131,6 +131,7 @@ local keybinds_mux = {
     { "]", "activate_key_table:visual" },
     { "escape", "deactivate_key_table" },
     { "ctrl+[", "deactivate_key_table" },
+    { "ctrl+b", "text:\x02" },
 }
 
 -- Insert 1-9 into mux order

@@ -3,9 +3,9 @@
 !.emacs.d/custom.el
 !.emacs.d/config.org
 !.emacs.d/early-init.el
-.config/fish/conf.d/*
-.config/fish/completions/*
-.config/fish/functions/*
-.config/fish/fish_variables
-.config/stylerc
-.config/ghostty/themes/current_theme.lua
+Configs/fish/.config/fish/conf.d/*
+Configs/fish/.config/fish/completions/*
+Configs/fish/.config/fish/functions/*
+Configs/fish/.config/fish/fish_variables
+Configs/.config/stylerc
+Configs/ghostty/.config/ghostty/themes/current_theme.lua
