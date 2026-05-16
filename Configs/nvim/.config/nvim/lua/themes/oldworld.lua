@@ -6,7 +6,7 @@ function M.setup(style, variant, utils)
     local c = require("oldworld.palette")
     c.bg = "#0D0D0D"
     c.fg = "#DDDDDD"
-    
+
     require("oldworld").setup({
         terminal_colors = true,
         styles = {
@@ -18,16 +18,34 @@ function M.setup(style, variant, utils)
             booleans = {},
         },
         integrations = {
-            alpha = true, cmp = true, flash = true, gitsigns = true,
-            hop = false, indent_blankline = true, lazy = true, lsp = true,
-            markdown = true, mason = true, navic = false, neo_tree = false,
-            neorg = true, noice = true, notify = true, rainbow_delimiters = true,
-            telescope = true, treesitter = true,
+            alpha = true,
+            cmp = true,
+            flash = true,
+            gitsigns = true,
+            hop = false,
+            indent_blankline = true,
+            lazy = true,
+            lsp = true,
+            markdown = true,
+            mason = true,
+            navic = false,
+            neo_tree = false,
+            neorg = true,
+            noice = true,
+            notify = true,
+            rainbow_delimiters = true,
+            telescope = true,
+            treesitter = true,
         },
         highlight_overrides = {},
     })
 
     vim.cmd.colorscheme("oldworld")
+
+    c.special_char = utils.get_color("SpecialChar", "fg")
+    c.boolean = utils.get_color("Boolean", "fg")
+    c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
+    c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
 
     vim.schedule(function()
         utils.hl_overwrite({
@@ -60,13 +78,21 @@ function M.setup(style, variant, utils)
             Directory = { bg = "none" },
             SnacksPickerToggle = { bg = c.green, fg = c.bg },
             SnacksPickerDir = { fg = c.purple },
-            TreesitterContext = { link="Normal" },
-            TreesitterContextLineNumber = { link="LineNr" },
-            TreesitterContextSeparator = { link="Comment" },
+            TreesitterContext = { link = "Normal" },
+            TreesitterContextLineNumber = { link = "LineNr" },
+            TreesitterContextSeparator = { link = "Comment" },
+            TabLineFill = { bg = c.bg_unselected },
+            TabLineSel = { bg = c.bg, fg = c.fg },
+            TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+            TabLineIndicator = { bg = c.bg, fg = c.boolean },
+            BlinkCmpMenu = { link = "Normal" },
+            BlinkCmpKind = { bg = "none" },
+            BlinkCmpSource = { bg = "none" },
+            PmenuExtra = { bg = "none" },
         })
-        
+
         -- utils.hl_markdown_code(c.bg, c.gray1)
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = "#DDDDDD", italic = false })
+        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
         vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
     end)
 end

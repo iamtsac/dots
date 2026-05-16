@@ -16,6 +16,9 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         c.bg = c.base00
         c.fg = c.base0C
+        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.09)
+        c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+        c.string = utils.get_color("String", "fg")
 
         utils.hl_overwrite({
             Normal = { bg = c.base00 },
@@ -77,6 +80,10 @@ function M.setup(style, variant, utils)
             TreesitterContextLineNumber = { link="LineNr" },
             TreesitterContextSeparator = { link="Comment" },
             -- RenderMarkdownH1Bg = { bg = "none" },
+            TabLineFill = { bg = c.bg_unselected },
+            TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+            TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+            TabLineIndicator = { bg = c.bg, fg = c.string },
         })
 
         -- utils.hl_markdown_code(c.bg, c.base01)

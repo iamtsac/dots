@@ -21,6 +21,10 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         local c = koda.get_palette()
         c.pickerbg = utils.color_changer.lighten(c.bg, 0.03)
+        
+        c.const = utils.get_color("Constant", "fg")
+        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
+        c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
 
         if style == "dark" then
             utils.hl_overwrite({
@@ -52,6 +56,10 @@ function M.setup(style, variant, utils)
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
                 -- RenderMarkdownCode = { bg = c.bg },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.const },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })

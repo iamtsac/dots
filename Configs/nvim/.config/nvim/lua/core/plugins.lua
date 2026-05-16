@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     { "folke/which-key.nvim", dependencies = { "echasnovski/mini.icons", version = false } },
-    { "nvim-treesitter/nvim-treesitter", version = false, build = ":TSUpdate" },
+    { "nvim-treesitter/nvim-treesitter", version = false, build = ":TSUpdate", branch = "main" },
     { "nvim-treesitter/nvim-treesitter-context", dependencies = { "nvim-treesitter/nvim-treesitter" } },
     { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
     { "folke/snacks.nvim", priority = 1000, lazy = false },
@@ -21,6 +21,7 @@ require("lazy").setup({
     { "lewis6991/gitsigns.nvim" },
     { "numToStr/Comment.nvim" },
     { "stevearc/conform.nvim" },
+    { "tiagovla/scope.nvim", config = true },
     { "williamboman/mason.nvim" },
     { "neovim/nvim-lspconfig" },
     { "stevearc/oil.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
@@ -28,9 +29,10 @@ require("lazy").setup({
         "MeanderingProgrammer/render-markdown.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
     },
+    -- { "OXY2DEV/markview.nvim" },
     {
         "Saghen/blink.cmp",
-        version = 'v1.10.2',
+        version = "v1.*",
         dependencies = { "rafamadriz/friendly-snippets" },
         build = "cargo build --release",
     },

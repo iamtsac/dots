@@ -28,6 +28,7 @@ Snacks.setup({
     },
     picker = conf.picker,
     zen = conf.zen,
+    terminal = { enabled = true },
     toggle = { enabled = true },
     rename = { enabled = false },
 })

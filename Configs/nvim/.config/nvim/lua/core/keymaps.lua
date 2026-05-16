@@ -77,6 +77,11 @@ vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.fil
 vim.keymap.set("n", "<leader>fF", function() Snacks.picker.smart(snacks_opts.smart_opts) end, { desc = "Smart Find" })
 vim.keymap.set("n", "<leader>fp", function() Snacks.picker.projects() end, { desc = "Projects" })
 vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "File Explorer (Oil)" })
+vim.keymap.set("n", "<leader>fo", require("utils.folder_search").smart_dir_jump, { desc = "Smart Directory Jump" })
+vim.keymap.set("n", "<leader>fd", function()
+  require("utils.folder_search").open_folder_picker({ cwd = vim.fn.getcwd() })
+end, { desc = "Fuzzy Folders (Sorted by Depth)" })
+vim.keymap.set("n", "<leader>fn", ":e ", { desc = "Go-to/Create file" })
 
 -- Search (<leader>s)
 vim.keymap.set("n", "<leader>sg", function() Snacks.picker.grep() end, { desc = "Grep (Project)" })
@@ -93,13 +98,33 @@ vim.keymap.set({ "n", "v" }, "<leader>sz", function() Snacks.picker.spelling() e
 vim.keymap.set("n", "<leader>,", function() Snacks.picker.buffers(snacks_opts.buffer_opts) end, { desc = "Buffer Switch" })
 vim.keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
 vim.keymap.set("n", "<leader>bp", "<cmd>bprev<CR>", { desc = "Prev Buffer" })
-vim.keymap.set("n", "<leader>bk", function() Snacks.bufdelete() end, { desc = "Kill Buffer" })
+vim.keymap.set("n", "<leader>bx", function() Snacks.bufdelete() end, { desc = "Kill Buffer" })
 
 -- Tabs
 vim.keymap.set("n", "<leader><Tab>c", "<cmd>tabnew<CR>", { desc = "New Tab" })
 vim.keymap.set("n", "<leader><Tab>n", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 vim.keymap.set("n", "<leader><Tab>p", "<cmd>tabprevious<CR>", { desc = "Prev Tab" })
-vim.keymap.set("n", "<leader><Tab>k", "<cmd>tabclose<CR>", { desc = "Close Tab" })
+vim.keymap.set("n", "<leader><Tab>x", require("utils.tab_utils").safe_tab_close, { desc = "Close Tab" })
+vim.keymap.set("n", "<leader><Tab>r", function()
+  local name = vim.fn.input("Tab name: ")
+  if name and name ~= "" then
+    vim.t.tabname = name
+    vim.cmd("redrawtabline") 
+  else
+    vim.t.tabname = nil
+    vim.cmd("redrawtabline")
+  end
+end, { desc = "Set Custom Tab Name" })
+
+for i = 1, 9 do
+  vim.keymap.set("n", "<leader><Tab>" .. i, i .. "gt", { desc = "which_key_ignore" })
+end
+
+vim.keymap.set("n", "<leader><Tab>P", "<cmd>-tabmove<CR>", { desc = "Move tab left" })
+vim.keymap.set("n", "<leader><Tab>N", "<cmd>+tabmove<CR>", { desc = "Move tab right" })
+vim.keymap.set("n", "<leader><Tab>$", "<cmd>$tabmove<CR>", { desc = "Move tab at the end" })
+vim.keymap.set("n", "<leader><Tab>0", "<cmd>0tabmove<CR>", { desc = "Move tab at the start" })
+
 
 -- =============================================================================
 -- 6. Toggle

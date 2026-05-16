@@ -4,7 +4,7 @@ require("nvim-treesitter").setup({
         "markdown_inline", "html", "css", "javascript", "scss",
         "svelte", "vue", "vim", "vimdoc", "query" -- Added these 4 for stability
     },
-    auto_install = false,
+    auto_install = true,
     sync_install = true,
     ignore_install = { "tmux" },
     highlight = {

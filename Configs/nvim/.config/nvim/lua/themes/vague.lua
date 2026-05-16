@@ -42,6 +42,12 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         if style == "dark" then
             c.pickerBg = utils.color_changer.lighten(c.bg, 0.03)
+
+            c.special_char = utils.get_color("SpecialChar", "fg")
+            c.boolean = utils.get_color("Boolean", "fg")
+            c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
+            c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -69,7 +75,15 @@ function M.setup(style, variant, utils)
                 TreesitterContext = { link="Normal" },
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
+                BlinkCmpMenu = { link = "Normal" },
+                BlinkCmpKind = { bg = "none" },
+                BlinkCmpSource = { bg = "none" },
+                PmenuExtra = { bg = "none" },
                 -- RenderMarkdownCode = { bg = c.bg },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = c.fg },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.boolean },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.5) })

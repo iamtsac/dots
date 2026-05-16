@@ -23,6 +23,10 @@ function M.setup(style, variant, utils)
             c.red = utils.get_color("Error", "fg")
             c.green = utils.get_color("Character", "fg")
             c.orange = utils.get_color("Constant", "fg")
+            c.string = utils.get_color("String", "fg")
+            c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
+            c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -51,6 +55,10 @@ function M.setup(style, variant, utils)
                 TreesitterContext = { link="Normal" },
                 TreesitterContextSeparator = { link="Comment" },
                 TreesitterContextLineNumber = { link="LineNr" },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.string },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.30) })
@@ -65,6 +73,11 @@ function M.setup(style, variant, utils)
             c.green = utils.get_color("Character", "fg")
             c.orange = utils.get_color("Constant", "fg")
             c.violet = utils.get_color("@comment", "fg")
+
+            c.string = utils.get_color("String", "fg")
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.17)
+            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.45)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.fg, bg = c.bg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -99,6 +112,10 @@ function M.setup(style, variant, utils)
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
                 WhichKeyIcon = { link = "WhichKeyValue" },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.string },
             })
 
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })

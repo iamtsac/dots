@@ -123,18 +123,17 @@ vim.diagnostic.config({
 vim.diagnostic.enable(false)
 
 require("blink.cmp").setup({
-    appearance = {
-        nerd_font_variant = "normal",
-    },
+    appearance = { nerd_font_variant = "normal" },
     fuzzy = { implementation = "prefer_rust" },
-    keymap = { preset = "cmdline" },
+    signature = { enabled = true },
+
     completion = {
         keyword = { range = "full" },
-        list = { selection = { preselect = false, auto_insert = true } },
         menu = { auto_show = true },
         ghost_text = { enabled = false },
+        list = { selection = { preselect = false, auto_insert = true } },
     },
-    signature = { enabled = true },
+
     keymap = {
         ["<C-k>"] = { "scroll_documentation_up", "fallback" },
         ["<C-j>"] = { "scroll_documentation_down", "fallback" },
@@ -142,12 +141,28 @@ require("blink.cmp").setup({
         ["<CR>"] = { "accept", "fallback" },
         ["<Tab>"] = { "snippet_forward", "fallback" },
         ["<S-Tab>"] = { "snippet_backward", "fallback" },
-        ["<C-p>"] = { "select_prev", "fallback_to_mappings" },
-        ["<C-n>"] = { "select_next", "fallback_to_mappings" },
     },
-    cmdline = { enabled=true, completion = { ghost_text = { enabled = true } } }
+
+    cmdline = {
+        enabled = true,
+        completion = {
+            menu = {
+                auto_show = function(ctx)
+                    return vim.fn.getcmdtype() == ":"
+                end,
+                draw = {
+                    columns = { { "label", "label_description", gap = 5 } },
+                },
+            },
+            list = { selection = { preselect = true, auto_insert = false } },
+        },
+        keymap = {
+            ["<Tab>"] = { "show", "accept" },
+            ["<C-n>"] = { "select_next", "fallback" },
+            ["<C-p>"] = { "select_prev", "fallback" },
+        },
+    },
 })
--- require("blink.cmp.config").completion.menu.auto_show = false
 
 vim.api.nvim_create_augroup("TextDiagnostics", { clear = true })
 
@@ -180,11 +195,8 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
         if vim.bo[args.buf].buftype == "nofile" then
             local winid = vim.fn.bufwinid(args.buf)
             if winid ~= -1 then
-                -- 1. Ensure conceal is active
                 vim.wo[winid].conceallevel = 2
                 vim.wo[winid].concealcursor = "nc"
-                -- 2. Manually define a syntax match to conceal the backticks
-                -- This targets the backticks and the language name (e.g., ```python)
                 vim.fn.matchadd("Conceal", [[^```\w*]], 10, -1, { conceal = "" })
                 vim.fn.matchadd("Conceal", [[^```$]], 10, -1, { conceal = "" })
             end

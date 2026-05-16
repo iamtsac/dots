@@ -5,7 +5,7 @@ function M.setup(style, variant, utils)
     vim.o.winborder = "rounded"
     vim.opt.background = style
     require("modus-themes").setup({
-        style = "auto", variant = "default", transparent = false,
+        style = "auto", variants = "default", transparent = false,
         dim_inactive = false, hide_inactive_statusline = false,
         line_nr_column_background = false, sign_column_background = false,
         styles = { comments = { italic = false }, keywords = { italic = false }, functions = {}, variables = {} },
@@ -14,9 +14,14 @@ function M.setup(style, variant, utils)
     
     vim.cmd("colorscheme modus")
     c.fg = utils.get_color("Normal", "fg")
+    c.bg = utils.get_color("Normal", "bg")
 
     vim.schedule(function()
         if style == "dark" then
+            c.string = utils.get_color("String", "fg")
+            c.bg_unselected = utils.color_changer.lighten(c.bg, 0.15)
+            c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -48,12 +53,22 @@ function M.setup(style, variant, utils)
                 TreesitterContextBottom = { underline=true },
                 TreesitterContextLineNumberBottom = { underline=true },
                 TreesitterContextSeparator = { link="Comment" },
+
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.string },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
         end
 
         if style == "light" then
+
+            c.string = utils.get_color("String", "fg")
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.17)
+            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.45)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.fg, bg = c.bg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -85,6 +100,10 @@ function M.setup(style, variant, utils)
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
                 LineNr = { bg = "none" },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = utils.get_color("@lsp.type.variable", "fg") },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.string },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })

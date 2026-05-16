@@ -15,6 +15,12 @@ function M.setup(style, variant, utils)
             c.bg_dim = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.03)
             c.fg = c.vscFront
             c.bg = c.vscBack
+
+            c.special_char = utils.get_color("SpecialChar", "fg")
+            c.boolean = utils.get_color("Boolean", "fg")
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.55)
+            c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -47,6 +53,10 @@ function M.setup(style, variant, utils)
                 -- LineNr = { fg = vscPopupFront, bg = c.vscCursorDarkDark },
                 -- LineNrAbove = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },
                 -- LineNrBelow = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = c.special_char },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.boolean },
             })
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
             vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) })
@@ -57,6 +67,12 @@ function M.setup(style, variant, utils)
             c.bg_dim = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.03)
             c.fg = c.vscFront
             c.bg = c.vscBack
+
+            c.special_char = utils.get_color("SpecialChar", "fg")
+            c.boolean = utils.get_color("Boolean", "fg")
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.25)
+            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.15)
+
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.fg, bg = c.bg },
                 SnacksPickerBorder = { fg = c.bg, bg = c.bg },
@@ -98,6 +114,10 @@ function M.setup(style, variant, utils)
                 -- RenderMarkdownH4Bg = { bg = "none" },
                 -- RenderMarkdownH5Bg = { bg = "none" },
                 -- RenderMarkdownH6Bg = { bg = "none" },
+                TabLineFill = { bg = c.bg_unselected },
+                TabLineSel = { bg = c.bg, fg = c.special_char },
+                TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+                TabLineIndicator = { bg = c.bg, fg = c.boolean },
             })
 
             vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })

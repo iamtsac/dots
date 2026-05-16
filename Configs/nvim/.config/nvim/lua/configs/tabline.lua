@@ -1,40 +1,36 @@
 function MyTabLine()
     local s = ""
     for i = 1, vim.fn.tabpagenr("$") do
-        local winnr = vim.fn.tabpagewinnr(i)
-        local buflist = vim.fn.tabpagebuflist(i)
+        local tabnr = i
+        local is_selected = tabnr == vim.fn.tabpagenr()
+
+        local display_name = ""
+        local custom_name = vim.fn.gettabvar(tabnr, "tabname")
+        local buflist = vim.fn.tabpagebuflist(tabnr)
+        local winnr = vim.fn.tabpagewinnr(tabnr)
         local bufnr = buflist[winnr]
         local bufname = vim.fn.bufname(bufnr)
-        local bufmodified = vim.fn.getbufvar(bufnr, "&modified")
 
-        if bufname == "" then
-            bufname = "[No Name]"
-        end
-
-        -- Highlight active tab
-        if i == vim.fn.tabpagenr() then
-            s = s .. "%#TabLineSel#"
+        if custom_name ~= "" then
+            display_name = custom_name
+        elseif tabnr == 1 then
+            local project_dir = vim.fn.fnamemodify(vim.fn.getcwd(-1, tabnr), ":t")
+            display_name = project_dir ~= "" and project_dir or "[Project]"
+        elseif bufname == "" then
+            display_name = "[No Name]"
         else
-            s = s .. "%#TabLine#"
+            local parent = vim.fn.fnamemodify(bufname, ":p:h:t")
+            display_name = parent
         end
 
-        -- Tab number
-        s = s .. " " .. i
-        -- s = s .. " " .. vim.fn.fnamemodify(bufname, ":p:t")
-
-        -- Show `+` if buffer is modified
-        if bufmodified == 1 then
-            s = s .. " [+]"
+        if is_selected then
+            s = s .. "%#TabLineIndicator#▍%#TabLineSel#" .. tabnr .. ": " .. display_name .. " %#TabLine# "
+        else
+            s = s .. "%#TabLine# " .. tabnr .. ": " .. display_name .. "  "
         end
-
-        s = s .. " %T"
     end
 
-    -- Right-aligned close button
-    s = s .. "%#TabLineFill#%="
-    -- s = s .. "%#TabLineFill#%T%=%#TabLineFill#X"
-
-    return s
+    return "%#TabLine#" .. s .. "%#TabLineFill#%="
 end
 
 vim.o.tabline = "%!v:lua.MyTabLine()"
