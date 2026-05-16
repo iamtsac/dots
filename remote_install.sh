@@ -61,13 +61,8 @@ echo "Installing Rust tools..."
 # Yazi (Un-locked to get the latest master updates)
 cargo install --force yazi-build
 
-# Skim (fzf replacement)
-cargo install skim
-
 # Rest of the essentials
-cargo install bat ripgrep eza fd-find tree-sitter-cli
-
-cargo install tuckr
+cargo install bat ripgrep eza fd-find tree-sitter-cli zoxide skim tuckr
 
 # 7. Oh My Posh (Prompt)
 echo "Installing Oh My Posh..."
