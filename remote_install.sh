@@ -131,19 +131,38 @@ manage_cargo_tools() {
 }
 
 manage_treesitter() {
-    echo "Checking GitHub for the latest Tree-sitter release..."
-    LATEST_TAG=$(curl -s https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [ -z "$LATEST_TAG" ]; then echo "Warning: Skipping Tree-sitter update."; return; fi
-    CLEAN_VER=$(echo "$LATEST_TAG" | sed -E 's/^v//')
+    echo "Installing/Updating Tree-sitter via Cargo..."
 
-    if ! command -v tree-sitter &> /dev/null || [[ "$(tree-sitter --version 2>/dev/null)" != *"$CLEAN_VER"* ]]; then
-        echo "Installing/Updating to prebuilt static Tree-sitter ($LATEST_TAG)..."
-        cd "$SRC_DIR"
-        curl -sLO "https://github.com/tree-sitter/tree-sitter/releases/download/${LATEST_TAG}/tree-sitter-linux-${TS_ARCH}.gz"
-        gunzip -f "tree-sitter-linux-${TS_ARCH}.gz"
-        mv "tree-sitter-linux-${TS_ARCH}" "$BIN_DIR/tree-sitter"
-        chmod +x "$BIN_DIR/tree-sitter"
+    # 1. Ensure Cargo is available
+    if ! command -v cargo &> /dev/null; then
+        echo "Error: Cargo is not installed. Please install Rust/Cargo first."
+        return 1
     fi
+
+    # 2. Ensure Clang is available
+    if ! command -v clang &> /dev/null; then
+        echo "Error: clang is missing. Please install it first (e.g., 'pixi global install clang')."
+        return 1
+    fi
+
+    # 3. Locate libclang.so for bindgen
+    LIB_DIR=$(find ~/.pixi ~/.local/share/pixi -name "libclang.so" -printf '%h\n' 2>/dev/null | head -n 1)
+
+    # 4. Run the installation
+    if [ -n "$LIB_DIR" ]; then
+        CC=clang CXX=clang++ LIBCLANG_PATH="$LIB_DIR" cargo install tree-sitter-cli
+    else
+        echo "Warning: libclang.so not found in standard Pixi paths. Trying default cargo build..."
+        cargo install tree-sitter-cli
+    fi
+
+    # 5. Cleanup any old broken pre-built binaries (if they exist)
+    if [ -f "$BIN_DIR/tree-sitter" ]; then
+        echo "Cleaning up old pre-built binary from $BIN_DIR..."
+        rm -f "$BIN_DIR/tree-sitter"
+    fi
+
+    echo "Tree-sitter setup complete!"
 }
 
 manage_oh_my_posh() {
@@ -187,7 +206,11 @@ export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$H
 
 # Auto-start Fish for interactive sessions
 if [[ $- == *i* ]] && command -v fish >/dev/null 2>&1; then
-    exec fish
+    # Prevent hijacking shells spawned by zmx
+    PARENT_PROC=$(ps -o comm= -p $PPID 2>/dev/null)
+    if [[ "$PARENT_PROC" != "zmx" ]]; then
+        exec fish
+    fi
 fi
 EOF
     fi
@@ -218,11 +241,13 @@ execute_uninstall() {
     rm -rf "$SRC_DIR"
 
     echo "Removing isolated package managers (Rust, Pixi, ZVM)..."
+    # Note: Removing .cargo automatically uninstalls our new tree-sitter-cli!
     rm -rf "$HOME/.cargo" "$HOME/.rustup"
     rm -rf "$HOME/.pixi"
     rm -rf "$HOME/.zvm"
 
     echo "Removing specific local binaries..."
+    # We still clean tree-sitter here just in case an old pre-built one is lingering
     cd "$BIN_DIR" && rm -f fish nvim tmux tree-sitter oh-my-posh zmx rg bat eza fd zoxide sk tuckr yazi yazi-cli yazi-build cargo-install-update
 
     echo "Removing Ghostty terminfo mappings..."
@@ -253,14 +278,24 @@ execute_uninstall() {
     rm -rf "$HOME/.cache/yazi"
 
     # 6. Clean up remaining background utility tracking
-    echo "Clearing remaining terminal utility leftovers..."
+    echo "Clearing remaining terminal utility leftovers (Zoxide, ZMX, Oh-My-Posh)..."
     rm -rf "$HOME/.local/share/zoxide"
+    rm -rf "$HOME/.local/share/zmx"
+    rm -rf "$HOME/.local/state/zmx"
     rm -rf "$HOME/.cache/pixi"
     rm -rf "$HOME/.cache/zig"
+    rm -rf "$HOME/.cache/oh-my-posh"
 
-    echo "Cleaning up .bashrc shell paths..."
+    echo "Cleaning up .bashrc shell paths and auto-starts..."
     if [ -f "$HOME/.bashrc" ]; then
+        # Remove the main environment block
         sed -i '/# --- Custom Environment ---/,/fi/d' "$HOME/.bashrc"
+        
+        # Remove the specific Fish auto-start wrapper we created
+        # We use a slightly different sed command here to safely remove the nested 'if' statements
+        sed -i '/# Auto-start Fish for interactive sessions/,/^fi/d' "$HOME/.bashrc"
+        # Run it twice in case the nested `fi` tripped the first range closure
+        sed -i '/# Auto-start Fish for interactive sessions/,/^fi/d' "$HOME/.bashrc"
     fi
 
     echo "--- Uninstall Complete ---"
