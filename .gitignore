@@ -9,3 +9,5 @@ Configs/fish/.config/fish/functions/*
 Configs/fish/.config/fish/fish_variables
 Configs/.config/stylerc
 Configs/ghostty/.config/ghostty/themes/current_theme.lua
+Configs/ghostty/.config/ghostty/config
+Configs/kitty/.config/kitty/kitty.conf
