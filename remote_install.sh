@@ -133,33 +133,28 @@ manage_cargo_tools() {
 manage_treesitter() {
     echo "Installing/Updating Tree-sitter via Cargo..."
 
-    # 1. Ensure Cargo is available
-    if ! command -v cargo &> /dev/null; then
-        echo "Error: Cargo is not installed. Please install Rust/Cargo first."
-        return 1
-    fi
-
-    # 2. Ensure Clang is available
     if ! command -v clang &> /dev/null; then
-        echo "Error: clang is missing. Please install it first (e.g., 'pixi global install clang')."
-        return 1
+        echo "clang is missing. Checking for Pixi to install it automatically..."
+        if command -v pixi &> /dev/null; then
+            echo "Installing clang globally via Pixi..."
+            pixi global install clang
+
+            # Refresh path tracking just in case
+            [ -d "$HOME/.pixi/bin" ] && export PATH="$HOME/.pixi/bin:$PATH"
+        else
+            echo "Error: clang is missing and Pixi is not available to install it automatically."
+            return 1
+        fi
     fi
 
-    # 3. Locate libclang.so for bindgen
+    # Locate libclang.so for bindgen
     LIB_DIR=$(find ~/.pixi ~/.local/share/pixi -name "libclang.so" -printf '%h\n' 2>/dev/null | head -n 1)
 
-    # 4. Run the installation
     if [ -n "$LIB_DIR" ]; then
         CC=clang CXX=clang++ LIBCLANG_PATH="$LIB_DIR" cargo install tree-sitter-cli
     else
         echo "Warning: libclang.so not found in standard Pixi paths. Trying default cargo build..."
         cargo install tree-sitter-cli
-    fi
-
-    # 5. Cleanup any old broken pre-built binaries (if they exist)
-    if [ -f "$BIN_DIR/tree-sitter" ]; then
-        echo "Cleaning up old pre-built binary from $BIN_DIR..."
-        rm -f "$BIN_DIR/tree-sitter"
     fi
 
     echo "Tree-sitter setup complete!"
@@ -290,7 +285,7 @@ execute_uninstall() {
     if [ -f "$HOME/.bashrc" ]; then
         # Remove the main environment block
         sed -i '/# --- Custom Environment ---/,/fi/d' "$HOME/.bashrc"
-        
+
         # Remove the specific Fish auto-start wrapper we created
         # We use a slightly different sed command here to safely remove the nested 'if' statements
         sed -i '/# Auto-start Fish for interactive sessions/,/^fi/d' "$HOME/.bashrc"
