@@ -194,10 +194,10 @@ EOF
 }
 
 # -----------------------------------------------------------------------------
-# Uninstall / Teardown Actions
+# Uninstall Actions
 # -----------------------------------------------------------------------------
 execute_uninstall() {
-    echo "!!! WARNING: This will completely erase all tools managed by this script !!!"
+    echo "!!! WARNING: This will completely erase all tools, plugins, and caches managed by this script !!!"
     read -p "Are you absolutely sure you want to proceed? (y/N): " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -205,10 +205,16 @@ execute_uninstall() {
         exit 0
     fi
 
-    # Allow errors to pass during uninstall so missing files don't halt progress
+    # Allow errors to pass during uninstall so missing folders don't halt progress
     set +e
 
-    echo "Removing source code and temporary workspaces..."
+    # 1. Clear Yazi system /tmp cache using the CLI before deleting files
+    if command -v yazi &> /dev/null; then
+        echo "Asking Yazi to purge temporary system caches..."
+        yazi --clear-cache
+    fi
+
+    echo "Removing source code and temporary build workspaces..."
     rm -rf "$SRC_DIR"
 
     echo "Removing isolated package managers (Rust, Pixi, ZVM)..."
@@ -217,20 +223,49 @@ execute_uninstall() {
     rm -rf "$HOME/.zvm"
 
     echo "Removing specific local binaries..."
-    # Explicitly removing only what this script targets to protect user-added binaries
     cd "$BIN_DIR" && rm -f fish nvim tmux tree-sitter oh-my-posh zmx rg bat eza fd zoxide sk tuckr yazi yazi-cli yazi-build cargo-install-update
 
     echo "Removing Ghostty terminfo mappings..."
     rm -f "$HOME/.terminfo/g/ghostty"
 
+    echo "--- DEEP CLEAN: Purging Application Plugins, States, & Caches ---"
+
+    # 2. CONFIGS PRESERVED: Left commented out because they are linked by tuckr
+    echo "Preserving configuration files in ~/.config/..."
+    # rm -rf "$HOME/.config/nvim"
+    # rm -rf "$HOME/.config/fish"
+    # rm -rf "$HOME/.config/yazi"
+
+    # 3. Clean up Neovim state and local plugin downloads
+    echo "Clearing Neovim leftovers..."
+    rm -rf "$HOME/.local/share/nvim"
+    rm -rf "$HOME/.local/state/nvim"
+    rm -rf "$HOME/.local/lib/nvim"
+    rm -rf "$HOME/.cache/nvim"
+
+    # 4. Clean up Fish Shell data history
+    echo "Clearing Fish Shell leftovers..."
+    rm -rf "$HOME/.local/share/fish"
+
+    # 5. Clean up Yazi data folders
+    echo "Clearing Yazi leftovers..."
+    rm -rf "$HOME/.local/share/yazi"
+    rm -rf "$HOME/.cache/yazi"
+
+    # 6. Clean up remaining background utility tracking
+    echo "Clearing remaining terminal utility leftovers..."
+    rm -rf "$HOME/.local/share/zoxide"
+    rm -rf "$HOME/.cache/pixi"
+    rm -rf "$HOME/.cache/zig"
+
     echo "Cleaning up .bashrc shell paths..."
     if [ -f "$HOME/.bashrc" ]; then
-        # Uses sed to cleanly strip out the script's injected custom block completely
         sed -i '/# --- Custom Environment ---/,/fi/d' "$HOME/.bashrc"
     fi
 
     echo "--- Uninstall Complete ---"
-    echo "Please run 'source ~/.bashrc' or restart your terminal to complete the reset."
+    echo "Your machine is clean. Configuration files were preserved for tuckr."
+    echo "Please run 'source ~/.bashrc' or restart your terminal to finish."
 }
 
 # -----------------------------------------------------------------------------

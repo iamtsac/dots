@@ -15,10 +15,27 @@ require("lazy").setup({
     { "folke/which-key.nvim", dependencies = { "echasnovski/mini.icons", version = false } },
     { "nvim-treesitter/nvim-treesitter", version = false, build = ":TSUpdate", branch = "main" },
     { "nvim-treesitter/nvim-treesitter-context", dependencies = { "nvim-treesitter/nvim-treesitter" } },
-    { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
     { "folke/snacks.nvim", priority = 1000, lazy = false },
     { "nvim-tree/nvim-web-devicons" },
-    { "lewis6991/gitsigns.nvim" },
+    -- { "lewis6991/gitsigns.nvim" },
+    -- Git Plugins
+    { "esmuellert/codediff.nvim" },
+    {
+        "echasnovski/mini.diff",
+        version = "*", -- Tracks stable releases
+        event = { "BufReadPost", "BufNewFile" }, -- Load only when a file buffer is opened
+    },
+    {
+        "NeogitOrg/neogit",
+        lazy = true,
+        cmd = "Neogit",
+    },
+
     { "numToStr/Comment.nvim" },
     { "stevearc/conform.nvim" },
     { "tiagovla/scope.nvim", config = true },

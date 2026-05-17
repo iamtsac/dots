@@ -1,20 +1,35 @@
 local branch_cache = ""
 
 local function get_git_diff()
-    local icons = { added = "󰐖", changed = "󰏬", removed = "" }
-    local colors = { added = "%#GitSignsAdd#", changed = "%#GitSignsChange#", removed = "%#GitSignsDelete#" }
-    local signs = vim.b.gitsigns_status_dict
-    local info = ""
-    if signs == nil then
+    local icons = { add = "󰐖", change = "󰏬", delete = "" }
+    local colors = { add = "%#GitSignsAdd#", change = "%#GitSignsChange#", delete = "%#GitSignsDelete#" }
+    local order = { "add", "change", "delete" }
+
+    local has_minidiff, minidiff = pcall(require, "mini.diff")
+    if not has_minidiff then
         return "%#StatusLine#"
     end
-    local c = 0
-    for name, icon in pairs(icons) do
-        if tonumber(signs[name]) and signs[name] > 0 then
+
+    local data = minidiff.get_buf_data(0)
+    local summary = data and data.summary
+
+    if not summary then
+        return "%#StatusLine#"
+    end
+
+    local info = ""
+    for _, name in ipairs(order) do
+        local count = summary[name]
+        if tonumber(count) and count > 0 then
             local space = (info ~= "") and " " or ""
-            info = info .. space .. colors[name] .. icons[name] .. " %#StatusLine#" .. signs[name]
+            info = info .. space .. colors[name] .. icons[name] .. " %#StatusLine#" .. count
         end
     end
+
+    if info == "" then
+        return "%#StatusLine#"
+    end
+
     return "%#StatusLineSecondary#" .. info .. "%#StatusLine#" .. "%#StatusLineSecondary#"
 end
 
@@ -142,7 +157,7 @@ local function ftype()
 end
 
 local function progress()
-local current_line = vim.fn.line(".")
+    local current_line = vim.fn.line(".")
     local total_lines = vim.fn.line("$")
     local first_visible = vim.fn.line("w0")
     local last_visible = vim.fn.line("w$")
@@ -189,7 +204,9 @@ end
 
 local function lsp_status()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
-    if #clients == 0 then return "" end
+    if #clients == 0 then
+        return ""
+    end
 
     local names = {}
     for _, client in ipairs(clients) do
@@ -200,22 +217,34 @@ local function lsp_status()
 end
 
 local function search_count()
-    if vim.v.hlsearch == 0 then return "" end
+    if vim.v.hlsearch == 0 then
+        return ""
+    end
     local ok, res = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 10 })
-    if not ok or next(res) == nil or res.total == 0 then return "" end
+    if not ok or next(res) == nil or res.total == 0 then
+        return ""
+    end
     return string.format(" %%#StatusLineMain#[%d/%d]", res.current, res.total)
 end
 
 local function diagnostics()
-    local counts = {0, 0, 0, 0}
+    local counts = { 0, 0, 0, 0 }
     for _, d in ipairs(vim.diagnostic.get(0)) do
         counts[d.severity] = counts[d.severity] + 1
     end
 
-    local e = counts[vim.diagnostic.severity.ERROR] > 0 and "%#DiagnosticError# " .. counts[vim.diagnostic.severity.ERROR] .. " " or ""
-    local w = counts[vim.diagnostic.severity.WARN] > 0 and "%#DiagnosticWarn# " .. counts[vim.diagnostic.severity.WARN] .. " " or ""
-    local i = counts[vim.diagnostic.severity.INFO] > 0 and "%#DiagnosticInfo# " .. counts[vim.diagnostic.severity.INFO] .. " " or ""
-    local h = counts[vim.diagnostic.severity.HINT] > 0 and "%#DiagnosticHint#󰌵 " .. counts[vim.diagnostic.severity.HINT] .. " " or ""
+    local e = counts[vim.diagnostic.severity.ERROR] > 0
+            and "%#DiagnosticError# " .. counts[vim.diagnostic.severity.ERROR] .. " "
+        or ""
+    local w = counts[vim.diagnostic.severity.WARN] > 0
+            and "%#DiagnosticWarn# " .. counts[vim.diagnostic.severity.WARN] .. " "
+        or ""
+    local i = counts[vim.diagnostic.severity.INFO] > 0
+            and "%#DiagnosticInfo# " .. counts[vim.diagnostic.severity.INFO] .. " "
+        or ""
+    local h = counts[vim.diagnostic.severity.HINT] > 0
+            and "%#DiagnosticHint#󰌵 " .. counts[vim.diagnostic.severity.HINT] .. " "
+        or ""
 
     local res = e .. w .. i .. h
     if vim.diagnostic.is_enabled({ bufnr = 0 }) then
@@ -247,7 +276,7 @@ Statusline.active = function()
         ftype(),
         lsp_status(),
         selected_compiler(),
-        ")"
+        ")",
     })
 end
 

@@ -1,8 +1,8 @@
 local wk = require("which-key")
 local conform = require("conform")
-local gs = require("gitsigns")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
+local neogit = require("neogit")
 
 wk.setup({
     delay = 1000,
@@ -21,21 +21,6 @@ local function cat_table(x1, x2)
         tmp[k] = v
     end
     return tmp
-end
-
-local custom_diff = function()
-    if vim.wo.diff then
-        local buffers = vim.api.nvim_list_bufs()
-        for _, bufnr in ipairs(buffers) do
-            -- Check if the buffer name starts with 'gitsigns:/'
-            local bufname = vim.api.nvim_buf_get_name(bufnr)
-            if bufname:match("^gitsigns:/") then
-                vim.api.nvim_buf_delete(bufnr, { force = true })
-            end
-        end
-    else
-        gs.diffthis()
-    end
 end
 
 local oil_custom = function()
@@ -171,15 +156,26 @@ vim.keymap.set("n", "<leader>gS", function() Snacks.picker.git_status() end, { d
 vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log_line() end, { desc = "Git Log (Line)" })
 vim.keymap.set("n", "<leader>gH", function() Snacks.picker.git_log() end, { desc = "Git Log (Project)" })
 vim.keymap.set("n", "<leader>gh", function() Snacks.picker.git_log_file() end, { desc = "Git Log (File)" })
-vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff File" })
+vim.keymap.set("n", "<leader>gg", function() neogit.open({ kind = "replace" }) end, { desc = "Neogit" })
+-- vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff File" })
+--
+vim.keymap.set("n", "<leader>gdd", "<cmd>CodeDiff<cr>", { desc = "Git Diff View (CodeDiff)" })
+vim.keymap.set("n", "<leader>gdf", "<cmd>CodeDiff file HEAD<cr>", { desc = "Git Diff View (Current File)" })
+vim.keymap.set("n", "<leader>gdc", ":CodeDiff ", { desc = "Git Diff View Command" })
+vim.keymap.set("n", "<leader>gdh", "<cmd>CodeDiff history<cr>", { desc = "Git Diff History" })
+
 vim.keymap.set("n", "<leader>gb", function() Snacks.git.blame_line() end, { desc = "Git Blame" })
 
 -- Hunk Management
-vim.keymap.set({ "n", "v" }, "<leader>gs", gs.stage_hunk, { desc = "Stage Hunk" })
-vim.keymap.set({ "n", "v" }, "<leader>gr", gs.reset_hunk, { desc = "Reset Hunk" })
-vim.keymap.set("n", "<leader>gp", gs.preview_hunk_inline, { desc = "Preview Hunk" })
-vim.keymap.set("n", "]g", function() gs.nav_hunk("next") end, { desc = "Next Hunk" })
-vim.keymap.set("n", "[g", function() gs.nav_hunk("prev") end, { desc = "Prev Hunk" })
+vim.keymap.set("v", "<leader>gs", function() require("mini.diff").operator("apply") end, { desc = "Stage selected lines" })
+vim.keymap.set("v", "<leader>gr", function() require("mini.diff").operator("reset") end, { desc = "Reset selected lines" })
+vim.keymap.set("n", "<leader>gp", function() require("mini.diff").toggle_overlay(0) end, { desc = "Preview Hunk (Toggle Overlay)" })
+vim.keymap.set("n", "<leader>gR", function()
+    local view = vim.fn.winsaveview()
+    require("mini.diff").operator("reset")
+    vim.cmd("normal! ggg@G")
+    vim.fn.winrestview(view)
+end, { desc = "Reset Buffer (All Hunks)" })
 
 -- =============================================================================
 -- 8. LSP (Navigation & Actions)
