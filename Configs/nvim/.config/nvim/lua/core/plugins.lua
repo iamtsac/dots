@@ -52,6 +52,7 @@ require("lazy").setup({
         version = "v1.*",
         dependencies = { "rafamadriz/friendly-snippets" },
         build = "cargo build --release",
+        event = { "InsertEnter", "CmdLineEnter" },
     },
     {
         "catgoose/nvim-colorizer.lua",

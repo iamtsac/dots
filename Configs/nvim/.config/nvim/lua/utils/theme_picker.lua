@@ -117,7 +117,9 @@ M.theme_picker = function()
             if #variants == 1 then
                 apply_theme(variants[1], item.name)
             else
-                variant_picker(item.name, variants)
+                vim.schedule(function()
+                    variant_picker(item.name, variants)
+                end)
             end
         end,
         format = "text",
