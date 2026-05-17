@@ -1,8 +1,8 @@
 require("neogit").setup({
     graph_style = "unicode",
     commit_editor = {
-        kind = "tab",
-        staged_diff_split_kind = "vsplit",
+        kind = "vsplit",
+        staged_diff_split_kind = "split",
 
     },
     commit_select_view = {
