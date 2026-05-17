@@ -156,7 +156,7 @@ vim.keymap.set("n", "<leader>gS", function() Snacks.picker.git_status() end, { d
 vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log_line() end, { desc = "Git Log (Line)" })
 vim.keymap.set("n", "<leader>gH", function() Snacks.picker.git_log() end, { desc = "Git Log (Project)" })
 vim.keymap.set("n", "<leader>gh", function() Snacks.picker.git_log_file() end, { desc = "Git Log (File)" })
-vim.keymap.set("n", "<leader>gg", function() neogit.open({ kind = "replace" }) end, { desc = "Neogit" })
+vim.keymap.set("n", "<leader>gg", function() neogit.open() end, { desc = "Neogit" })
 -- vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff File" })
 --
 vim.keymap.set("n", "<leader>gdd", "<cmd>CodeDiff<cr>", { desc = "Git Diff View (CodeDiff)" })

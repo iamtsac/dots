@@ -174,3 +174,21 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         })
     end,
 })
+
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CodeDiffOpen",
+  callback = function()
+    vim.g.codediff_saved_showtabline = vim.o.showtabline
+    vim.o.showtabline = 0
+  end,
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "CodeDiffClose",
+  callback = function()
+    if vim.g.codediff_saved_showtabline then
+      vim.o.showtabline = vim.g.codediff_saved_showtabline
+      vim.g.codediff_saved_showtabline = nil
+    end
+  end,
+})

@@ -1,12 +1,13 @@
 require("neogit").setup({
     graph_style = "unicode",
+    kind = "replace",
     commit_editor = {
-        kind = "vsplit",
-        staged_diff_split_kind = "split",
+        kind = "tab",
+        staged_diff_split_kind = "vsplit",
 
     },
     commit_select_view = {
-        kind = "floating",
+        kind = "split",
     },
     commit_view = {
         kind = "vsplit",
@@ -19,7 +20,7 @@ require("neogit").setup({
         kind = "auto",
     },
     reflog_view = {
-        kind = "floating",
+        kind = "tab",
     },
     merge_editor = {
         kind = "auto",
@@ -32,9 +33,9 @@ require("neogit").setup({
         show_title = false,
     },
     stash = {
-        kind = "floating",
+        kind = "tab",
     },
     refs_view = {
-        kind = "floating",
+        kind = "tab",
     },
 })

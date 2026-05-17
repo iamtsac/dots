@@ -34,3 +34,45 @@ function MyTabLine()
 end
 
 vim.o.tabline = "%!v:lua.MyTabLine()"
+
+local tab_group = vim.api.nvim_create_augroup("GlobalTabHistory", { clear = true })
+local tab_history = {}
+
+vim.api.nvim_create_autocmd("TabEnter", {
+    group = tab_group,
+    callback = function()
+        local current_tab = vim.api.nvim_get_current_tabpage()
+
+        -- Remove the tab from history if it's already there (to avoid duplicates)
+        for i, tab in ipairs(tab_history) do
+            if tab == current_tab then
+                table.remove(tab_history, i)
+                break
+            end
+        end
+
+        table.insert(tab_history, 1, current_tab)
+    end,
+})
+
+vim.api.nvim_create_autocmd("TabClosed", {
+    group = tab_group,
+    callback = function()
+        local valid_history = {}
+        for _, tab in ipairs(tab_history) do
+            if vim.api.nvim_tabpage_is_valid(tab) then
+                table.insert(valid_history, tab)
+            end
+        end
+        tab_history = valid_history
+
+        if #tab_history > 0 then
+            local target_tab = tab_history[1]
+            vim.schedule(function()
+                if vim.api.nvim_tabpage_is_valid(target_tab) then
+                    vim.api.nvim_set_current_tabpage(target_tab)
+                end
+            end)
+        end
+    end,
+})
