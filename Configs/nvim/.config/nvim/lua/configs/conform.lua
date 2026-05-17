@@ -199,14 +199,23 @@ meta_cpp_format_opts = [[{
 }]]
 
 conform.setup({
+    default_format_opts = {
+        timeout_ms = 3000,
+        async = false,
+        quiet = false,
+        lsp_format = "fallback",
+    },
     formatters_by_ft = {
         lua = { "stylua" },
-        python = { "ruff_organize_imports", "ruff_format", },
+        fish = { "fish_indent" },
+        sh = { "shfmt" },
+        python = { "ruff_organize_imports", "ruff_format" },
         cpp = { "clang_format" },
         markdown = { "injected" },
         ["*"] = { "trim_whitespace" },
     },
     formatters = {
+        injected = { options = { ignore_errors = true } },
         clang_format = {
             prepend_args = {
                 "--style",
@@ -214,7 +223,7 @@ conform.setup({
             },
         },
         ruff_format = {
-            prepend_args = { "format", "--line-length", "100", },
+            prepend_args = { "format", "--line-length", "100" },
         },
         black = {
             prepend_args = { "--line-length", "100" },

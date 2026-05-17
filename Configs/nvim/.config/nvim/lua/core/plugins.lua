@@ -15,7 +15,7 @@ require("lazy").setup({
     { "folke/which-key.nvim", dependencies = { "echasnovski/mini.icons", version = false } },
     { "nvim-treesitter/nvim-treesitter", version = false, build = ":TSUpdate", branch = "main" },
     { "nvim-treesitter/nvim-treesitter-context", dependencies = { "nvim-treesitter/nvim-treesitter" } },
-    { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+    { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main", dependencies = { "nvim-treesitter/nvim-treesitter" } },
     { "folke/snacks.nvim", priority = 1000, lazy = false },
     { "nvim-tree/nvim-web-devicons" },
     { "lewis6991/gitsigns.nvim" },

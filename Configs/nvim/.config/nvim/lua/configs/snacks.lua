@@ -28,7 +28,14 @@ Snacks.setup({
     },
     picker = conf.picker,
     zen = conf.zen,
-    terminal = { enabled = true },
+    terminal = {
+        enabled = true,
+        shell = "fish",
+        win = { style = "float" },
+        bo = {
+            filetype = "snacks_terminal",
+        },
+    },
     toggle = { enabled = true },
     rename = { enabled = false },
 })

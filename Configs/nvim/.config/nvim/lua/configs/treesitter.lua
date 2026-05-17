@@ -2,7 +2,7 @@ require("nvim-treesitter").setup({
     ensure_installed = {
         "cpp", "python", "lua", "typst", "regex", "markdown",
         "markdown_inline", "html", "css", "javascript", "scss",
-        "svelte", "vue", "vim", "vimdoc", "query" -- Added these 4 for stability
+        "svelte", "vue", "vim", "vimdoc", "query"
     },
     auto_install = true,
     sync_install = true,

@@ -220,8 +220,8 @@ vim.keymap.set("n", "<C-S-J>", function() ts_swap.swap_next("@parameter.inner") 
 vim.keymap.set("n", "<C-S-K>", function() ts_swap.swap_previous("@parameter.inner") end, { desc = "Swap Prev Param" })
 
 -- Structural Movement
-vim.keymap.set({ "n", "x", "o" }, "]f", function() ts_move.goto_next_start("@function.outer") end, { desc = "Next Function" })
-vim.keymap.set({ "n", "x", "o" }, "[f", function() ts_move.goto_previous_start("@function.outer") end, { desc = "Prev Function" })
+vim.keymap.set({ "n", "x", "o" }, "]f", function() ts_move.goto_next_start("@function.outer", "textobjects") end, { desc = "Next Function" })
+vim.keymap.set({ "n", "x", "o" }, "[f", function() ts_move.goto_previous_start("@function.outer", "textobjects") end, { desc = "Prev Function" })
 vim.keymap.set({ "n", "x", "o" }, "]]", function() ts_move.goto_next_start("@class.outer") end, { desc = "Next Class" })
 vim.keymap.set({ "n", "x", "o" }, "[[", function() ts_move.goto_previous_start("@class.outer") end, { desc = "Prev Class" })
 vim.keymap.set({ "n", "x", "o" }, "]c", function() ts_move.goto_next("@conditional.outer") end, { desc = "Next Conditional" })
@@ -260,3 +260,75 @@ vim.keymap.set("n", "<leader>md", function()
         vim.api.nvim_buf_del_mark(bufnr, char)
     end
 end, { desc = " Delete mark" })
+
+-- =============================================================================
+-- 11. Terminal
+-- =============================================================================
+vim.keymap.set("t", "<C-[><C-[>", "<C-\\><C-n>", { desc = "Terminal normal mode" })
+
+vim.keymap.set({ "n" }, "<leader>th", function()
+  Snacks.terminal.toggle(nil, { win = { position = "bottom", height = 0.4 } })
+end, { desc = "Toggle Horizontal Terminal Split" })
+
+vim.keymap.set({ "n" }, "<leader>tv", function()
+  Snacks.terminal.toggle(nil, { win = { position = "right", width = 0.5 } })
+end, { desc = "Toggle Vertical Terminal Split" })
+
+vim.keymap.set({ "n", "t" }, "<C-\\>", function()
+  Snacks.terminal.toggle()
+end, { desc = "Toggle Terminal" })
+
+vim.keymap.set("n", "<leader>tl", function()
+  local terminal = require("snacks.terminal")
+  local current_tab = vim.api.nvim_get_current_tabpage()
+
+  local terminals = terminal.list()
+  local items = {}
+
+  for _, term in ipairs(terminals) do
+    if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
+      -- attach originating tab if missing
+      term._tab = term._tab or vim.api.nvim_tabpage_get_number(current_tab)
+
+      -- filter by current tab
+      if term._tab == vim.api.nvim_tabpage_get_number(current_tab) then
+        local display_name = "Terminal " .. (term.id or "?")
+
+        if term.opts and term.opts.cmd then
+          display_name = display_name .. " [" .. term.opts.cmd .. "]"
+        end
+
+        table.insert(items, {
+          text = display_name,
+          buf = term.buf,
+          term = term,
+        })
+      end
+    end
+  end
+
+  if #items == 0 then
+    vim.notify("No active snacks terminals in this tab.", vim.log.levels.INFO)
+    return
+  end
+
+  Snacks.picker.pick({
+    title = "Tab Terminals",
+    items = items,
+
+    layout = {
+      preset = "default",
+    },
+
+    format = function(item)
+      return {
+        { item.text, "Keyword" },
+      }
+    end,
+
+    confirm = function(picker, item)
+      picker:close()
+      item.term:show()
+    end,
+  })
+end, { desc = "List tab terminals" })
