@@ -270,7 +270,7 @@ vim.keymap.set({ "n" }, "<leader>tv", function()
   Snacks.terminal.toggle(nil, { win = { position = "right", width = 0.5 } })
 end, { desc = "Toggle Vertical Terminal Split" })
 
-vim.keymap.set({ "n", "t" }, "<C-\\>", function()
+vim.keymap.set({ "n", "t" }, "<C-/>", function()
   Snacks.terminal.toggle()
 end, { desc = "Toggle Terminal" })
 
