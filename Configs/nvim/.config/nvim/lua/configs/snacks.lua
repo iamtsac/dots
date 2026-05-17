@@ -31,7 +31,7 @@ Snacks.setup({
     terminal = {
         enabled = true,
         shell = "fish",
-        win = { style = "float" },
+        win = { style = "float", backdrop = 40 },
         bo = {
             filetype = "snacks_terminal",
         },
