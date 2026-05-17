@@ -49,6 +49,10 @@ function force_split_command
     commandline -r $out
 end
 
+if type -q zmx
+  zmx completions fish | source
+end
+
 if status is-interactive
     set -g fish_key_bindings fish_vi_key_bindings
     set -g fish_greeting ""

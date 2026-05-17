@@ -1,92 +1,186 @@
 #!/bin/bash
 
-# Exit on error
+# Exit on error (except during uninstall where we want to keep going if a file is already missing)
 set -e
 
-echo "--- Initializing No-Root Environment Setup ---"
-mkdir -p $HOME/pkg/
-mkdir -p $HOME/.local/bin
+# -----------------------------------------------------------------------------
+# Configuration & Paths
+# -----------------------------------------------------------------------------
+SRC_DIR="$HOME/.local/src"
+BIN_DIR="$HOME/.local/bin"
 
-# Set up paths for the session
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$PATH"
+# Detect System Architecture
+ARCH=$(uname -m)
+case "$ARCH" in
+    x86_64|amd64)
+        TMUX_ARCH="x86_64|amd64"
+        TS_ARCH="x64"
+        ;;
+    aarch64|arm64)
+        TMUX_ARCH="aarch64|arm64"
+        TS_ARCH="arm64"
+        ;;
+    *)
+        echo "Error: Unsupported architecture ($ARCH)"
+        exit 1
+        ;;
+esac
 
-cd $HOME/pkg/
+# Helper function to clone or pull a git repo incrementally
+sync_repo() {
+    local url=$1
+    local dir=$2
+    if [ -d "$dir" ]; then
+        echo "Updating Git repository: $(basename "$dir")..."
+        cd "$dir"
+        git stash --quiet || true
+        git pull || {
+            echo "Pull failed. Resetting and cloning fresh..."
+            cd .. && rm -rf "$dir"
+            git clone --depth 1 "$url" "$dir" && cd "$dir"
+        }
+    else
+        echo "Cloning Git repository: $(basename "$dir")..."
+        git clone --depth 1 "$url" "$dir"
+        cd "$dir"
+    fi
+}
 
-# # 1. Install Rust (Foundation)
-if ! command -v cargo &> /dev/null; then
-    echo "Installing Rust..."
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source $HOME/.cargo/env
-fi
+# -----------------------------------------------------------------------------
+# Installation / Update Actions
+# -----------------------------------------------------------------------------
 
-# # 2. Install ZVM & Zig
-echo "Installing ZVM..."
-curl https://www.zvm.app/install.sh | bash
-export PATH="$HOME/.zvm/bin:$HOME/.zvm/self:$PATH"
+manage_rust() {
+    if ! command -v cargo &> /dev/null; then
+        echo "Installing Rust..."
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        source "$HOME/.cargo/env"
+    else
+        echo "Updating Rust toolchain..."
+        rustup update
+    fi
+}
 
-# echo "Installing Zig via ZVM..."
-zvm install 0.15.2
-zvm use 0.15.2
+manage_zvm_zig() {
+    if ! command -v zvm &> /dev/null; then
+        echo "Installing ZVM..."
+        curl https://www.zvm.app/install.sh | bash
+        export PATH="$HOME/.zvm/bin:$HOME/.zvm/self:$PATH"
+    else
+        echo "Updating ZVM..."
+        zvm upgrade
+    fi
+    echo "Ensuring Zig 0.15.2 is configured..."
+    zvm install 0.15.2
+    zvm use 0.15.2
+}
 
-# ZMX (Multiplexer)
-git clone https://github.com/neurosnap/zmx.git
-cd zmx
-zig build -Doptimize=ReleaseSafe --prefix ~/.local
-cd ..
+manage_zmx() {
+    sync_repo "https://github.com/neurosnap/zmx.git" "$SRC_DIR/zmx"
+    echo "Building ZMX Multiplexer..."
+    zig build -Doptimize=ReleaseSafe --prefix "$HOME/.local"
+}
 
-# # 3. Install Pixi (Environment Manager)
-echo "Installing Pixi..."
-curl -fsSL https://pixi.sh/install.sh | bash
-export PATH="$HOME/.pixi/bin:$PATH"
+manage_pixi() {
+    if ! command -v pixi &> /dev/null; then
+        echo "Installing Pixi..."
+        curl -fsSL https://pixi.sh/install.sh | bash
+        export PATH="$HOME/.pixi/bin:$PATH"
+    else
+        echo "Updating Pixi..."
+        pixi self-update
+    fi
+}
 
-# # 4. Build Fish Shell from source
-echo "Building Fish Shell..."
-git clone --depth 1 https://github.com/fish-shell/fish-shell.git
-cd fish-shell
-cmake . -DCMAKE_INSTALL_PREFIX=$HOME/.local/
-make && make install
-cd ..
+manage_fish() {
+    sync_repo "https://github.com/fish-shell/fish-shell.git" "$SRC_DIR/fish-shell"
+    echo "Building/Updating Fish Shell from source..."
+    cmake . -DCMAKE_INSTALL_PREFIX="$HOME/.local/"
+    make && make install
+}
 
-# # 5. Build Neovim from source
-# echo "Building Neovim..."
-git clone --depth 1 https://github.com/neovim/neovim.git
-cd neovim
-make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=$HOME/.local
-make install
-cd ..
+manage_neovim() {
+    sync_repo "https://github.com/neovim/neovim.git" "$SRC_DIR/neovim"
+    echo "Building/Updating Neovim from source..."
+    make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX="$HOME/.local"
+    make install
+}
 
-# 6. Cargo Installs (The Rust Stack)
-echo "Installing Rust tools..."
+manage_cargo_tools() {
+    echo "Managing Cargo ecosystem tools..."
+    cargo install --force yazi-build
 
-# Yazi (Un-locked to get the latest master updates)
-cargo install --force yazi-build
+    if ! command -v cargo-install-update &> /dev/null; then
+        echo "Installing cargo-update manager with vendored OpenSSL..."
+        cargo install cargo-update --features vendored-openssl
+    fi
 
-# Rest of the essentials
-cargo install bat ripgrep eza fd-find tree-sitter-cli zoxide skim tuckr
+    declare -A tools=(
+        [rg]=ripgrep [bat]=bat [eza]=eza [fd]=fd-find [zoxide]=zoxide [sk]=skim [tuckr]=tuckr
+    )
+    for bin in "${!tools[@]}"; do
+        if ! command -v "$bin" &> /dev/null; then
+            echo "Installing missing tool: ${tools[$bin]}..."
+            cargo install "${tools[$bin]}"
+        fi
+    done
 
-# 7. Oh My Posh (Prompt)
-echo "Installing Oh My Posh..."
-curl -s https://ohmyposh.dev/install.sh | bash -s -- -d $HOME/.local/bin
+    echo "Bumping out-of-date Cargo packages safely..."
+    cargo install-update ripgrep bat eza fd-find zoxide skim tuckr
+    cargo install cargo-update --features vendored-openssl
+}
 
+manage_treesitter() {
+    echo "Checking GitHub for the latest Tree-sitter release..."
+    LATEST_TAG=$(curl -s https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [ -z "$LATEST_TAG" ]; then echo "Warning: Skipping Tree-sitter update."; return; fi
+    CLEAN_VER=$(echo "$LATEST_TAG" | sed -E 's/^v//')
 
-# echo "Setting Ghostty terminfo.. "
-mkdir -p ~/.terminfo
-curl -LO https://raw.githubusercontent.com/ghostty-org/ghostty/main/terminfo/ghostty.terminfo
-tic -x -o ~/.terminfo ghostty.terminfo
+    if ! command -v tree-sitter &> /dev/null || [[ "$(tree-sitter --version 2>/dev/null)" != *"$CLEAN_VER"* ]]; then
+        echo "Installing/Updating to prebuilt static Tree-sitter ($LATEST_TAG)..."
+        cd "$SRC_DIR"
+        curl -sLO "https://github.com/tree-sitter/tree-sitter/releases/download/${LATEST_TAG}/tree-sitter-linux-${TS_ARCH}.gz"
+        gunzip -f "tree-sitter-linux-${TS_ARCH}.gz"
+        mv "tree-sitter-linux-${TS_ARCH}" "$BIN_DIR/tree-sitter"
+        chmod +x "$BIN_DIR/tree-sitter"
+    fi
+}
 
+manage_oh_my_posh() {
+    if ! command -v oh-my-posh &> /dev/null; then
+        curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$BIN_DIR"
+    else
+        oh-my-posh upgrade
+    fi
+}
 
-# 8. Cleanup
-echo "Cleaning up build files..."
-cd $HOME
-rm -rf $HOME/pkg/
+manage_ghostty() {
+    cd "$SRC_DIR"
+    curl -sLO https://raw.githubusercontent.com/ghostty-org/ghostty/main/terminfo/ghostty.terminfo
+    tic -x -o "$HOME/.terminfo" ghostty.terminfo
+    rm -f ghostty.terminfo
+}
 
-echo "--- Setup Complete ---"
-echo "Add this to your fish config:"
-echo 'set -gx PATH $HOME/.local/bin $HOME/.cargo/bin $HOME/.zvm/bin $HOME/.zvm/self $PATH'
+manage_tmux() {
+    echo "Checking GitHub for the latest Tmux release..."
+    DOWNLOAD_URL=$(curl -s https://api.github.com/repos/tmux/tmux-builds/releases/latest | grep '"browser_download_url":' | grep 'linux' | grep -E "$TMUX_ARCH" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    if [ -z "$DOWNLOAD_URL" ]; then echo "Warning: Skipping Tmux update."; return; fi
+    FILENAME=$(basename "$DOWNLOAD_URL")
+    CLEAN_VER=$(echo "$FILENAME" | sed -E 's/tmux-([^_-]+)-.*/\1/')
 
-echo "Finalizing shell configuration..."
+    if ! command -v tmux &> /dev/null || [[ "$(tmux -V 2>/dev/null)" != *"$CLEAN_VER"* ]]; then
+        echo "Installing/Updating to static Tmux version $CLEAN_VER..."
+        cd "$SRC_DIR"
+        curl -sLO "$DOWNLOAD_URL"
+        tar -xzf "$FILENAME"
+        mv tmux "$BIN_DIR/tmux"
+        rm -f "$FILENAME"
+    fi
+}
 
-cat << 'EOF' >> "$HOME/.bashrc"
+configure_env() {
+    if ! grep -q "# --- Custom Environment ---" "$HOME/.bashrc"; then
+        cat << 'EOF' >> "$HOME/.bashrc"
 
 # --- Custom Environment ---
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$HOME/.pixi/bin:$PATH"
@@ -96,5 +190,78 @@ if [[ $- == *i* ]] && command -v fish >/dev/null 2>&1; then
     exec fish
 fi
 EOF
+    fi
+}
 
-echo "Setup complete! Log out and back in, or run 'source ~/.bashrc' to begin."
+# -----------------------------------------------------------------------------
+# Uninstall / Teardown Actions
+# -----------------------------------------------------------------------------
+execute_uninstall() {
+    echo "!!! WARNING: This will completely erase all tools managed by this script !!!"
+    read -p "Are you absolutely sure you want to proceed? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Uninstall aborted."
+        exit 0
+    fi
+
+    # Allow errors to pass during uninstall so missing files don't halt progress
+    set +e
+
+    echo "Removing source code and temporary workspaces..."
+    rm -rf "$SRC_DIR"
+
+    echo "Removing isolated package managers (Rust, Pixi, ZVM)..."
+    rm -rf "$HOME/.cargo" "$HOME/.rustup"
+    rm -rf "$HOME/.pixi"
+    rm -rf "$HOME/.zvm"
+
+    echo "Removing specific local binaries..."
+    # Explicitly removing only what this script targets to protect user-added binaries
+    cd "$BIN_DIR" && rm -f fish nvim tmux tree-sitter oh-my-posh zmx rg bat eza fd zoxide sk tuckr yazi yazi-cli yazi-build cargo-install-update
+
+    echo "Removing Ghostty terminfo mappings..."
+    rm -f "$HOME/.terminfo/g/ghostty"
+
+    echo "Cleaning up .bashrc shell paths..."
+    if [ -f "$HOME/.bashrc" ]; then
+        # Uses sed to cleanly strip out the script's injected custom block completely
+        sed -i '/# --- Custom Environment ---/,/fi/d' "$HOME/.bashrc"
+    fi
+
+    echo "--- Uninstall Complete ---"
+    echo "Please run 'source ~/.bashrc' or restart your terminal to complete the reset."
+}
+
+# -----------------------------------------------------------------------------
+# Runtime Controller
+# -----------------------------------------------------------------------------
+MODE=${1:-install}
+
+case "$MODE" in
+    install|update)
+        mkdir -p "$SRC_DIR" "$BIN_DIR" "$HOME/.terminfo"
+        echo "--- Initializing No-Root Environment Setup [Mode: ${MODE^^}] ---"
+        manage_rust
+        manage_zvm_zig
+        manage_zmx
+        manage_pixi
+        manage_fish
+        manage_neovim
+        manage_cargo_tools
+        manage_treesitter
+        manage_oh_my_posh
+        manage_ghostty
+        manage_tmux
+        configure_env
+        echo "--- Setup/Update Action Complete! ---"
+        ;;
+    uninstall)
+        execute_uninstall
+        ;;
+    *)
+        echo "Error: Invalid argument."
+        echo "Usage: $0 [install|update|uninstall]"
+        exit 1
+        ;;
+esac
