@@ -275,14 +275,8 @@ execute_uninstall() {
 
     echo "Cleaning up .bashrc shell paths and auto-starts..."
     if [ -f "$HOME/.bashrc" ]; then
-        # Remove the main environment block
-        sed -i '/# --- Custom Environment ---/,/fi/d' "$HOME/.bashrc"
-
-        # Remove the specific Fish auto-start wrapper we created
-        # We use a slightly different sed command here to safely remove the nested 'if' statements
-        sed -i '/# Auto-start Fish for interactive sessions/,/^fi/d' "$HOME/.bashrc"
-        # Run it twice in case the nested `fi` tripped the first range closure
-        sed -i '/# Auto-start Fish for interactive sessions/,/^fi/d' "$HOME/.bashrc"
+        # Delete from the custom environment marker all the way to the end of the file
+        sed -i '/# --- Custom Environment ---/,$d' "$HOME/.bashrc"
     fi
 
     echo "--- Uninstall Complete ---"
