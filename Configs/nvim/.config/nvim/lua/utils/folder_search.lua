@@ -62,6 +62,7 @@ M.open_folder_picker = function(opts)
         },
         layout = { preview = false },
         cwd = initial_cwd,
+        prompt = vim.fn.fnamemodify(initial_cwd, ":~") .. (initial_cwd == "/" and ""  or "/"),
         matcher = {
             cwd_bonus = true,
             filename_bonus = true,
@@ -90,19 +91,36 @@ M.open_folder_picker = function(opts)
                     if not has_subfolders(new_cwd) then
                         picker:close()
                         require("oil").open(new_cwd)
-                        return -- Stop here!
+                        return
                     end
                     picker:set_cwd(new_cwd)
+                    picker.opts.prompt = vim.fn.fnamemodify(new_cwd, ":~") .. (new_cwd == "/" and ""  or "/")
                     clear_prompt(picker)
                     picker:find()
                 end
             end,
+
             dir_up = function(picker)
                 local item = picker:current()
                 local parent_dir = vim.fn.fnamemodify(picker:cwd(), ":h")
                 picker:set_cwd(parent_dir)
+                picker.opts.prompt = vim.fn.fnamemodify(parent_dir, ":~") .. (parent_dir == "/" and ""  or "/")
                 clear_prompt(picker)
                 picker:find()
+            end,
+
+            dir_up_input_m = function(picker)
+                if picker:filter().pattern == "" then
+                    local item = picker:current()
+                    local parent_dir = vim.fn.fnamemodify(picker:cwd(), ":h")
+                    picker:set_cwd(parent_dir)
+                    picker.opts.prompt = vim.fn.fnamemodify(parent_dir, ":~") .. (parent_dir == "/" and ""  or "/")
+                    clear_prompt(picker)
+                    picker:find()
+                else
+                    local backspace = vim.api.nvim_replace_termcodes("<BS>", true, false, true)
+                    vim.api.nvim_feedkeys(backspace, "n", false)
+                end
             end,
 
             open_pwd_in_oil = function(picker)
@@ -122,6 +140,8 @@ M.open_folder_picker = function(opts)
             input = {
                 keys = {
                     ["<CR>"] = { "dir_down", mode = { "n", "i" } },
+                    ["/"] = { "dir_down", mode = { "i" } },
+                    ["<BS>"] = { "dir_up_input_m", mode = { "i" } },
                     ["<C-o>"] = { "open_pwd_in_oil", mode = { "n", "i" } },
                     ["<C-e>"] = { "open_selected_in_oil", mode = { "n", "i" } },
                     ["-"] = { "dir_up", mode = { "n" } },
