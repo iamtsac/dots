@@ -131,39 +131,25 @@ manage_cargo_tools() {
 }
 
 manage_treesitter() {
-    echo "Installing/Updating Tree-sitter via Cargo..."
-
     if ! command -v cargo &> /dev/null; then
-        [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+        echo "Error: Cargo does not exist."
+        return 1
     fi
 
     if ! command -v clang &> /dev/null; then
-        echo "clang is missing. Checking for Pixi to install it automatically..."
         if command -v pixi &> /dev/null; then
-            echo "Installing clang globally via Pixi..."
-            pixi global install clang
+            pixi global install --environment llvm clang libclang
             export PATH="$HOME/.pixi/bin:$PATH"
+            export LIBCLANG_PATH="$HOME/.pixi/envs/llvm/lib"
+
+            CC=clang CXX=clang++ cargo install tree-sitter-cli
         else
-            echo "Error: clang is missing and Pixi is not available."
+            echo "Error: Pixi does not exist."
             return 1
         fi
-    fi
-
-    LIB_DIR=$(find ~/.pixi ~/.local/share/pixi -name "libclang.so" -printf '%h\n' 2>/dev/null | head -n 1)
-
-    if [ -n "$LIB_DIR" ]; then
-        echo "Found libclang at: $LIB_DIR"
-        CC=clang CXX=clang++ LIBCLANG_PATH="$LIB_DIR" cargo install tree-sitter-cli
     else
-        echo "Warning: libclang.so not found in standard paths. Falling back to clean cargo install..."
         cargo install tree-sitter-cli
     fi
-
-    if [ -f "$BIN_DIR/tree-sitter" ]; then
-        rm -f "$BIN_DIR/tree-sitter"
-    fi
-
-    echo "Tree-sitter setup complete!"
 }
 
 manage_oh_my_posh() {
