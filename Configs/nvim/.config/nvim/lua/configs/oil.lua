@@ -6,8 +6,8 @@ require("oil").setup({
     -- See :help oil-columns
     columns = {
         "icon",
-        "permissions",
-        "size",
+        -- "permissions",
+        -- "size",
         -- "mtime",
     },
     -- Buffer-local options to use for oil buffers
@@ -74,6 +74,21 @@ require("oil").setup({
         ["gx"] = "actions.open_external",
         ["."] = { "actions.toggle_hidden", mode = "n" },
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
+        ["<S-k>"] = { "actions.preview_scroll_up", mode = "n" },
+        ["<S-j>"] = { "actions.preview_scroll_down", mode = "n" },
+        ["<S-h>"] = { "actions.preview_scroll_left", mode = "n" },
+        ["<S-l>"] = { "actions.preview_scroll_right", mode = "n" },
+        ["gd"] = {
+          desc = "Toggle file detail view",
+          callback = function()
+            detail = not detail
+            if detail then
+              require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+            else
+              require("oil").set_columns({ "icon" })
+            end
+          end,
+        },
     },
     -- Set to false to disable all of the above keymaps
     use_default_keymaps = true,

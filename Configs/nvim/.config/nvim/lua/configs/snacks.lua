@@ -42,3 +42,12 @@ Snacks.setup({
 
 Snacks.config.style("snacks_image", conf.image_style)
 vim.g.snacks_scroll = false
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "snacks_picker_input",
+  callback = function(args)
+    vim.keymap.set("i", "<C-t>", "<nop>", {
+      buffer = args.buf,
+    })
+  end,
+})
