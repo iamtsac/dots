@@ -155,40 +155,49 @@ require("codediff").setup({
 })
 
 local cu = require("utils.theme")
-vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
+
+local original_comment_hl = nil
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "CodeDiffOpen",
     callback = function()
+        vim.g.codediff_saved_showtabline = vim.o.showtabline
+        vim.o.showtabline = 0
+
+        original_comment_hl = vim.api.nvim_get_hl(0, { name = "Comment" })
+
         cu.hl_overwrite({
             CodeDiffCharInsert = {
-                reverse = true,
-                -- sp = cu.get_color("DiffAdd", "fg"),
+                undercurl = true,
+                sp = cu.get_color("DiffAdd", "fg"),
             },
             CodeDiffCharDelete = {
-                reverse = true,
-                -- sp = cu.get_color("DiffDelete", "fg"),
+                undercurl = true,
+                sp = cu.get_color("DiffDelete", "fg"),
             },
             CodeDiffCharMove = {
-                reverse = true,
-                -- sp = cu.get_color("CodeDiffCharMove", "fg"),
+                undercurl = true,
+                sp = cu.get_color("CodeDiffCharMove", "fg") or cu.get_color("DiffChange", "fg"),
+            },
+            Comment = {
+                italic = true,
+                fg = cu.get_color("Normal", "fg"),
             },
         })
     end,
 })
 
+vim.api.nvim_create_autocmd("User", {
+    pattern = "CodeDiffClose",
+    callback = function()
+        if vim.g.codediff_saved_showtabline then
+            vim.o.showtabline = vim.g.codediff_saved_showtabline
+            vim.g.codediff_saved_showtabline = nil
+        end
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "CodeDiffOpen",
-  callback = function()
-    vim.g.codediff_saved_showtabline = vim.o.showtabline
-    vim.o.showtabline = 0
-  end,
-})
-vim.api.nvim_create_autocmd("User", {
-  pattern = "CodeDiffClose",
-  callback = function()
-    if vim.g.codediff_saved_showtabline then
-      vim.o.showtabline = vim.g.codediff_saved_showtabline
-      vim.g.codediff_saved_showtabline = nil
-    end
-  end,
+        if original_comment_hl then
+            vim.api.nvim_set_hl(0, "Comment", original_comment_hl)
+            original_comment_hl = nil
+        end
+    end,
 })
