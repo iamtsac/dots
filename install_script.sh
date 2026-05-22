@@ -184,6 +184,10 @@ manage_tmux() {
     fi
 }
 
+manage_direnv() {
+    curl -sfL https://direnv.net/install.sh | bin_path=$HOME/.local/bin bash
+}
+
 configure_env() {
     if ! grep -q "# --- Custom Environment ---" "$HOME/.bashrc"; then
         cat << 'EOF' >> "$HOME/.bashrc"
@@ -272,6 +276,7 @@ execute_uninstall() {
     rm -rf "$HOME/.cache/pixi"
     rm -rf "$HOME/.cache/zig"
     rm -rf "$HOME/.cache/oh-my-posh"
+    rm -rf "$HOME/.local/bin/direnv"
 
     echo "Cleaning up .bashrc shell paths and auto-starts..."
     if [ -f "$HOME/.bashrc" ]; then
@@ -304,6 +309,7 @@ case "$MODE" in
         manage_oh_my_posh
         manage_ghostty
         manage_tmux
+        manage_direnv
         configure_env
         echo "--- Setup/Update Action Complete! ---"
         ;;
