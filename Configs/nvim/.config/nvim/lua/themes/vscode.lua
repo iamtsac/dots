@@ -16,10 +16,13 @@ function M.setup(style, variant, utils)
             c.fg = c.vscFront
             c.bg = c.vscBack
 
-            c.special_char = utils.get_color("SpecialChar", "fg")
-            c.boolean = utils.get_color("Boolean", "fg")
             c.bg_unselected = utils.color_changer.darken(c.bg, 0.55)
             c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
+            c.fg_selected = c.fg
+            c.bg_selected = c.bg_unselected
+            c.bg_tabbar = c.bg_unselected
+            c.fg_indicator = utils.get_color("Boolean", "fg")
+            c.fg_border = c.bg_tabbar
 
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
@@ -44,22 +47,30 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.vscLightRed, fg = c.bg },
                 SnacksPickerDir = { fg = c.vscPink },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_dim },
-                StatusLineNC = { fg = "none", bg = c.bg_dim },
+                StatusLine = { fg = "none", bg = c.bg_tabbar },
+                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 CursorLine = { bg = c.bg_dim },
+                WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 TreesitterContext = { link="Normal" },
                 TreesitterContextSeparator = { link="Comment" },
                 TreesitterContextLineNumber = { link="LineNr" },
                 -- LineNr = { fg = vscPopupFront, bg = c.vscCursorDarkDark },
                 -- LineNrAbove = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },
                 -- LineNrBelow = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },
-                TabLineFill = { bg = c.bg_unselected },
-                TabLineSel = { bg = c.bg, fg = c.special_char },
+                TabLineFill = { bg = c.bg_tabbar },
+                TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
                 TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-                TabLineIndicator = { bg = c.bg, fg = c.boolean },
+                TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
+
+                FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+                FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+                FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+                FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+                FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+                StatusLineMain = { fg = c.fg, italic = false },
+                StatusLineSecondary = { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) },
             })
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) })
             -- utils.hl_markdown_code(c.bg, c.bg_dim)
         end
 
@@ -68,10 +79,13 @@ function M.setup(style, variant, utils)
             c.fg = c.vscFront
             c.bg = c.vscBack
 
-            c.special_char = utils.get_color("SpecialChar", "fg")
-            c.boolean = utils.get_color("Boolean", "fg")
             c.bg_unselected = utils.color_changer.darken(c.bg, 0.25)
             c.fg_unselected = utils.color_changer.lighten(c.fg, 0.15)
+            c.fg_selected = c.fg
+            c.bg_selected = c.bg_unselected
+            c.bg_tabbar = c.bg_unselected
+            c.fg_indicator = utils.get_color("Boolean", "fg")
+            c.fg_border = c.bg_tabbar
 
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.fg, bg = c.bg },
@@ -114,14 +128,21 @@ function M.setup(style, variant, utils)
                 -- RenderMarkdownH4Bg = { bg = "none" },
                 -- RenderMarkdownH5Bg = { bg = "none" },
                 -- RenderMarkdownH6Bg = { bg = "none" },
-                TabLineFill = { bg = c.bg_unselected },
-                TabLineSel = { bg = c.bg, fg = c.special_char },
+                --
+                TabLineFill = { bg = c.bg_tabbar },
+                TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
                 TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-                TabLineIndicator = { bg = c.bg, fg = c.boolean },
-            })
+                TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
 
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg_main, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) })
+                FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+                FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+                FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+                FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+                FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+                StatusLineMain = { fg = c.fg_main, italic = false },
+                StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) },
+            })
         end
     end)
 end

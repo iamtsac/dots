@@ -42,10 +42,13 @@ function M.setup(style, variant, utils)
 
     vim.cmd.colorscheme("oldworld")
 
-    c.special_char = utils.get_color("SpecialChar", "fg")
-    c.boolean = utils.get_color("Boolean", "fg")
     c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
     c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
+    c.fg_selected = c.fg
+    c.bg_selected = c.bg_unselected
+    c.bg_tabbar = c.bg_unselected
+    c.fg_indicator = utils.get_color("Boolean", "fg")
+    c.fg_border = c.bg_tabbar
 
     vim.schedule(function()
         utils.hl_overwrite({
@@ -81,19 +84,30 @@ function M.setup(style, variant, utils)
             TreesitterContext = { link = "Normal" },
             TreesitterContextLineNumber = { link = "LineNr" },
             TreesitterContextSeparator = { link = "Comment" },
-            TabLineFill = { bg = c.bg_unselected },
-            TabLineSel = { bg = c.bg, fg = c.fg },
-            TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-            TabLineIndicator = { bg = c.bg, fg = c.boolean },
             BlinkCmpMenu = { link = "Normal" },
             BlinkCmpKind = { bg = "none" },
             BlinkCmpSource = { bg = "none" },
             PmenuExtra = { bg = "none" },
+            StatusLine = { fg = "none", bg = c.bg_tabbar },
+            StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+            WinSeparator = { fg = c.fg_unselected, bg = "none" },
+
+            TabLineFill = { bg = c.bg_tabbar },
+            TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
+            TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
+            TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
+
+            FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+            FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+            FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+            FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+            FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+            StatusLineMain = { fg = c.fg, italic = false },
+            StatusLineSecondary = { fg = "#888888" },
         })
 
         -- utils.hl_markdown_code(c.bg, c.gray1)
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#888888" })
     end)
 end
 

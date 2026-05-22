@@ -16,9 +16,14 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         c.bg = c.base00
         c.fg = c.base0C
-        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.09)
-        c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
         c.string = utils.get_color("String", "fg")
+        c.fg_unselected = utils.color_changer.darken(c.fg, 0.55)
+        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.09)
+        c.fg_selected = c.fg
+        c.bg_selected = c.bg_unselected
+        c.bg_tabbar = c.bg_unselected
+        c.fg_indicator = c.string
+        c.fg_border = c.bg_tabbar
 
         utils.hl_overwrite({
             Normal = { bg = c.base00 },
@@ -39,8 +44,8 @@ function M.setup(style, variant, utils)
             TSFuncBuiltin = { italic = false },
             TSVariableBuiltin = { italic = false },
             TSPunctDelimiter = { link = "TSType" },
-            StatusLine = { fg = "none", bg = utils.color_changer.lighten(c.base01, 0.03) },
-            StatusLineNC = { fg = "none", bg = utils.color_changer.lighten(c.base01, 0.03) },
+            StatusLine = { fg = "none", bg = c.bg_tabbar },
+            StatusLineNC = { fg = "none", bg = c.bg_tabbar },
 
             WhichKeyNormal = { bg = c.base01 },
             WhichKeyValue = { fg = c.base0D },
@@ -68,6 +73,7 @@ function M.setup(style, variant, utils)
             BlinkCmpLabelDetail = { link = "TSType" },
             BlinkCmpScrollBarThumb = { bg = c.fg },
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
+            WinSeparator = { fg = c.fg_unselected, bg = "none" },
 
             GitSignsAdd = { link = "GitSignsStagedAdd" },
             GitSignsDelete = { link = "GitSignsStagedDelete" },
@@ -80,15 +86,22 @@ function M.setup(style, variant, utils)
             TreesitterContextLineNumber = { link="LineNr" },
             TreesitterContextSeparator = { link="Comment" },
             -- RenderMarkdownH1Bg = { bg = "none" },
-            TabLineFill = { bg = c.bg_unselected },
-            TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+            TabLineFill = { bg = c.bg_tabbar },
+            TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
             TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-            TabLineIndicator = { bg = c.bg, fg = c.string },
+            TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
+
+            FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+            FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+            FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+            FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+            FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+            StatusLineMain = { fg = c.base08, italic = false },
+            StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.05) },
         })
 
         -- utils.hl_markdown_code(c.bg, c.base01)
-        vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.base08, italic = false })
-        vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.05) })
     end)
 end
 

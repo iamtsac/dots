@@ -43,10 +43,13 @@ function M.setup(style, variant, utils)
         if style == "dark" then
             c.pickerBg = utils.color_changer.lighten(c.bg, 0.03)
 
-            c.special_char = utils.get_color("SpecialChar", "fg")
-            c.boolean = utils.get_color("Boolean", "fg")
             c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
             c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+            c.fg_selected = c.fg
+            c.bg_selected = c.bg_unselected
+            c.bg_tabbar = c.bg_unselected
+            c.fg_indicator = utils.get_color("Boolean", "fg")
+            c.fg_border = c.bg_tabbar
 
             utils.hl_overwrite({
                 SnacksImageMath = { fg = c.bg, bg = c.fg },
@@ -66,10 +69,11 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.func, fg = c.bg },
                 SnacksPickerDir = { fg = c.parameter },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.pickerBg },
+                StatusLine = { fg = "none", bg = c.bg_tabbar },
                 Directory = { bg = "none" },
-                StatusLineNC = { fg = "none", bg = c.pickerBg },
+                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 CursorLine = { bg = c.line },
+                WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 NormalFloat = { bg = "none" },
                 LineNr = { fg = c.floatBorder, bg = "none" },
                 TreesitterContext = { link="Normal" },
@@ -80,13 +84,20 @@ function M.setup(style, variant, utils)
                 BlinkCmpSource = { bg = "none" },
                 PmenuExtra = { bg = "none" },
                 -- RenderMarkdownCode = { bg = c.bg },
-                TabLineFill = { bg = c.bg_unselected },
-                TabLineSel = { bg = c.bg, fg = c.fg },
+                TabLineFill = { bg = c.bg_tabbar },
+                TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
                 TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-                TabLineIndicator = { bg = c.bg, fg = c.boolean },
+                TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
+
+                FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+                FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+                FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+                FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+                FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+                StatusLineMain = { fg = c.fg, italic = false },
+                StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.5) },
             })
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.5) })
         end
     end)
 end

@@ -62,5 +62,5 @@ require("treesitter-context").setup({
     multiline_threshold = 2,
     trim_scope = "inner",
     mode = "cursor",
-    separator = '—',
+    separator = "─",
 })

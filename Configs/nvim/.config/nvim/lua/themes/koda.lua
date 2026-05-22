@@ -5,15 +5,33 @@ function M.setup(style, variant, utils)
     vim.opt.background = style
     local koda = require("koda")
     koda.setup({
-        transparent = false, auto = true, cache = true,
+        transparent = false,
+        auto = true,
+        cache = true,
         styles = { functions = { bold = true }, keywords = {}, comments = {}, strings = {}, constants = {} },
         colors = {
-            bg = "#101010", fg = "#b0b0b0", dim = "#000000", line = "#272727",
-            keyword = "#777777", comment = "#50585d", border = "#ffffff", emphasis = "#ffffff",
-            func = "#ffffff", string = "#ffffff", char = "#ffffff", const = "#d9ba73",
-            highlight = "#458ee6", info = "#8ebeec", success = "#86cd82", warning = "#d9ba73",
-            danger = "#ff7676", green = "#14ba19", orange = "#f54d27", red = "#701516",
-            pink = "#f2a4db", cyan = "#5abfb5",
+            bg = "#101010",
+            fg = "#b0b0b0",
+            dim = "#000000",
+            line = "#272727",
+            keyword = "#777777",
+            comment = "#50585d",
+            border = "#ffffff",
+            emphasis = "#ffffff",
+            func = "#ffffff",
+            string = "#ffffff",
+            char = "#ffffff",
+            const = "#d9ba73",
+            highlight = "#458ee6",
+            info = "#8ebeec",
+            success = "#86cd82",
+            warning = "#d9ba73",
+            danger = "#ff7676",
+            green = "#14ba19",
+            orange = "#f54d27",
+            red = "#701516",
+            pink = "#f2a4db",
+            cyan = "#5abfb5",
         },
     })
 
@@ -21,10 +39,14 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         local c = koda.get_palette()
         c.pickerbg = utils.color_changer.lighten(c.bg, 0.03)
-        
-        c.const = utils.get_color("Constant", "fg")
-        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.05)
-        c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+
+        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.04)
+        c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
+        c.fg_selected = c.fg
+        c.bg_selected = c.bg_unselected
+        c.bg_tabbar = c.bg_unselected
+        c.fg_indicator = utils.get_color("Constant", "fg")
+        c.fg_border = c.bg_tabbar
 
         if style == "dark" then
             utils.hl_overwrite({
@@ -48,21 +70,28 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.func, fg = c.bg },
                 SnacksPickerDir = { fg = c.fg },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.pickerbg },
-                StatusLineNC = { fg = "none", bg = c.pickerbg },
+                StatusLine = { fg = "none", bg = c.bg_tabbar },
+                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 CursorLine = { bg = c.pickerbg },
-                WinSeparator = { fg = c.fg, bg = "none" },
-                TreesitterContext = { link="Normal" },
-                TreesitterContextLineNumber = { link="LineNr" },
-                TreesitterContextSeparator = { link="Comment" },
+                WinSeparator = { fg = c.fg_unselected, bg = "none" },
+                TreesitterContext = { link = "Normal" },
+                TreesitterContextLineNumber = { link = "LineNr" },
+                TreesitterContextSeparator = { link = "Comment" },
                 -- RenderMarkdownCode = { bg = c.bg },
-                TabLineFill = { bg = c.bg_unselected },
-                TabLineSel = { bg = c.bg, fg = utils.get_color("Character", "fg") },
+                TabLineFill = { bg = c.bg_tabbar },
+                TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
                 TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
-                TabLineIndicator = { bg = c.bg, fg = c.const },
+                TabLineIndicator = { bg = c.bg_tabbar, fg = c.fg_indicator },
+
+                FloatingTabsActive = { fg = c.fg_selected, bg = c.bg_selected },
+                FloatingTabsInactive = { fg = c.fg_unselected, bg = c.bg_unselected },
+                FloatingTabsIndicator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+                FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
+                FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
+
+                StatusLineMain = { fg = c.fg, italic = false },
+                StatusLineSecondary = { fg = "#777777" },
             })
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = "#777777" })
             -- utils.hl_markdown_code(c.bg, c.dim)
         end
     end)
