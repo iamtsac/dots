@@ -5,13 +5,13 @@ set -gx fish_term24bit 1
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p --theme base16-256'"
 
 fish_add_path $HOME/.cargo/bin \
-              $HOME/.npm/bin \
-              $HOME/.pixi/bin \
-              $HOME/.local/bin \
-              $HOME/.conda/bin \
-              $HOME/.zvm/bin \
-              $ZVM_INSTALL \
-              /opt/bin
+    $HOME/.npm/bin \
+    $HOME/.pixi/bin \
+    $HOME/.local/bin \
+    $HOME/.conda/bin \
+    $HOME/.zvm/bin \
+    $ZVM_INSTALL \
+    /opt/bin
 
 switch (uname)
     case Linux
@@ -50,7 +50,11 @@ function force_split_command
 end
 
 if type -q zmx
-  zmx completions fish | source
+    zmx completions fish | source
+end
+
+if type -q pixi
+    pixi completion --shell fish | source
 end
 
 if status is-interactive
@@ -121,5 +125,12 @@ for file in $HOME/.config/fish/conf.d/{local_conf,theme}.fish
     end
 end
 
-zoxide init fish | source
+if type -q direnv
+    direnv hook fish | source
+end
+
+if type -q direnv
+    zoxide init fish | source
+end
+
 oh-my-posh init fish --config "$HOME/.config/oh-my-posh.omp.toml" | source
