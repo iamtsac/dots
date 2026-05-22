@@ -2,8 +2,7 @@ local Snacks = require("snacks")
 local conf = require("configs/snacks_configs").snacks_config()
 
 Snacks.setup({
-    ---@type snacks.Config
-    terminal = { passthrough = true },
+    terminal = conf.terminal,
     bigfile = { enabled = true },
     dashboard = { enabled = false },
     explorer = { enabled = false },
@@ -28,14 +27,6 @@ Snacks.setup({
     },
     picker = conf.picker,
     zen = conf.zen,
-    terminal = {
-        enabled = true,
-        shell = "fish",
-        win = { style = "float", backdrop = 40 },
-        bo = {
-            filetype = "snacks_terminal",
-        },
-    },
     toggle = { enabled = true },
     rename = { enabled = false },
 })

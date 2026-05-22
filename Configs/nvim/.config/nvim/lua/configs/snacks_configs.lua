@@ -1,3 +1,139 @@
+local term = require("configs.term")
+
+local terminal_keys = {
+    ["<C-w>v"] = { "split_v", mode = { "n", "t" }, desc = "Split layout vertically" },
+    ["<C-w>s"] = { "split_h", mode = { "n", "t" }, desc = "Split layout horizontally" },
+    ["<C-w>q"] = { "kill_term", mode = { "n", "t" }, desc = "Kill terminal buffer & process" },
+    ["<C-w>c"] = { "kill_term", mode = { "n", "t" }, desc = "Kill terminal buffer & process" },
+
+    ["<C-w>h"] = {
+        function()
+            vim.cmd("wincmd h")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Go to left window",
+    },
+    ["<C-w>j"] = {
+        function()
+            vim.cmd("wincmd j")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Go to down window",
+    },
+    ["<C-w>k"] = {
+        function()
+            vim.cmd("wincmd k")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Go to up window",
+    },
+    ["<C-w>l"] = {
+        function()
+            vim.cmd("wincmd l")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Go to right window",
+    },
+    ["<C-w>="] = { "equalize_windows", mode = { "n", "t" }, desc = "Equalize windows" },
+
+    ["<C-w>H"] = {
+        function()
+            vim.cmd("wincmd H")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Move window left",
+    },
+    ["<C-w>J"] = {
+        function()
+            vim.cmd("wincmd J")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Move window down",
+    },
+    ["<C-w>K"] = {
+        function()
+            vim.cmd("wincmd K")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Move window up",
+    },
+    ["<C-w>L"] = {
+        function()
+            vim.cmd("wincmd L")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Move window right",
+    },
+
+    ["<C-w>+"] = {
+        function()
+            vim.cmd(term.resize_step .. "wincmd +")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Increase height",
+    },
+    ["<C-w>-"] = {
+        function()
+            vim.cmd(term.resize_step .. "wincmd -")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Decrease height",
+    },
+    ["<C-w>>"] = {
+        function()
+            vim.cmd(term.resize_step .. "wincmd >")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Increase width",
+    },
+    ["<C-w><"] = {
+        function()
+            vim.cmd(term.resize_step .. "wincmd <")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Increase width",
+    },
+    ["<C-w>_"] = {
+        function()
+            vim.cmd("wincmd _")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Maximize height",
+    },
+    ["<C-w>|"] = {
+        function()
+            vim.cmd("wincmd |")
+        end,
+        mode = "t",
+        expr = false,
+        desc = "Maximize width",
+    },
+}
+
+-- 2. Dynamically inject <C-w>1 through <C-w>9 for direct pane focusing
+for i = 1, 9 do
+    terminal_keys["<C-w>" .. i] = {
+        function(self)
+            term.focus_pane(self, i)
+        end,
+        mode = { "n", "t" },
+        desc = "Focus pane " .. i,
+    }
+end
+
 local M = {}
 
 function M.snacks_config()
@@ -172,7 +308,7 @@ function M.snacks_config()
         win = {
             input = {
                 keys = {
-                    ["<C-t>"] = { "<C-t>", mode = {"i"}, remap=true},
+                    ["<C-t>"] = { "<C-t>", mode = { "i" }, remap = true },
                     ["<C-t>p"] = { "toggle_preview", mode = { "i", "n" } },
                     ["<C-t>h"] = { "toggle_hidden", mode = { "i", "n" } },
                     ["<C-t>i"] = { "toggle_ignored", mode = { "i", "n" } },
@@ -557,6 +693,85 @@ function M.snacks_config()
                     ["<c-r>"] = { "git_restore", mode = { "n", "i" }, nowait = true },
                 },
             },
+        },
+    }
+
+    conf.terminal = {
+        passthrough = true,
+        enabled = true,
+        shell = "fish",
+        bo = { filetype = "snacks_terminal" },
+        win = {
+            stack = true,
+            backdrop = 50,
+            wo = {
+                -- Vimscript magically isolates the math:
+                -- Workspace = (id % 10000) / 10
+                -- Pane = id % 10
+                winbar = term.get_title("%{(b:snacks_terminal.id % 10000) / 10}", "%{b:snacks_terminal.id % 10}"),
+            },
+            actions = {
+                split_v = function(self)
+                    local pid, ws_id = term.get_context(self)
+                    local new_id = term.get_next_split_id(ws_id)
+                    if not new_id then
+                        return
+                    end
+
+                    Snacks.terminal.open(nil, {
+                        count = new_id,
+                        cwd = vim.fn.getcwd(), -- Force local directory
+                        win = {
+                            position = "right",
+                        },
+                    })
+                    vim.schedule(function()
+                        pcall(vim.cmd, "wincmd =")
+                    end)
+                end,
+
+                split_h = function(self)
+                    local pid, ws_id = term.get_context(self)
+                    local new_id = term.get_next_split_id(ws_id)
+                    if not new_id then
+                        return
+                    end
+
+                    Snacks.terminal.open(nil, {
+                        count = new_id,
+                        cwd = vim.fn.getcwd(), -- Force local directory
+                        win = {
+                            position = "bottom",
+                        },
+                    })
+                    vim.schedule(function()
+                        pcall(vim.cmd, "wincmd =")
+                    end)
+                end,
+
+                kill_term = function(self)
+                    local buf = self.buf
+                    if buf and vim.api.nvim_buf_is_valid(buf) then
+                        vim.cmd("silent! noautocmd bdelete! " .. buf)
+                    end
+                    pcall(function()
+                        self:close()
+                    end)
+                    vim.schedule(function()
+                        pcall(vim.cmd, "doautocmd WinEnter")
+                        pcall(vim.cmd, "redrawstatus!")
+                    end)
+                end,
+
+                equalize_windows = function()
+                    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                        pcall(vim.api.nvim_set_option_value, "winfixwidth", false, { win = win })
+                        pcall(vim.api.nvim_set_option_value, "winfixheight", false, { win = win })
+                    end
+                    vim.cmd("wincmd =")
+                end,
+            },
+            keys = terminal_keys,
         },
     }
 

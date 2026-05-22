@@ -37,13 +37,13 @@ vim.o.expandtab = true
 vim.o.cursorline = true
 vim.o.cursorlineopt = "line"
 vim.opt.fillchars = {
-    horiz = "━",
-    horizup = "┻",
-    horizdown = "┳",
-    vert = "┃",
-    vertleft = "┫",
-    vertright = "┣",
-    verthoriz = "╋",
+  horiz     = "─",
+  horizup   = "┴",
+  horizdown = "┬",
+  vert      = "│",
+  vertleft  = "┤",
+  vertright = "├",
+  verthoriz = "┼",
 }
 
 -- window-local options
@@ -69,25 +69,26 @@ vim.g.netrw_winsize = 20
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.g.mapleader = " "
 
-require("core/plugins")
-require("configs/treesitter")
-require("configs/snacks")
+require("core.plugins")
+require("configs.treesitter")
+require("configs.snacks")
 
 -- require("configs/gitsigns")
-require("configs/mason")
-require("configs/conform")
-require("configs/oil")
-require("core/keymaps")
-require("configs/comment")
-require("configs/tabline")
-require("configs/scope")
-require("configs/statusline")
-require("configs/codediff")
-require("configs/mini_diff")
-require("configs/neogit")
-require("configs/markdown")
-require("configs/lsp")
-require("configs/overseer")
+require("configs.mason")
+require("configs.conform")
+require("configs.oil")
+require("core.keymaps")
+require("configs.comment")
+require("configs.tabline")
+require("configs.scope")
+require("configs.statusline")
+require("configs.codediff")
+require("configs.mini_diff")
+require("configs.neogit")
+require("configs.markdown")
+require("configs.lsp")
+require("configs.overseer")
+require("configs.term")
 
 local theme_utils = require("utils.theme")
 theme_utils.load_theme()
@@ -142,51 +143,3 @@ local function watch_theme()
     )
 end
 watch_theme()
-
-local tab_group = vim.api.nvim_create_augroup("GlobalTabHistory", { clear = true })
-local tab_history = {}
-
--- 1. Track every time you enter a tab, pushing it to the top of our history stack
-vim.api.nvim_create_autocmd("TabEnter", {
-  group = tab_group,
-  callback = function()
-    local current_tab = vim.api.nvim_get_current_tabpage()
-    
-    -- Remove the tab from history if it's already there (to avoid duplicates)
-    for i, tab in ipairs(tab_history) do
-      if tab == current_tab then
-        table.remove(tab_history, i)
-        break
-      end
-    end
-    
-    -- Push current tab to the front of the history
-    table.insert(tab_history, 1, current_tab)
-  end,
-})
-
--- 2. When a tab is closed, find the most recently visited valid tab and go there
-vim.api.nvim_create_autocmd("TabClosed", {
-  group = tab_group,
-  callback = function()
-    -- Filter out invalid (closed) tabs from our history
-    local valid_history = {}
-    for _, tab in ipairs(tab_history) do
-      if vim.api.nvim_tabpage_is_valid(tab) then
-        table.insert(valid_history, tab)
-      end
-    end
-    tab_history = valid_history
-
-    -- If we have a previous tab in history, jump back to it
-    if #tab_history > 0 then
-      local target_tab = tab_history[1]
-      -- Use schedule to let Neovim finish destroying the closed tab first
-      vim.schedule(function()
-        if vim.api.nvim_tabpage_is_valid(target_tab) then
-          vim.api.nvim_set_current_tabpage(target_tab)
-        end
-      end)
-    end
-  end,
-})

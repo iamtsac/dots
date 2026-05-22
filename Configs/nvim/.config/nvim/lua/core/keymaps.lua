@@ -3,6 +3,7 @@ local conform = require("conform")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
 local neogit = require("neogit")
+local term = require("configs.term")
 
 wk.setup({
     delay = 1000,
@@ -62,11 +63,13 @@ vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.fil
 vim.keymap.set("n", "<leader>fF", function() Snacks.picker.smart(snacks_opts.smart_opts) end, { desc = "Smart Find" })
 vim.keymap.set("n", "<leader>fp", function() Snacks.picker.projects() end, { desc = "Projects" })
 vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "File Explorer (Oil)" })
-vim.keymap.set("n", "<leader>fo", require("utils.folder_search").smart_dir_jump, { desc = "Smart Directory Jump" })
+vim.keymap.set("n", "<leader>fP", require("utils.folder_search").smart_dir_jump, { desc = "Smart Project Jump" })
 vim.keymap.set("n", "<leader>fd", function()
   require("utils.folder_search").open_folder_picker({ cwd = vim.fn.getcwd() })
 end, { desc = "Fuzzy Folders (Sorted by Depth)" })
-vim.keymap.set("n", "<leader>fn", ":e ", { desc = "Go-to/Create file" })
+vim.keymap.set("n", "<leader>fn", function()
+  require("utils.folder_search").open_file_navigator({ cwd = vim.fn.getcwd() })
+end, { desc = "Go-to/Create file" })
 
 -- Search (<leader>s)
 vim.keymap.set("n", "<leader>sg", function() Snacks.picker.grep() end, { desc = "Grep (Project)" })
@@ -262,69 +265,26 @@ end, { desc = " Delete mark" })
 -- =============================================================================
 vim.keymap.set("t", "<C-[><C-[>", "<C-\\><C-n>", { desc = "Terminal normal mode" })
 
-vim.keymap.set({ "n" }, "<leader>th", function()
-  Snacks.terminal.toggle(nil, { win = { position = "bottom", height = 0.4 } })
-end, { desc = "Toggle Horizontal Terminal Split" })
+vim.keymap.set("n", "<leader>ts", function()
+    local ws_id = term.update_and_get_workspace()
+    term.toggle_workspace_group({ ws_id = ws_id, default_style = "terminal", default_position = "bottom", height = 0.4 })
+end, { desc = "Toggle Layout Workspace (Bottom)" })
 
-vim.keymap.set({ "n" }, "<leader>tv", function()
-  Snacks.terminal.toggle(nil, { win = { position = "right", width = 0.5 } })
-end, { desc = "Toggle Vertical Terminal Split" })
+vim.keymap.set("n", "<leader>tv", function()
+    local ws_id = term.update_and_get_workspace()
+    term.toggle_workspace_group({ ws_id = ws_id, default_style = "terminal", default_position = "right", width = 0.4 })
+end, { desc = "Toggle Layout Workspace (Right)" })
 
-vim.keymap.set({ "n", "t" }, "<C-/>", function()
-  Snacks.terminal.toggle()
-end, { desc = "Toggle Terminal" })
+local function handle_main_toggle()
+    local ws_id = term.update_and_get_workspace()
+    term.toggle_workspace_group({
+        ws_id = ws_id,
+        default_style = "terminal",
+        default_position = "float",
+        height = 0.95,
+        width = 0.95,
+    })
+end
 
-vim.keymap.set("n", "<leader>tl", function()
-  local terminal = require("snacks.terminal")
-  local current_tab = vim.api.nvim_get_current_tabpage()
-
-  local terminals = terminal.list()
-  local items = {}
-
-  for _, term in ipairs(terminals) do
-    if term.buf and vim.api.nvim_buf_is_valid(term.buf) then
-      -- attach originating tab if missing
-      term._tab = term._tab or vim.api.nvim_tabpage_get_number(current_tab)
-
-      -- filter by current tab
-      if term._tab == vim.api.nvim_tabpage_get_number(current_tab) then
-        local display_name = "Terminal " .. (term.id or "?")
-
-        if term.opts and term.opts.cmd then
-          display_name = display_name .. " [" .. term.opts.cmd .. "]"
-        end
-
-        table.insert(items, {
-          text = display_name,
-          buf = term.buf,
-          term = term,
-        })
-      end
-    end
-  end
-
-  if #items == 0 then
-    vim.notify("No active snacks terminals in this tab.", vim.log.levels.INFO)
-    return
-  end
-
-  Snacks.picker.pick({
-    title = "Tab Terminals",
-    items = items,
-
-    layout = {
-      preset = "default",
-    },
-
-    format = function(item)
-      return {
-        { item.text, "Keyword" },
-      }
-    end,
-
-    confirm = function(picker, item)
-      picker:close()
-      item.term:show()
-    end,
-  })
-end, { desc = "List tab terminals" })
+vim.keymap.set({ "n", "t" }, "<C-/>", handle_main_toggle, { desc = "Toggle Active Terminal Workspace" })
+vim.keymap.set("n", "<leader>tl", term.terminal_picker, { desc = "Pick Terminal Workspace" })
