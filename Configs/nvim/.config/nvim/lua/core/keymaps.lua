@@ -61,9 +61,9 @@ end, { desc = "Format File" })
 
 vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.files_opts) end, { desc = "Find File" })
 vim.keymap.set("n", "<leader>fF", function() Snacks.picker.smart(snacks_opts.smart_opts) end, { desc = "Smart Find" })
-vim.keymap.set("n", "<leader>fp", function() Snacks.picker.projects() end, { desc = "Projects" })
+vim.keymap.set("n", "<leader>fP", function() Snacks.picker.projects() end, { desc = "Projects" })
 vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "File Explorer (Oil)" })
-vim.keymap.set("n", "<leader>fP", require("utils.folder_search").smart_dir_jump, { desc = "Smart Project Jump" })
+vim.keymap.set("n", "<leader>fp", require("utils.folder_search").smart_dir_jump, { desc = "Smart Project Jump" })
 vim.keymap.set("n", "<leader>fd", function()
   require("utils.folder_search").open_folder_picker({ cwd = vim.fn.getcwd() })
 end, { desc = "Fuzzy Folders (Sorted by Depth)" })
@@ -93,6 +93,7 @@ vim.keymap.set("n", "<leader><Tab>c", "<cmd>tabnew<CR>", { desc = "New Tab" })
 vim.keymap.set("n", "<leader><Tab>n", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 vim.keymap.set("n", "<leader><Tab>p", "<cmd>tabprevious<CR>", { desc = "Prev Tab" })
 vim.keymap.set("n", "<leader><Tab>x", require("utils.tab_utils").safe_tab_close, { desc = "Close Tab" })
+vim.keymap.set("n", "<leader><tab>s",  require("utils.tab_utils").tab_picker, { desc = "Search Tabs" })
 vim.keymap.set("n", "<leader><Tab>r", function()
   local name = vim.fn.input("Tab name: ")
   if name and name ~= "" then
@@ -288,3 +289,4 @@ end
 
 vim.keymap.set({ "n", "t" }, "<C-/>", handle_main_toggle, { desc = "Toggle Active Terminal Workspace" })
 vim.keymap.set("n", "<leader>tl", term.terminal_picker, { desc = "Pick Terminal Workspace" })
+

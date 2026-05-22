@@ -6,121 +6,23 @@ local terminal_keys = {
     ["<C-w>q"] = { "kill_term", mode = { "n", "t" }, desc = "Kill terminal buffer & process" },
     ["<C-w>c"] = { "kill_term", mode = { "n", "t" }, desc = "Kill terminal buffer & process" },
 
-    ["<C-w>h"] = {
-        function()
-            vim.cmd("wincmd h")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Go to left window",
-    },
-    ["<C-w>j"] = {
-        function()
-            vim.cmd("wincmd j")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Go to down window",
-    },
-    ["<C-w>k"] = {
-        function()
-            vim.cmd("wincmd k")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Go to up window",
-    },
-    ["<C-w>l"] = {
-        function()
-            vim.cmd("wincmd l")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Go to right window",
-    },
+    ["<C-w>h"] = { function() vim.cmd("wincmd h") end, mode = "t", expr = false, desc = "Go to left window", },
+    ["<C-w>j"] = { function() vim.cmd("wincmd j") end, mode = "t", expr = false, desc = "Go to down window", },
+    ["<C-w>k"] = { function() vim.cmd("wincmd k") end, mode = "t", expr = false, desc = "Go to up window", },
+    ["<C-w>l"] = { function() vim.cmd("wincmd l") end, mode = "t", expr = false, desc = "Go to right window", },
     ["<C-w>="] = { "equalize_windows", mode = { "n", "t" }, desc = "Equalize windows" },
 
-    ["<C-w>H"] = {
-        function()
-            vim.cmd("wincmd H")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Move window left",
-    },
-    ["<C-w>J"] = {
-        function()
-            vim.cmd("wincmd J")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Move window down",
-    },
-    ["<C-w>K"] = {
-        function()
-            vim.cmd("wincmd K")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Move window up",
-    },
-    ["<C-w>L"] = {
-        function()
-            vim.cmd("wincmd L")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Move window right",
-    },
+    ["<C-w>H"] = { function() vim.cmd("wincmd H") end, mode = "t", expr = false, desc = "Move window left", },
+    ["<C-w>J"] = { function() vim.cmd("wincmd J") end, mode = "t", expr = false, desc = "Move window down", },
+    ["<C-w>K"] = { function() vim.cmd("wincmd K") end, mode = "t", expr = false, desc = "Move window up", },
+    ["<C-w>L"] = { function() vim.cmd("wincmd L") end, mode = "t", expr = false, desc = "Move window right", },
 
-    ["<C-w>+"] = {
-        function()
-            vim.cmd(term.resize_step .. "wincmd +")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Increase height",
-    },
-    ["<C-w>-"] = {
-        function()
-            vim.cmd(term.resize_step .. "wincmd -")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Decrease height",
-    },
-    ["<C-w>>"] = {
-        function()
-            vim.cmd(term.resize_step .. "wincmd >")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Increase width",
-    },
-    ["<C-w><"] = {
-        function()
-            vim.cmd(term.resize_step .. "wincmd <")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Increase width",
-    },
-    ["<C-w>_"] = {
-        function()
-            vim.cmd("wincmd _")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Maximize height",
-    },
-    ["<C-w>|"] = {
-        function()
-            vim.cmd("wincmd |")
-        end,
-        mode = "t",
-        expr = false,
-        desc = "Maximize width",
-    },
+    ["<C-w>+"] = { function() vim.cmd(term.resize_step .. "wincmd +") end, mode = "t", expr = false, desc = "Increase height", },
+    ["<C-w>-"] = { function() vim.cmd(term.resize_step .. "wincmd -") end, mode = "t", expr = false, desc = "Decrease height", },
+    ["<C-w>>"] = { function() vim.cmd(term.resize_step .. "wincmd >") end, mode = "t", expr = false, desc = "Increase width", },
+    ["<C-w><"] = { function() vim.cmd(term.resize_step .. "wincmd <") end, mode = "t", expr = false, desc = "Increase width", },
+    ["<C-w>_"] = { function() vim.cmd("wincmd _") end, mode = "t", expr = false, desc = "Maximize height", },
+    ["<C-w>|"] = { function() vim.cmd("wincmd |") end, mode = "t", expr = false, desc = "Maximize width", },
 }
 
 -- 2. Dynamically inject <C-w>1 through <C-w>9 for direct pane focusing
