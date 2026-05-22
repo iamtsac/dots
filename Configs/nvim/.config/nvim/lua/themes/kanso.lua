@@ -89,7 +89,7 @@ function M.setup(style, variant, utils)
 
             c.string = utils.get_color("String", "fg")
             c.bg_unselected = utils.color_changer.darken(c.bg, 0.05)
-            c.fg_unselected = utils.color_changer.darken(c.fg, 0.45)
+            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.55)
             c.fg_selected = c.fg
             c.bg_selected = c.bg_unselected
             c.bg_tabbar = c.bg_unselected
@@ -126,6 +126,7 @@ function M.setup(style, variant, utils)
                 LineNr = { bg = "none" },
                 NormalFloat = { bg = "none" },
                 CursorLine = { bg = c.bg_dim },
+                WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 TreesitterContext = { link="Normal" },
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
