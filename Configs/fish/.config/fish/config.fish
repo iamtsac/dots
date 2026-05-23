@@ -57,6 +57,10 @@ if type -q pixi
     pixi completion --shell fish | source
 end
 
+if type -q mutagen
+    mutagen completion fish | source
+end
+
 if status is-interactive
     set -g fish_key_bindings fish_vi_key_bindings
     set -g fish_greeting ""

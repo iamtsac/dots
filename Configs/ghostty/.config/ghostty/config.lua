@@ -37,7 +37,7 @@ if uname == "Darwin" then
     local raw_res = get_output("system_profiler SPDisplaysDataType | grep Resolution | awk '{print $2}' | head -n 1")
     main_resolution = tonumber(raw_res) or 0
 elseif uname == "Linux" then
-    config.command = "/usr/bin/fish"
+    config.command = "fish"
     local cmd = "xrandr --current | grep -oE '[0-9]+x[0-9]+' | sort -rn | head -n 1"
     local raw_res = get_output(cmd)
     if raw_res == "" or raw_res == nil then 
@@ -85,7 +85,6 @@ config.palette_harmonious = false
 config.split_preserve_zoom = true
 config.unfocused_split_opacity = 0.5
 
--- REFACTORED: Keybinds as ordered arrays
 local keybinds_global = {
     { "ctrl+shift+c", "copy_to_clipboard" },
     { "ctrl+shift+v", "paste_from_clipboard" },
@@ -101,7 +100,7 @@ local keybinds_global = {
     { "ctrl+shift+minus", "decrease_font_size:0.5" },
     { "ctrl+shift+0", "reset_font_size" },
     { "super+r", "reload_config" },
-    -- { "ctrl+b", "activate_key_table_once:mux" },
+    { "ctrl+b", "activate_key_table_once:mux" },
 }
 
 local keybinds_mux = {
@@ -114,7 +113,7 @@ local keybinds_mux = {
     { "ctrl+shift+n", "move_tab:1" },
     { "/", "start_search" },
     { "s", "toggle_tab_overview" },
-    { "shift+3", "prompt_tab_title" },
+    { ",", "prompt_tab_title" },
     { "shift+semicolon", "toggle_command_palette" },
     { "o", "goto_split:next" },
     { "semicolon", "goto_split:next" },
