@@ -25,7 +25,7 @@ vim.o.backup = false
 vim.o.timeoutlen = 1500
 vim.o.ttimeoutlen = 0
 vim.o.writebackup = false
-vim.o.cmdheight = 1
+vim.o.cmdheight = 0
 vim.o.showcmd = true
 vim.o.showcmdloc = "statusline"
 vim.o.showmode = false
@@ -34,16 +34,16 @@ vim.o.tabstop = 8
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
-vim.o.cursorline = true
+vim.o.cursorline = false
 vim.o.cursorlineopt = "line"
 vim.opt.fillchars = {
-  horiz     = "─",
-  horizup   = "┴",
-  horizdown = "┬",
-  vert      = "│",
-  vertleft  = "┤",
-  vertright = "├",
-  verthoriz = "┼",
+    horiz = "─",
+    horizup = "┴",
+    horizdown = "┬",
+    vert = "│",
+    vertleft = "┤",
+    vertright = "├",
+    verthoriz = "┼",
 }
 
 -- window-local options
@@ -101,6 +101,25 @@ vim.o.foldenable = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "pum"
 
+-- Autoreloading sync files
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+        local timer = vim.loop.new_timer()
+        timer:start(
+            0,
+            2000,
+            vim.schedule_wrap(function()
+                -- Only check if we are in normal mode so it doesn't break typing
+                if vim.api.nvim_get_mode().mode == "n" then
+                    vim.cmd("silent! checktime")
+                end
+            end)
+        )
+    end,
+})
+
 -- vim.g.clipboard = {
 --     name = "OSC 52",
 --     copy = {
@@ -123,7 +142,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-local uv = vim.loop
 local stylerc = vim.fn.expand("~/.config/stylerc")
 local handle = vim.uv.new_fs_event()
 

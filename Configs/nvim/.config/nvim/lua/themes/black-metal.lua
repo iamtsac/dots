@@ -28,7 +28,6 @@ function M.setup(style, variant, utils)
         utils.hl_overwrite({
             Normal = { bg = c.base00 },
             NormalFloat = { bg = "none" },
-            NormalNC = { bg = "none" },
             SignColumn = { bg = "none" },
             LineNr = { fg = c.base03, bg = "none" },
             CurosrLineNr = { link = "LineNr" },

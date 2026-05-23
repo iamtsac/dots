@@ -25,7 +25,6 @@ local terminal_keys = {
     ["<C-w>|"] = { function() vim.cmd("wincmd |") end, mode = "t", expr = false, desc = "Maximize width", },
 }
 
--- 2. Dynamically inject <C-w>1 through <C-w>9 for direct pane focusing
 for i = 1, 9 do
     terminal_keys["<C-w>" .. i] = {
         function(self)
@@ -47,75 +46,10 @@ function M.snacks_config()
             backdrop = false,
             row = -1,
             width = 0,
-            height = 0.5,
+            height = 0.48,
             border = "top",
             title = " {title} {live} {flags}",
-            title_pos = "center",
-            {
-                win = "input",
-                height = 1,
-                border = "bottom",
-                width = 0.,
-            },
-            {
-                box = "horizontal",
-                {
-                    win = "list",
-                    border = "none",
-                },
-                {
-                    win = "preview",
-                    title = "{preview}",
-                    title_pos = "center",
-                    width = 0.5,
-                    border = "none",
-                    wo = {
-                        number = false,
-                        signcolumn = "yes:4",
-                    },
-                },
-            },
-        },
-    }
-
-    conf.simple_layout = {
-        layout = {
-            box = "vertical",
-            backdrop = false,
-            row = -1,
-            width = 0,
-            height = 0.4,
-            border = "top",
-            title = " {title} {live} {flags}",
-            title_pos = "center",
-            {
-                win = "input",
-                height = 1,
-                border = "bottom",
-                width = 0.,
-            },
-            {
-                box = "horizontal",
-                {
-                    win = "list",
-                    border = "none",
-                },
-            },
-        },
-    }
-
-    conf.explorer_layout = {
-        preview = "main",
-        layout = {
-            box = "vertical",
-            backdrop = false,
-            row = -1,
-            width = 0,
-            height = 0.4,
-            border = "top",
-            position = "bottom",
-            title = " {title} {live} {flags}",
-            title_pos = "center",
+            title_pos = "left",
             {
                 win = "input",
                 height = 1,
@@ -391,70 +325,6 @@ function M.snacks_config()
         },
     }
 
-    conf.explorer_opts = {
-        finder = "explorer",
-        sort = { fields = { "sort" } },
-        supports_live = true,
-        tree = true,
-        watch = true,
-        diagnostics = true,
-        diagnostics_open = false,
-        git_status = true,
-        git_status_open = false,
-        git_untracked = true,
-        follow_file = true,
-        focus = "list",
-        auto_close = false,
-        jump = { close = false },
-        layout = conf.explorer_layout,
-        -- to show the explorer to the right, add the below to
-        -- your config under `opts.picker.sources.explorer`
-        -- layout = { layout = { position = "right" } },
-        formatters = {
-            file = { filename_only = true },
-            severity = { pos = "right" },
-        },
-        matcher = { sort_empty = false, fuzzy = false },
-        config = function(opts)
-            return require("snacks.picker.source.explorer").setup(opts)
-        end,
-        win = {
-            list = {
-                keys = {
-                    ["<BS>"] = "explorer_up",
-                    ["-"] = "explorer_up",
-                    ["l"] = "confirm",
-                    ["h"] = "explorer_close", -- close directory
-                    ["a"] = "explorer_add",
-                    ["d"] = "explorer_del",
-                    ["r"] = "explorer_rename",
-                    ["c"] = "explorer_copy",
-                    ["m"] = "explorer_move",
-                    ["o"] = "explorer_open", -- open with system application
-                    ["P"] = "toggle_preview",
-                    ["y"] = { "explorer_yank", mode = { "n", "x" } },
-                    ["p"] = "explorer_paste",
-                    ["u"] = "explorer_update",
-                    ["<c-c>"] = "tcd",
-                    ["<leader>/"] = "picker_grep",
-                    ["<c-t>"] = "terminal",
-                    ["."] = "explorer_focus",
-                    ["I"] = "toggle_ignored",
-                    ["H"] = "toggle_hidden",
-                    ["Z"] = "explorer_close_all",
-                    ["]g"] = "explorer_git_next",
-                    ["[g"] = "explorer_git_prev",
-                    ["]d"] = "explorer_diagnostic_next",
-                    ["[d"] = "explorer_diagnostic_prev",
-                    ["]w"] = "explorer_warn_next",
-                    ["[w"] = "explorer_warn_prev",
-                    ["]e"] = "explorer_error_next",
-                    ["[e"] = "explorer_error_prev",
-                },
-            },
-        },
-    }
-
     conf.image_opts = {
         formats = {
             "png",
@@ -605,7 +475,7 @@ function M.snacks_config()
         bo = { filetype = "snacks_terminal" },
         win = {
             stack = true,
-            backdrop = 50,
+            backdrop = false,
             wo = {
                 -- Vimscript magically isolates the math:
                 -- Workspace = (id % 10000) / 10

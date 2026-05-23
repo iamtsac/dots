@@ -53,7 +53,6 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         utils.hl_overwrite({
             NormalFloat = { bg = c.bg },
-            NormalNC = { bg = c.bg },
             SignColumn = { bg = c.bg },
             LineNr = { fg = utils.color_changer.darken(c.fg, 0.7), bg = "none" },
             EndOfBuffer = { link = "LineNr" },

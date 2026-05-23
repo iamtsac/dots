@@ -72,7 +72,6 @@ function M.tab_picker()
         source = "tabs",
         title = " Tabs List ",
         layout = {
-            preset = "ivy",
             preview = false, -- Turn off preview pane safely
             layout = {
                 height = 0.3, -- Explicitly locks the split layout window to 8 rows tall

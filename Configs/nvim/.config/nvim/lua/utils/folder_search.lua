@@ -1,9 +1,5 @@
 local M = {}
 
--- =============================================================================
--- UTILITY FUNCTIONS
--- =============================================================================
-
 local function is_dir(path)
     local stat = vim.uv.fs_stat(path)
     return stat and stat.type == "directory"
@@ -34,13 +30,9 @@ local function clear_prompt(picker)
     picker:filter():init({ pattern = "", search = "" })
 end
 
--- =============================================================================
--- DECLARATIVE BASE PICKER OPTIONS CONFIGURATION (DEFINED OUTSIDE)
--- =============================================================================
-
 local base_opts = {
     title = "File Navigator",
-    layout = { preset = "ivy", preview = true },
+    layout = { layout = {height = 0.4 }},
     dirs_only = false,
     hidden = false,
     ignored = true,
@@ -262,17 +254,13 @@ local base_opts = {
 M.open_file_navigator = function(opts)
     opts = opts or {}
     local initial_cwd = opts.cwd or vim.fn.getcwd()
-
-    -- Clean up initialization-only parameters so they don't corrupt snacks parsing layers
     opts.cwd = nil
 
-    -- 1. Construct contextual parameters
     local structural_defaults = {
         cwd = initial_cwd,
         prompt = vim.fn.fnamemodify(initial_cwd, ":~") .. (initial_cwd == "/" and "" or "/"),
     }
 
-    -- 2. Cleanly merge: base architecture options -> runtime adjustments -> structural contexts
     local final_opts = vim.tbl_deep_extend("force", {}, base_opts, opts, structural_defaults)
 
     require("snacks").picker(final_opts)
@@ -345,7 +333,7 @@ M.smart_dir_jump = function()
 
     snacks.picker.pick("zoxide", {
         title = "Smart Jump (Zoxide)",
-        layout = { preset = "ivy", preview = false },
+        layout = { preview = false, layout = { height = 0.3 } },
         win = {
             input = {
                 keys = {

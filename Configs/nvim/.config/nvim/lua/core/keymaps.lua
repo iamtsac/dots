@@ -5,6 +5,21 @@ local snacks_opts = require("configs/snacks_configs").snacks_config()
 local neogit = require("neogit")
 local term = require("configs.term")
 
+local function reload_config()
+  for name, _ in pairs(package.loaded) do
+    if name:match("^core%.") or name:match("^configs%.") or name:match("^utils%.") then
+      package.loaded[name] = nil
+    end
+  end
+
+  if handle and not handle:is_closing() then
+    handle:stop()
+  end
+
+  dofile(vim.env.MYVIMRC)
+  vim.notify("Neovim configuration reloaded!", vim.log.levels.INFO)
+end
+
 wk.setup({
     delay = 1000,
     preset = "classic",
@@ -12,29 +27,6 @@ wk.setup({
     show_help = false,
     show_keys = false,
 })
-
-local function cat_table(x1, x2)
-    local tmp = {}
-    for k, v in pairs(x1) do
-        tmp[k] = v
-    end
-    for k, v in pairs(x2) do
-        tmp[k] = v
-    end
-    return tmp
-end
-
-local oil_custom = function()
-    local buffers = vim.api.nvim_list_bufs()
-    for _, bufnr in ipairs(buffers) do
-        local bufname = vim.api.nvim_buf_get_name(bufnr)
-        if bufname:match("^oil:/") then
-            vim.api.nvim_buf_delete(bufnr, { force = true })
-            return
-        end
-    end
-    vim.cmd("Oil")
-end
 
 -- Regster categories in which_key
 wk.add({
@@ -54,15 +46,13 @@ wk.add({
 
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear Highlight" })
-
-vim.keymap.set({ "n", "v" }, "=", function()
-    conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
-end, { desc = "Format File" })
-
+-- =============================================================================
+-- 1. Files
+-- =============================================================================
 vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.files_opts) end, { desc = "Find File" })
 vim.keymap.set("n", "<leader>fF", function() Snacks.picker.smart(snacks_opts.smart_opts) end, { desc = "Smart Find" })
 vim.keymap.set("n", "<leader>fP", function() Snacks.picker.projects() end, { desc = "Projects" })
-vim.keymap.set("n", "<leader>fe", oil_custom, { desc = "File Explorer (Oil)" })
+vim.keymap.set("n", "<leader>fe", function() vim.cmd("Oil") end, { desc = "File Explorer (Oil)" })
 vim.keymap.set("n", "<leader>fp", require("utils.folder_search").smart_dir_jump, { desc = "Smart Project Jump" })
 vim.keymap.set("n", "<leader>fd", function()
   require("utils.folder_search").open_folder_picker({ cwd = vim.fn.getcwd() })
@@ -71,7 +61,9 @@ vim.keymap.set("n", "<leader>fn", function()
   require("utils.folder_search").open_file_navigator({ cwd = vim.fn.getcwd() })
 end, { desc = "Go-to/Create file" })
 
--- Search (<leader>s)
+-- =============================================================================
+-- 2. Search
+-- =============================================================================
 vim.keymap.set("n", "<leader>sg", function() Snacks.picker.grep() end, { desc = "Grep (Project)" })
 vim.keymap.set("n", "<leader>sb", function() Snacks.picker.grep_buffers() end, { desc = "Grep (Open Buffers)" })
 vim.keymap.set("n", "<leader>sl", function() Snacks.picker.lines() end, { desc = "Search Lines" })
@@ -81,7 +73,7 @@ vim.keymap.set({ "n", "x" }, "<leader>sw", function() Snacks.picker.grep_word() 
 vim.keymap.set({ "n", "v" }, "<leader>sz", function() Snacks.picker.spelling() end, { desc = "Spell Suggestions" })
 
 -- =============================================================================
--- 5. Buffer & Tab Management
+-- 3. Buffer & Tab Management
 -- =============================================================================
 vim.keymap.set("n", "<leader>,", function() Snacks.picker.buffers(snacks_opts.buffer_opts) end, { desc = "Buffer Switch" })
 vim.keymap.set("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
@@ -116,7 +108,7 @@ vim.keymap.set("n", "<leader><Tab>0", "<cmd>0tabmove<CR>", { desc = "Move tab at
 
 
 -- =============================================================================
--- 6. Toggle
+-- 4. Toggle
 -- =============================================================================
 vim.keymap.set("n", "<leader>tZ", function() Snacks.zen() end, { desc = " Toggle zen mode" })
 vim.keymap.set("n", "<leader>tc", "<cmd>TSContext toggle<cr>", { desc = " Toggle TS Context mode" })
@@ -152,7 +144,7 @@ vim.keymap.set("n", "<leader>tw", function()
 end, { desc = " Toggle line wrap" })
 
 -- =============================================================================
--- 7. Git Integration
+-- 5. Git Integration
 -- =============================================================================
 vim.keymap.set("n", "<leader>gf", function() Snacks.picker.git_files() end, { desc = "Git Files" })
 vim.keymap.set("n", "<leader>gB", function() Snacks.picker.git_branches() end, { desc = "Git Branches" })
@@ -161,7 +153,6 @@ vim.keymap.set("n", "<leader>gl", function() Snacks.picker.git_log_line() end, {
 vim.keymap.set("n", "<leader>gH", function() Snacks.picker.git_log() end, { desc = "Git Log (Project)" })
 vim.keymap.set("n", "<leader>gh", function() Snacks.picker.git_log_file() end, { desc = "Git Log (File)" })
 vim.keymap.set("n", "<leader>gg", function() neogit.open() end, { desc = "Neogit" })
--- vim.keymap.set("n", "<leader>gd", custom_diff, { desc = "Diff File" })
 --
 vim.keymap.set("n", "<leader>gdd", "<cmd>CodeDiff<cr>", { desc = "Git Diff View (CodeDiff)" })
 vim.keymap.set("n", "<leader>gdf", "<cmd>CodeDiff file HEAD<cr>", { desc = "Git Diff View (Current File)" })
@@ -182,7 +173,7 @@ vim.keymap.set("n", "<leader>gR", function()
 end, { desc = "Reset Buffer (All Hunks)" })
 
 -- =============================================================================
--- 8. LSP (Navigation & Actions)
+-- 6. LSP (Navigation & Actions)
 -- =============================================================================
 vim.keymap.set("n", "<leader>ld", function() Snacks.picker.lsp_definitions() end, { desc = "Definition" })
 vim.keymap.set("n", "<leader>lD", function() Snacks.picker.lsp_declarations() end, { desc = "Declaration" })
@@ -194,18 +185,24 @@ vim.keymap.set("n", "<leader>lco", function() Snacks.picker.lsp_outgoing_calls()
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename Symbol" })
 
+-- Formating
+vim.keymap.set({ "n", "v" }, "=", function()
+    conform.format({ lsp_fallback = true, async = false, timeout_ms = 500 })
+end, { desc = "Format File" })
+
+
 -- Diagnostics (mnemonic e/E for Error)
 vim.keymap.set("n", "<leader>le", function() Snacks.picker.diagnostics() end, { desc = "Project Errors" })
 vim.keymap.set("n", "<leader>lE", function() Snacks.picker.diagnostics_buffer() end, { desc = "Buffer Errors" })
 vim.keymap.set("n", "<C-K>", vim.diagnostic.open_float, { desc = "View Diagnostic" })
 
 -- Symbols
-local sym_opts = { layout = snacks_opts.simple_layout, keep_parents = true }
+local sym_opts = { keep_parents = true }
 vim.keymap.set("n", "<leader>ls", function() Snacks.picker.lsp_symbols(sym_opts) end, { desc = "LSP Symbols" })
 vim.keymap.set("n", "<leader>lS", function() Snacks.picker.lsp_workspace_symbols(sym_opts) end, { desc = "LSP Workspace Symbols" })
 
 -- =============================================================================
--- 9. Tree-sitter & Movement
+-- 7. Tree-sitter & Movement
 -- =============================================================================
 local ts_select = require("nvim-treesitter-textobjects.select")
 local ts_move = require("nvim-treesitter-textobjects.move")
@@ -228,10 +225,10 @@ vim.keymap.set({ "n", "x", "o" }, "]c", function() ts_move.goto_next("@condition
 vim.keymap.set({ "n", "x", "o" }, "[c", function() ts_move.goto_previous("@conditional.outer") end, { desc = "Prev Conditional" })
 
 -- =============================================================================
--- 10. Help & Misc
+-- 8. Help & Misc
 -- =============================================================================
 vim.keymap.set("n", "<leader>hk", function() Snacks.picker.keymaps() end, { desc = "Keymaps" })
-vim.keymap.set("n", "<leader>hr", "<cmd>source $MYVIMRC<cr>", { desc = "Reload Config" })
+vim.keymap.set("n", "<leader>hr", reload_config, { desc = "Reload Config" })
 vim.keymap.set("n", "<leader>hp", "<cmd>Lazy<cr>", { desc = "Plugin Manager" })
 vim.keymap.set("n", "<leader>co", "<cmd>OverseerToggle<CR>", { desc = "Compile/Overseer" })
 vim.keymap.set("n", "<leader>hh", function() Snacks.picker.highlights() end, { desc = " Highlights" })
@@ -262,7 +259,7 @@ vim.keymap.set("n", "<leader>md", function()
 end, { desc = " Delete mark" })
 
 -- =============================================================================
--- 11. Terminal
+-- 9. Terminal
 -- =============================================================================
 vim.keymap.set("t", "<C-[><C-[>", "<C-\\><C-n>", { desc = "Terminal normal mode" })
 
@@ -280,10 +277,10 @@ local function handle_main_toggle()
     local ws_id = term.update_and_get_workspace()
     term.toggle_workspace_group({
         ws_id = ws_id,
-        default_style = "terminal",
+        default_style = "float",
         default_position = "float",
-        height = 0.95,
-        width = 0.95,
+        height = 0.90,
+        width = 0.90,
     })
 end
 

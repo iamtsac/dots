@@ -161,8 +161,9 @@ local original_comment_hl = nil
 vim.api.nvim_create_autocmd("User", {
     pattern = "CodeDiffOpen",
     callback = function()
-        vim.g.codediff_saved_showtabline = vim.o.showtabline
-        vim.o.showtabline = 0
+        -- vim.g.codediff_saved_showtabline = vim.o.showtabline
+        -- vim.o.showtabline = 0
+        vim.t.tabname = "Diff Mode"
 
         original_comment_hl = vim.api.nvim_get_hl(0, { name = "Comment" })
 
@@ -190,10 +191,10 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("User", {
     pattern = "CodeDiffClose",
     callback = function()
-        if vim.g.codediff_saved_showtabline then
-            vim.o.showtabline = vim.g.codediff_saved_showtabline
-            vim.g.codediff_saved_showtabline = nil
-        end
+        -- if vim.g.codediff_saved_showtabline then
+        --     vim.o.showtabline = vim.g.codediff_saved_showtabline
+        --     vim.g.codediff_saved_showtabline = nil
+        -- end
 
         if original_comment_hl then
             vim.api.nvim_set_hl(0, "Comment", original_comment_hl)

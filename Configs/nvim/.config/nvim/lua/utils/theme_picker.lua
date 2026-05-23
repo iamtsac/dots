@@ -62,7 +62,7 @@ local function variant_picker(main_name, variants)
         source = "theme_variants",
         items = variants,
         title = main_name .. " Options",
-        layout = { preview = false, preset = "vscode" },
+        layout = { preview = false, preset = "neomodern" },
         win = {
             input = {
                 keys = {
