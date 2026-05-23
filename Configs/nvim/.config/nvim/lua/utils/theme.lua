@@ -238,6 +238,16 @@ M.load_theme = function()
         theme_module.setup(args.style, args.variant, M)
         vim.api.nvim_exec_autocmds("ColorScheme", { modeline = false })
         vim.opt.termguicolors = true
+
+        vim.schedule(function()
+            local cursor_color = M.get_color("Cursor", "bg") or M.get_color("Normal", "fg")
+            if cursor_color and cursor_color:match("^#") then
+                -- Send OSC 12 (Change Cursor Color) escape code
+                -- \27]12; sets the cursor color, \27\\ terminates the string sequence cleanly
+                io.write(string.format("\27]12;%s\27\\", cursor_color))
+                io.flush()
+            end
+        end)
     else
         vim.notify("Theme Refresh Failed: " .. theme_name, vim.log.levels.ERROR)
     end
