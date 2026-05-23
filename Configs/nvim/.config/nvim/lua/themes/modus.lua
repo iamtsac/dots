@@ -56,8 +56,6 @@ function M.setup(style, variant, utils)
                 PmenuExtra = { bg = "none" },
                 NormalFloat = { bg = "none" },
                 CursorLine = { bg = c.bg_dim },
-                TreesitterContextBottom = { underline=true },
-                TreesitterContextLineNumberBottom = { underline=true },
                 TreesitterContextSeparator = { link="Comment" },
 
                 TabLineFill = { bg = c.bg_tabbar },
@@ -118,6 +116,9 @@ function M.setup(style, variant, utils)
                 TreesitterContextLineNumber = { link="LineNr" },
                 TreesitterContextSeparator = { link="Comment" },
                 LineNr = { bg = "none" },
+                DiffAdd = { link = "MiniDiffSignAdd" },
+                DiffDelete = { link = "MiniDiffSignDelete" },
+                DiffChange = { link = "MiniDiffSignChange" },
 
                 TabLineFill = { bg = c.bg_tabbar },
                 TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },

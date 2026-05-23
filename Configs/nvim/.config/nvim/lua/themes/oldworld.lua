@@ -10,11 +10,11 @@ function M.setup(style, variant, utils)
     require("oldworld").setup({
         terminal_colors = true,
         styles = {
-            comments = { italic = true, bold = true },
+            comments = { italic = true, bold = false },
             keywords = {},
             identifiers = {},
             functions = { italic = false, bold = false },
-            variables = { bold = true },
+            variables = { bold = false },
             booleans = {},
         },
         integrations = {
@@ -53,6 +53,7 @@ function M.setup(style, variant, utils)
     vim.schedule(function()
         utils.hl_overwrite({
             NormalFloat = { bg = c.bg },
+            NormalNC = { bg = c.bg },
             SignColumn = { bg = c.bg },
             LineNr = { fg = utils.color_changer.darken(c.fg, 0.7), bg = "none" },
             EndOfBuffer = { link = "LineNr" },

@@ -16,8 +16,8 @@ function M.setup(style, variant, utils)
             c.fg = c.vscFront
             c.bg = c.vscBack
 
-            c.bg_unselected = utils.color_changer.darken(c.bg, 0.55)
-            c.fg_unselected = utils.color_changer.darken(c.fg, 0.65)
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.09)
+            c.fg_unselected = utils.color_changer.darken(c.fg, 0.55)
             c.fg_selected = c.fg
             c.bg_selected = c.bg_unselected
             c.bg_tabbar = c.bg_unselected
@@ -79,8 +79,8 @@ function M.setup(style, variant, utils)
             c.fg = c.vscFront
             c.bg = c.vscBack
 
-            c.bg_unselected = utils.color_changer.darken(c.bg, 0.25)
-            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.15)
+            c.bg_unselected = utils.color_changer.darken(c.bg, 0.07)
+            c.fg_unselected = utils.color_changer.lighten(c.fg, 0.35)
             c.fg_selected = c.fg
             c.bg_selected = c.bg_unselected
             c.bg_tabbar = c.bg_unselected
@@ -141,7 +141,7 @@ function M.setup(style, variant, utils)
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
                 StatusLineMain = { fg = c.fg_main, italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) },
+                StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.60) },
             })
         end
     end)

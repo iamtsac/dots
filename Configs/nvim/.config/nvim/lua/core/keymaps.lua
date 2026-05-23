@@ -17,7 +17,6 @@ local function reload_config()
   end
 
   dofile(vim.env.MYVIMRC)
-  vim.notify("Neovim configuration reloaded!", vim.log.levels.INFO)
 end
 
 wk.setup({
