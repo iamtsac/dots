@@ -35,7 +35,7 @@ function M.setup(style, variant, utils)
             variables = "none",
         },
         plugin = {
-            cmp = { plain = false, reverse = false }, 
+            cmp = { plain = false, reverse = false },
         },
     })
 
@@ -105,9 +105,9 @@ function M.setup(style, variant, utils)
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
             WinSeparator = { fg = c.fg_unselected, bg = "none" },
 
-            TreesitterContext = { link="Normal" },
-            TreesitterContextLineNumber = { link="LineNr" },
-            TreesitterContextSeparator = { link="Comment" },
+            TreesitterContext = { link = "Normal" },
+            -- TreesitterContextLineNumber = { fg = c.bg_unselected },
+            TreesitterContextSeparator = { fg = c.bg_unselected },
             TabLineFill = { bg = c.bg_tabbar },
             TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
             TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },

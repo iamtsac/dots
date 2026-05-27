@@ -50,7 +50,7 @@ require("markview").setup({
         task_scopes = { enable = true },
         taglinks = { enable = true },
     },
-    hybrid_modes = { "n", "i" },
+    hybrid_modes = { "n", "i", "no" },
 })
 
 require("markview.extras.checkboxes").setup()

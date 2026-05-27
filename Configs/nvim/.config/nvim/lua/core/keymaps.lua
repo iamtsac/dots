@@ -1,7 +1,7 @@
 local wk = require("which-key")
 local conform = require("conform")
 local oil = require("oil")
-local snacks_opts = require("configs/snacks_configs").snacks_config()
+local snacks_opts = require("configs/snacks_configs")
 local neogit = require("neogit")
 local term = require("utils.term")
 
@@ -71,6 +71,7 @@ wk.add({
     { "<leader>h", group = "Help/Misc", icon = "󰋖" },
     { "<leader>l", group = "LSP", icon = "󰄲" },
     { "<leader>m", group = "Marks", icon = "󰶰" },
+    { "<leader>M", group = "Markdown View", icon = "" },
     { "<leader>s", group = "Search", icon = "󰍉" }, -- Consolidated Search
     { "<leader>t", group = "Toggle", icon = "󰔡" },
     { "<leader>c", group = "Compile", icon = "󰄲" },
@@ -158,6 +159,17 @@ vim.keymap.set("n", "<C-K>", function() vim.diagnostic.open_float() end, { desc 
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", { desc = " Toggle line wrap" })
 vim.keymap.set("n", "<leader>tC", function() vim.cmd("ColorizerToggle") end, { desc = " Toggle colorizer" })
 vim.keymap.set('n', '<leader>tr', window_resize_mode, { desc = "Enter Window Resize Mode" })
+vim.keymap.set('n', '<leader>th', function() 
+    vim.o.cursorline = not vim.o.cursorline
+    -- vim.o.cursorcolumn = not vim.o.cursorcolumn
+    if vim.o.background == "light" then
+        vim.api.nvim_set_hl(0, "CursorLine", { bg = "#fcf151" })
+        vim.api.nvim_set_hl(0, "CursorColumn", { bg = "#fcf151" })
+    elseif vim.o.background == "dark" then
+        vim.api.nvim_set_hl(0, "CursorLine", { bg = "#003554" })
+        vim.api.nvim_set_hl(0, "CursorColumn", { bg = "#003554" })
+    end
+end, { desc = "Toggle hightlighting" })
 
 
 vim.keymap.set("n", "<leader>tS", function()

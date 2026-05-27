@@ -16,21 +16,3 @@ require("mini.diff").setup({
         reset = "<leader>gr", -- Reset/Undo hunk under cursor back to HEAD
     },
 })
-
-local cu = require("utils.theme_utils")
-vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-        cu.hl_overwrite({
-            MiniDiffSignAdd = { link = "GitSignsAdd" },
-            MiniDiffSignChange = { link = "GitSignsChange" },
-            MiniDiffSignDelete = { link = "GitSignsDelete" },
-            MiniDiffOverAdd = { bg = cu.get_color("DiffAdd", "bg"), fg = "none" },
-            MiniDiffOverChange = { bg = cu.get_color("DiffChange", "bg"), fg = "none" },
-            MiniDiffOverDelete = { bg = cu.get_color("DiffDelete", "bg"), fg = "none" },
-            MiniDiffOverChangeBuf = { bg = cu.get_color("DiffChange", "bg"), fg = "none" },
-            MiniDiffOverContext = { bg = "none", fg = "none" },
-            MiniDiffOverContextBuf = { bg = "none", fg = "none" },
-        })
-    end,
-})

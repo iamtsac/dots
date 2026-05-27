@@ -1,10 +1,10 @@
 local Snacks = require("snacks")
-local conf = require("configs/snacks_configs").snacks_config()
+local conf = require("configs.snacks_configs")
 
 Snacks.setup({
     terminal = conf.terminal,
     bigfile = { enabled = true },
-    dashboard = { enabled = false },
+    dashboard = conf.dashboard,
     explorer = { enabled = false },
     image = conf.image_opts,
     indent = conf.indent,

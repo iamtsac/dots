@@ -238,6 +238,7 @@ M.load_theme = function()
         theme_module.setup(args.style, args.variant, M)
         vim.api.nvim_exec_autocmds("ColorScheme", { modeline = false })
         vim.opt.termguicolors = true
+        require("themes.generic_style").apply()
 
         vim.schedule(function()
             local cursor_color = M.get_color("Cursor", "bg") or M.get_color("Normal", "fg")
