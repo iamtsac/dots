@@ -16,8 +16,8 @@ require("utils.floating_tabbar").setup({
         separator_hl = "FloatingTabsSeparator",
     },
     auto_hide = {
-        cursor_overlap = true,
-        text_overlap = true,
+        cursor_overlap = false,
+        text_overlap = false,
     },
 })
 

@@ -186,7 +186,7 @@ end
 
 local function buffer_state()
     -- local mod = vim.bo.modified and "**" or "--"
-    local mod = vim.bo.modified and "%#Exception#𜷄" or "%#String#█"
+    local mod = vim.bo.modified and "%#Exception#𜷄" or "%#Boolean#█"
     local read = vim.bo.readonly and "%#Exception#" or mod
     return read
 end
@@ -253,6 +253,14 @@ local function diagnostics()
     return ""
 end
 
+
+local function resize_mode()
+    if vim.g.in_resize_mode then
+        return "%#StatusLineMain# Resizing..."
+    end
+    return ""
+end
+
 Statusline = {}
 
 Statusline.active = function()
@@ -277,6 +285,8 @@ Statusline.active = function()
         lsp_status(),
         selected_compiler(),
         ")",
+        "%=",
+        resize_mode(),
     })
 end
 

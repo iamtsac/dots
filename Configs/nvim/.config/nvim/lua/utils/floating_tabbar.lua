@@ -199,10 +199,12 @@ local function draw_floating_tabs()
         local s_col = vim.fn.screencol() - 1
 
         -- Toggle cursorline based on dynamic row_pos
-        if s_row == row_pos then
-            vim.o.cursorline = false
-        else
-            vim.o.cursorline = true
+        if vim.g.default_cursor_line_mode then
+            if s_row == row_pos then
+                vim.o.cursorline = false
+            else
+                vim.o.cursorline = true
+            end
         end
 
         if s_row == row_pos and s_col >= col_pos and s_col <= (col_pos + safe_width) then
@@ -293,6 +295,10 @@ function FloatingTabs.setup(opts)
     })
 
     vim.schedule(draw_floating_tabs)
+end
+
+function FloatingTabs.redraw()
+    draw_floating_tabs()
 end
 
 return FloatingTabs

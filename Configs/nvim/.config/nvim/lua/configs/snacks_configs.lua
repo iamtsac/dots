@@ -1,4 +1,4 @@
-local term = require("configs.term")
+local term = require("utils.term")
 
 local terminal_keys = {
     ["<C-w>v"] = { "split_v", mode = { "n", "t" }, desc = "Split layout vertically" },
@@ -345,30 +345,17 @@ function M.snacks_config()
         },
         force = false, -- try displaying the image, even if the terminal does not support it
         doc = {
-            -- enable image viewer for documents
-            -- a treesitter parser must be available for the enabled languages.
             enabled = true,
-            -- render the image inline in the buffer
-            -- if your env doesn't support unicode placeholders, this will be disabled
-            -- takes precedence over `opts.float` on supported terminals
             inline = false,
-            -- render the image in a floating window
-            -- only used if `opts.inline` is disabled
             float = true,
-            max_width = 60,
-            max_height = 60,
-            -- Set to `true`, to conceal the image text when rendering inline.
-            -- (experimental)
-            ---@param lang string tree-sitter language
-            ---@param type snacks.image.Type image type
+            max_width = 30,
+            max_height = 30,
             conceal = function(lang, type)
                 -- only conceal math expressions
                 return false
             end,
         },
         img_dirs = { "img", "images", "assets", "static", "public", "media", "attachments" },
-        -- window options applied to windows displaying image buffers
-        -- an image buffer is a buffer with `filetype=image`
         wo = {
             wrap = false,
             number = false,
@@ -394,15 +381,12 @@ function M.snacks_config()
             chart = "󰄧 ",
             image = " ",
         },
-        ---@class snacks.image.convert.Config
         convert = {
             notify = false, -- show a notification on error
-            ---@type snacks.image.args
             mermaid = function()
                 local theme = vim.o.background == "light" and "neutral" or "dark"
                 return { "-i", "{src}", "-o", "{file}", "-b", "transparent", "-t", theme, "-s", "{scale}" }
             end,
-            ---@type table<string,snacks.image.args>
             magick = {
                 default = { "{src}[0]", "-scale", "1920x1080>" }, -- default for raster images
                 vector = { "-density", 192, "{src}[0]" }, -- used by vector images like svg
@@ -443,12 +427,12 @@ function M.snacks_config()
     }
 
     conf.image_style = {
-        relative = "win",
+        relative = "cursor",
         border = "none",
         focusable = false,
         backdrop = false,
         row = 0,
-        col = -1,
+        col = 800,
     }
 
     conf.git_diff = {

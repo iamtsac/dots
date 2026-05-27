@@ -3,7 +3,7 @@ local conform = require("conform")
 local oil = require("oil")
 local snacks_opts = require("configs/snacks_configs").snacks_config()
 local neogit = require("neogit")
-local term = require("configs.term")
+local term = require("utils.term")
 
 local function reload_config()
   for name, _ in pairs(package.loaded) do
@@ -17,6 +17,42 @@ local function reload_config()
   end
 
   dofile(vim.env.MYVIMRC)
+end
+
+vim.g.in_resize_mode = false
+local function window_resize_mode()
+    vim.g.in_resize_mode = true
+    vim.cmd('redrawstatus')
+
+    local function opts(desc)
+        return { buffer = true, noremap = true, silent = true, desc = desc }
+    end
+
+    -- Map the resizing keys
+    vim.keymap.set('n', '<', '<C-w><', opts("Resize Left"))
+    vim.keymap.set('n', '>', '<C-w>>', opts("Resize Right"))
+    vim.keymap.set('n', '+', '<C-w>+', opts("Resize Down"))
+    vim.keymap.set('n', '-', '<C-w>-', opts("Resize Up"))
+    vim.keymap.set('n', '_', '<C-w>_', opts("Maximize Vertically"))
+    vim.keymap.set('n', '|', '<C-w>|', opts("Maximize Horizontally"))
+    vim.keymap.set('n', '=', '<C-w>=', opts("Equalize"))
+
+    local function exit_mode()
+        vim.keymap.del('n', '<', { buffer = true })
+        vim.keymap.del('n', '>', { buffer = true })
+        vim.keymap.del('n', '+', { buffer = true })
+        vim.keymap.del('n', '-', { buffer = true })
+        vim.keymap.del('n', '_', { buffer = true })
+        vim.keymap.del('n', '=', { buffer = true })
+        vim.keymap.del('n', '<Esc>', { buffer = true })
+        vim.keymap.del('n', '<leader>tr', { buffer = true })
+
+        vim.g.in_resize_mode = false
+        vim.cmd('redrawstatus')
+    end
+
+    vim.keymap.set('n', '<Esc>', exit_mode, opts("Exit Resize Mode"))
+    vim.keymap.set('n', '<leader>tr', exit_mode, opts("Exit Resize Mode"))
 end
 
 wk.setup({
@@ -52,13 +88,16 @@ vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files(snacks_opts.fil
 vim.keymap.set("n", "<leader>fF", function() Snacks.picker.smart(snacks_opts.smart_opts) end, { desc = "Smart Find" })
 vim.keymap.set("n", "<leader>fP", function() Snacks.picker.projects() end, { desc = "Projects" })
 vim.keymap.set("n", "<leader>fe", function() vim.cmd("Oil") end, { desc = "File Explorer (Oil)" })
-vim.keymap.set("n", "<leader>fp", require("utils.folder_search").smart_dir_jump, { desc = "Smart Project Jump" })
+vim.keymap.set("n", "<leader>fp", require("utils.file_search_utils").smart_dir_jump, { desc = "Smart Project Jump" })
 vim.keymap.set("n", "<leader>fd", function()
-  require("utils.folder_search").open_folder_picker({ cwd = vim.fn.getcwd() })
-end, { desc = "Fuzzy Folders (Sorted by Depth)" })
+  require("utils.file_search_utils").open_folder_picker({ cwd = vim.fn.getcwd() })
+end, { desc = "Fuzzy Folders" })
 vim.keymap.set("n", "<leader>fn", function()
-  require("utils.folder_search").open_file_navigator({ cwd = vim.fn.getcwd() })
+  require("utils.file_search_utils").open_file_navigator({ cwd = vim.fn.getcwd() })
 end, { desc = "Go-to/Create file" })
+vim.keymap.set("n", "<leader>fD", function()
+  require("utils.file_search_utils").open_folder_picker({ cwd = "~" })
+end, { desc = "Fuzzy Folders (~)" })
 
 -- =============================================================================
 -- 2. Search
@@ -90,9 +129,11 @@ vim.keymap.set("n", "<leader><Tab>r", function()
   if name and name ~= "" then
     vim.t.tabname = name
     vim.cmd("redrawtabline") 
+    _G.FloatingTabs.redraw()
   else
     vim.t.tabname = nil
     vim.cmd("redrawtabline")
+    _G.FloatingTabs.redraw()
   end
 end, { desc = "Set Custom Tab Name" })
 
@@ -116,9 +157,10 @@ vim.keymap.set("n", "<leader>td", function() vim.diagnostic.enable(not vim.diagn
 vim.keymap.set("n", "<C-K>", function() vim.diagnostic.open_float() end, { desc = " View current diagnostic" })
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", { desc = " Toggle line wrap" })
 vim.keymap.set("n", "<leader>tC", function() vim.cmd("ColorizerToggle") end, { desc = " Toggle colorizer" })
+vim.keymap.set('n', '<leader>tr', window_resize_mode, { desc = "Enter Window Resize Mode" })
 
 
-vim.keymap.set("n", "<leader>ts", function()
+vim.keymap.set("n", "<leader>tS", function()
     local new_state = not (vim.g.snacks_scroll ~= false)
     vim.g.snacks_scroll = new_state
     local status = new_state and "Enabled" or "Disabled"
@@ -183,6 +225,12 @@ vim.keymap.set("n", "<leader>lci", function() Snacks.picker.lsp_incoming_calls()
 vim.keymap.set("n", "<leader>lco", function() Snacks.picker.lsp_outgoing_calls() end, { desc = "Outgoing Calls" })
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set("n", "<leader>ln", vim.lsp.buf.rename, { desc = "Rename Symbol" })
+vim.keymap.set("n", "<leader>lR", function() 
+    vim.defer_fn(function()
+        vim.cmd("lsp restart") 
+        vim.notify("LSP environment refreshed and restarted", vim.log.levels.INFO)
+    end, 100)
+end, { desc = "Restart LSP" })
 
 -- Formating
 vim.keymap.set({ "n", "v" }, "=", function()
@@ -261,6 +309,7 @@ end, { desc = " Delete mark" })
 -- 9. Terminal
 -- =============================================================================
 vim.keymap.set("t", "<C-[><C-[>", "<C-\\><C-n>", { desc = "Terminal normal mode" })
+vim.keymap.set("t", "<C-[>", "<Esc>", { desc = "Terminal normal mode" })
 
 vim.keymap.set("n", "<leader>ts", function()
     local ws_id = term.update_and_get_workspace()
@@ -278,11 +327,20 @@ local function handle_main_toggle()
         ws_id = ws_id,
         default_style = "float",
         default_position = "float",
-        height = 0.90,
-        width = 0.90,
+        height = 0.98,
+        width = 0.98,
     })
 end
 
 vim.keymap.set({ "n", "t" }, "<C-/>", handle_main_toggle, { desc = "Toggle Active Terminal Workspace" })
 vim.keymap.set("n", "<leader>tl", term.terminal_picker, { desc = "Pick Terminal Workspace" })
 
+-- =============================================================================
+-- 10. Rendering
+-- =============================================================================
+vim.api.nvim_set_keymap("n", "<leader>tm", "<CMD>Markview<CR>", { desc = "Toggles `markview` previews globally." });
+vim.api.nvim_set_keymap("n", "<leader>Ms", "<CMD>Markview splitToggle<CR>", { desc = "Toggles `splitview` for current buffer." });
+vim.api.nvim_set_keymap("n", "<leader>Mt", "<CMD>Checkbox toggle<CR>", { desc = "(.md) Toggle Checkbox" });
+vim.api.nvim_set_keymap("n", "<leader>MH", "<CMD>Heading increase<CR>", { desc = "(.md) Increase Heading" });
+vim.api.nvim_set_keymap("n", "<leader>Mh", "<CMD>Heading decrease<CR>", { desc = "(.md) Decrease Heading" });
+vim.api.nvim_set_keymap("n", "<leader>Mc", "<CMD>Editor edit<CR>", { desc = "(.md) Open Code Editor" });

@@ -1,0 +1,51 @@
+local themes = {
+    ["Neomodern"] = {
+        { name = "Moon (Dark)", theme = "neomodern", style = "dark", variant = "moon" },
+        { name = "Iceclimber (Dark)", theme = "neomodern", style = "dark", variant = "iceclimber" },
+        { name = "Gyokuro (Dark)", theme = "neomodern", style = "dark", variant = "gyokuro" },
+        { name = "Hojicha (Dark)", theme = "neomodern", style = "dark", variant = "hojicha" },
+        { name = "RosePrime (Dark)", theme = "neomodern", style = "dark", variant = "roseprime" },
+        { name = "Moon (Light)", theme = "neomodern", style = "light", variant = "moon" },
+        { name = "Iceclimber (Light)", theme = "neomodern", style = "light", variant = "iceclimber" },
+        { name = "Gyokuro (Light)", theme = "neomodern", style = "light", variant = "gyokuro" },
+        { name = "Hojicha (Light)", theme = "neomodern", style = "light", variant = "hojicha" },
+        { name = "RosePrime (Light)", theme = "neomodern", style = "light", variant = "roseprime" },
+    },
+    ["Kanso"] = {
+        { name = "Zen (Dark)", theme = "kanso", style = "dark", variant = "zen" },
+        { name = "Mist (Dark)", theme = "kanso", style = "dark", variant = "mist" },
+        { name = "Ink (Dark)", theme = "kanso", style = "dark", variant = "ink" },
+        { name = "Pearl (Light)", theme = "kanso", style = "light", variant = "pearl" },
+    },
+    ["Modus"] = {
+        { name = "Dark", theme = "modus", style = "dark", variant = "default" },
+        { name = "Light", theme = "modus", style = "light", variant = "default" },
+    },
+    ["Black-Metal"] = {
+        { name = "Nile (Dark)", theme = "black-metal", style = "dark", variant = "nile" },
+        { name = "Khold (Dark)", theme = "black-metal", style = "dark", variant = "khold" },
+        { name = "Bathory (Dark)", theme = "black-metal", style = "dark", variant = "bathory" },
+        { name = "Burzum (Dark)", theme = "black-metal", style = "dark", variant = "burzum" },
+        { name = "Gorgoroth (Dark)", theme = "black-metal", style = "dark", variant = "gorgoroth" },
+        { name = "Marduk (Dark)", theme = "black-metal", style = "dark", variant = "marduk" },
+        { name = "Mayhem (Dark)", theme = "black-metal", style = "dark", variant = "mayhem" },
+        { name = "Venom (Dark)", theme = "black-metal", style = "dark", variant = "venom" },
+        { name = "Immortal (Dark)", theme = "black-metal", style = "dark", variant = "immortal" },
+        { name = "Dark Funeral (Dark)", theme = "black-metal", style = "dark", variant = "dark-funeral" },
+        { name = "Darkthrone (Dark)", theme = "black-metal", style = "dark", variant = "darkthrone" },
+        { name = "Emperor (Dark)", theme = "black-metal", style = "dark", variant = "emperor" },
+        { name = "Impaled Nazarene (Dark)", theme = "black-metal", style = "dark", variant = "impaled-nazarene" },
+        { name = "Taake (Dark)", theme = "black-metal", style = "dark", variant = "taake" },
+        { name = "Thyrfing (Dark)", theme = "black-metal", style = "dark", variant = "thyrfing" },
+        { name = "Windir (Dark)", theme = "black-metal", style = "dark", variant = "windir" },
+    },
+    ["Koda"] = { { name = "Default", theme = "koda", style = "dark", variant = "default" } },
+    ["Oldworld"] = { { name = "Default", theme = "oldworld", style = "dark", variant = "default" } },
+    ["VSCode"] = {
+        { name = "Dark", theme = "vscode", style = "dark", variant = "default" },
+        { name = "Light", theme = "vscode", style = "light", variant = "default" },
+    },
+    ["Vague"] = { { name = "Default", theme = "vague", style = "dark", variant = "default" } },
+}
+
+return themes

@@ -154,7 +154,7 @@ require("codediff").setup({
     },
 })
 
-local cu = require("utils.theme")
+local cu = require("utils.theme_utils")
 
 local original_comment_hl = nil
 

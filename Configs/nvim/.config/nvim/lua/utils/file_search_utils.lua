@@ -5,7 +5,34 @@ local function is_dir(path)
     return stat and stat.type == "directory"
 end
 
-local function execute_jump(path, is_directory)
+local function has_subfolders(path)
+    local handle = vim.uv.fs_scandir(path)
+    if not handle then
+        return false
+    end
+    while true do
+        local name, type = vim.uv.fs_scandir_next(handle)
+        if not name then
+            break
+        end
+
+        if name ~= ".git" and name ~= "__pycache__" then
+            if type == "directory" then
+                return true
+            elseif type == "link" then
+                -- Resolve the link to see if it points to a directory
+                local full_path = path .. "/" .. name
+                local stat = vim.uv.fs_stat(full_path)
+                if stat and stat.type == "directory" then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function execute_jump(path, is_directory, tcd)
     if not path then
         return
     end
@@ -13,11 +40,13 @@ local function execute_jump(path, is_directory)
 
     if is_directory then
         require("oil").open(full_path)
-        vim.schedule(function()
-            vim.cmd("tcd " .. vim.fn.fnameescape(full_path))
-            vim.t.tabname = vim.fn.fnamemodify(full_path, ":t")
-            vim.cmd("redrawtabline")
-        end)
+        if tcd then
+            vim.schedule(function()
+                vim.cmd("tcd " .. vim.fn.fnameescape(full_path))
+                vim.t.tabname = vim.fn.fnamemodify(full_path, ":t")
+                vim.cmd("redrawtabline")
+            end)
+        end
     else
         vim.cmd("edit " .. vim.fn.fnameescape(full_path))
     end
@@ -39,11 +68,12 @@ local base_opts = {
     toggles = { dirs_only = "d", hidden = "h", ignored = "i" },
     sort = { empty = false },
     matcher = { cwd_bonus = true, filename_bonus = true },
+    tcd = true,
 
     finder = function(picker_opts, ctx)
         local current_cwd = ctx.picker:cwd()
         local base_args =
-            "--absolute-path --max-depth 1 --exclude .git --exclude __pycache__ --exclude wandb/ --exclude .build/"
+            "-L --absolute-path --max-depth 1 --exclude .git --exclude __pycache__ --exclude wandb/ --exclude .build/"
         if ctx.picker.opts.ignored then
             base_args = base_args .. " --no-ignore"
         end
@@ -268,6 +298,7 @@ end
 
 M.open_folder_picker = function(opts)
     opts = opts or {}
+    tcd = opts.tcd or false
 
     -- Define explicit overrides targeting your loose-matching folder search requirement
     local search_overrides = {
@@ -280,7 +311,10 @@ M.open_folder_picker = function(opts)
                 local item = picker:current()
                 if item and item.dir then
                     picker:close()
-                    execute_jump(item.file, true)
+                    if not has_subfolders(item.file) then
+                        execute_jump(item.file, true, tcd)
+                    end
+                    execute_jump(item.file, true, tcd)
                     return
                 end
                 picker:close()
@@ -290,6 +324,9 @@ M.open_folder_picker = function(opts)
                 local item = picker:current()
                 if item and item.dir then
                     local new_cwd = item.file
+                    if not has_subfolders(new_cwd) then
+                        execute_jump(item.file, true, tcd)
+                    end
                     picker:set_cwd(new_cwd)
                     picker.opts.prompt = vim.fn.fnamemodify(new_cwd, ":~") .. (new_cwd == "/" and "" or "/")
                     clear_prompt(picker)
@@ -318,19 +355,6 @@ end
 M.smart_dir_jump = function()
     local snacks = require("snacks")
 
-    local function open_oil(path)
-        if not path then
-            return
-        end
-        local full_path = vim.fn.expand(path)
-        require("oil").open(full_path)
-        vim.schedule(function()
-            vim.cmd("tcd " .. vim.fn.fnameescape(full_path))
-            vim.t.tabname = vim.fn.fnamemodify(full_path, ":t")
-            vim.cmd("redrawtabline")
-        end)
-    end
-
     snacks.picker.pick("zoxide", {
         title = "Smart Jump (Zoxide)",
         layout = { preview = false, layout = { height = 0.3 } },
@@ -349,19 +373,20 @@ M.smart_dir_jump = function()
                     M.open_file_navigator({
                         title = "Zoxide Folder Discovery",
                         cwd = vim.fn.expand("$HOME"),
-                        show_hidden = true,
+                        hidden = true,
                     })
                 else
                     picker:close()
-                    execute_jump(item.file or item.text, true)
+                    execute_jump(item.file or item.text, true, true)
                 end
             end,
             force_discover = function(picker)
                 picker:close()
-                M.open_file_navigator({
+                M.open_folder_picker({
                     title = "Zoxide Folder Discovery",
                     cwd = vim.fn.expand("$HOME"),
-                    show_hidden = true,
+                    hidden = false,
+                    tcd=true,
                 })
             end,
         },

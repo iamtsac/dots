@@ -43,10 +43,13 @@ require("lazy").setup({
     { "neovim/nvim-lspconfig" },
     { "stevearc/oil.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
     {
-        "MeanderingProgrammer/render-markdown.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+        "OXY2DEV/markview.nvim",
+        lazy = false,
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons",
+        },
     },
-    -- { "OXY2DEV/markview.nvim" },
     {
         "Saghen/blink.cmp",
         version = "v1.*",
@@ -68,7 +71,7 @@ require("lazy").setup({
     { "Mofiqul/vscode.nvim", lazy = false, priority = 1000 },
     { "vague-theme/vague.nvim", lazy = false, priority = 1000 },
     { "dgox16/oldworld.nvim", lazy = false, priority = 1000 },
-    { "RRethy/base16-nvim", lazy = false, priority = 1000 },
+    { "metalelf0/black-metal-theme-neovim", lazy = false, priority = 1000 },
     { "oskarnurm/koda.nvim", lazy = false, priority = 1000 },
     { "casedami/neomodern.nvim", lazy = false, priority = 1000 },
 })

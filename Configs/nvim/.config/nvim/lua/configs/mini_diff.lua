@@ -17,7 +17,7 @@ require("mini.diff").setup({
     },
 })
 
-local cu = require("utils.theme")
+local cu = require("utils.theme_utils")
 vim.api.nvim_create_autocmd("ColorScheme", {
     pattern = "*",
     callback = function()

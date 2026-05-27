@@ -52,7 +52,7 @@ function M.setup(style, variant, utils)
                 CursorLine = { bg = c.bg_dim },
                 WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 TreesitterContext = { link="Normal" },
-                TreesitterContextSeparator = { link="Comment" },
+                TreesitterContextSeparator = { bg = "none", fg = utils.color_changer.lighten(c.bg, 0.15) },
                 TreesitterContextLineNumber = { link="LineNr" },
                 -- LineNr = { fg = vscPopupFront, bg = c.vscCursorDarkDark },
                 -- LineNrAbove = { fg = c.vscSplitLight, bg = c.vscCursorDarkDark },

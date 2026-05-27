@@ -35,6 +35,7 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.cursorline = false
+vim.g.default_cursor_line_mode = vim.o.cursorline -- Needed for floating tabs
 vim.o.cursorlineopt = "line"
 vim.opt.fillchars = {
     horiz = "─",
@@ -73,7 +74,6 @@ require("core.plugins")
 require("configs.treesitter")
 require("configs.snacks")
 
--- require("configs/gitsigns")
 require("configs.mason")
 require("configs.conform")
 require("configs.oil")
@@ -88,9 +88,10 @@ require("configs.neogit")
 require("configs.markdown")
 require("configs.lsp")
 require("configs.overseer")
-require("configs.term")
+require("utils.term")
+require("utils.direnv_hot_load")
 
-local theme_utils = require("utils.theme")
+local theme_utils = require("utils.theme_utils")
 theme_utils.load_theme()
 
 vim.opt.foldmethod = "expr"

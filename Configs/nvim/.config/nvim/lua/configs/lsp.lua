@@ -4,6 +4,22 @@ capabilities.general = capabilities.general or {}
 capabilities.general.positionEncodings = { "utf-8" }
 vim.lsp.config("*", { capabilities = capabilities })
 
+local function get_python_path(root_dir)
+    local pixi_prefix = os.getenv("CONDA_PREFIX") or (root_dir .. "/.pixi/envs/default")
+    local pixi_python = pixi_prefix .. "/bin/python"
+
+    if vim.fn.executable(pixi_python) == 1 then
+        return pixi_python
+    end
+
+    local venv_python = root_dir .. "/.venv/bin/python"
+    if vim.fn.executable(venv_python) == 1 then
+        return venv_python
+    end
+
+    return vim.fn.exepath("python3") or vim.fn.exepath("python")
+end
+
 vim.lsp.config["lua-language-server"] = {
     cmd = { "lua-language-server" },
     filetypes = { "lua" },
@@ -65,7 +81,6 @@ vim.lsp.config["ruff"] = {
     },
     on_attach = function(client, bufnr)
         if client.name == "ruff" then
-            -- Disable hover in favor of Pyright (if you use it)
             client.server_capabilities.hoverProvider = false
         end
     end,
@@ -74,14 +89,17 @@ vim.lsp.config["ruff"] = {
 vim.lsp.config("basedpyright", {
     root_markers = { "pyproject.toml", "setup.py", "requirements.txt", ".git" },
     on_init = function(client)
-        client.config.settings.python.pythonPath = vim.fn.exepath("python")
+        -- Leverage the root directory to point basedpyright to your isolated Pixi environment
+        local root = client.root_dir or vim.fn.getcwd()
+        client.config.settings.python.pythonPath = get_python_path(root)
     end,
     settings = {
         python = {
             analysis = {
-                diagnosticMode = "workspace",
-                indexing = true,
+                diagnosticMode = "openFilesOnly",
+                autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
+                indexing = true,
             },
         },
     },
@@ -90,10 +108,11 @@ vim.lsp.config("basedpyright", {
 vim.lsp.config("ty", {
     cmd = { "ty", "server" },
     filetypes = { "python" },
-    root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "ty.toml", ".git" },
+    root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "ty.toml", "pixi.toml", ".git" },
     capabilities = capabilities,
     on_init = function(client)
-        client.config.settings.python.pythonPath = vim.fn.exepath("python")
+        local root = client.root_dir or vim.fn.getcwd()
+        client.config.settings.python.pythonPath = get_python_path(root)
     end,
     settings = {
         python = {
@@ -194,11 +213,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     callback = function(args)
         if vim.bo[args.buf].buftype == "nofile" then
             local winid = vim.fn.bufwinid(args.buf)
-            if winid ~= -1 then
+            if winid and winid ~= -1 then
                 vim.wo[winid].conceallevel = 2
                 vim.wo[winid].concealcursor = "nc"
-                vim.fn.matchadd("Conceal", [[^```\w*]], 10, -1, { conceal = "" })
-                vim.fn.matchadd("Conceal", [[^```$]], 10, -1, { conceal = "" })
             end
         end
     end,

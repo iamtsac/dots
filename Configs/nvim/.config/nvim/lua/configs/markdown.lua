@@ -1,130 +1,58 @@
-require("render-markdown").setup({
-    render_modes = { "n", "c", "t" },
-    indent = {
-        enabled = false,
-        -- render_modes = false,
-        per_level = 2,
-        skip_level = 1,
-        skip_heading = false,
-        icon = "▎",
-        highlight = "RenderMarkdownIndent",
-    },
-    heading = {
-        enabled = true,
-        -- render_modes = true,
-        atx = true,
-        setext = true,
-        sign = true,
-        icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
-        position = "overlay",
-        signs = { "󰫎 " },
-        width = "block",
-        left_margin = 0,
-        left_pad = 0,
-        right_pad = 0,
-        min_width = 0,
-        border = false,
-        border_virtual = false,
-        border_prefix = false,
-        above = "▄",
-        below = "▀",
-        backgrounds = {
-            "RenderMarkdownH1Bg",
-            "RenderMarkdownH2Bg",
-            "RenderMarkdownH3Bg",
-            "RenderMarkdownH4Bg",
-            "RenderMarkdownH5Bg",
-            "RenderMarkdownH6Bg",
-        },
-        foregrounds = {
-            "RenderMarkdownH1",
-            "RenderMarkdownH2",
-            "RenderMarkdownH3",
-            "RenderMarkdownH4",
-            "RenderMarkdownH5",
-            "RenderMarkdownH6",
-        },
-        custom = {},
-    },
-    dash = {
-        enabled = true,
-        -- render_modes = true,
-        icon = "─",
-        width = "full",
-        left_margin = 0,
-        highlight = "RenderMarkdownDash",
-    },
-    code = {
-        enabled = true,
-        -- render_modes = false,
-        sign = true,
-        style = "full",
-        position = "left",
-        language_pad = 0,
-        language_icon = true,
-        language_name = true,
-        disable_background = { "diff" },
-        width = "block",
-        left_margin = 0,
-        left_pad = 0,
-        right_pad = 0,
-        min_width = 0,
-        border = "hide",
-        above = "▄",
-        below = "▀",
-        inline_left = "-",
-        inline_right = "-",
-        inline_pad = 0,
-        highlight = "RenderMarkdownCode",
-        highlight_language = nil,
-        highlight_border = "RenderMarkdownCodeBorder",
-        highlight_fallback = "RenderMarkdownCodeFallback",
-        highlight_inline = "RenderMarkdownCodeInline",
-    },
-    pipe_table = {
-        enabled = true,
-        -- render_modes = { "n", "c", "t" },
-        preset = "none",
-        style = "full",
-        cell = "padded",
-        padding = 1,
-        min_width = 0,
-        border = {
-            "┌",
-            "┬",
-            "┐",
-            "├",
-            "┼",
-            "┤",
-            "└",
-            "┴",
-            "┘",
-            "│",
-            "─",
-        },
-        alignment_indicator = "━",
-        head = "RenderMarkdownTableHead",
-        row = "RenderMarkdownTableRow",
-    },
-    latex = {
-        enabled = false,
-        -- render_modes = false,
-        converter = "latex2text",
-        highlight = "RenderMarkdownMath",
-        position = "above",
-        top_pad = 0,
-        bottom_pad = 0,
-    },
-     document = {
-        -- Turn on / off document rendering.
-        enabled = false,
-    },
-    overrides = {
-        buftype = {
-            nofile = {
-                enabled = false, -- This is the master switch for hover windows
+local presets = require("markview.presets").headings
+require("markview").setup({
+    markdown = {
+        enable = true,
+        headings = presets.numbered,
+        tables = { enable = true },
+        code_blocks = { enable = true },
+        list_items = {
+            shift_width = function(buffer, item)
+                ---@type integer Parent list items indent. Must be at least 1.
+                local parent_indnet = math.max(4, item.indent - vim.bo[buffer].shiftwidth)
+                return item.indent * (1 / (parent_indnet * 2))
+            end,
+            marker_minus = {
+                add_padding = function(_, item)
+                    return item.indent > 1
+                end,
             },
         },
     },
+    markdown_inline = {
+        tags = {
+            default = {
+                hl = "MarkviewCodeInfo",
+                padding_left = "",
+                padding_left_hl = "MarkviewCodeFg",
+                padding_right = "",
+                padding_right_hl = "MarkviewCodeFg",
+            },
+            enable = true,
+        },
+    },
+    preview = { enable = true },
+    latex = {
+        enable = false,
+        blocks = {
+            enable = true,
+            hl = "MarkviewCode",
+            text = "  LaTeX ",
+        },
+    },
+
+    html = { enable = true },
+    comment = {
+        enable = true,
+        code_blocks = { enable = true },
+        mentions = { enable = true },
+        tasks = { enable = true },
+        urls = { enable = true },
+        task_scopes = { enable = true },
+        taglinks = { enable = true },
+    },
+    hybrid_modes = { "n", "i" },
 })
 
+require("markview.extras.checkboxes").setup()
+require("markview.extras.headings").setup()
+require("markview.extras.editor").setup()

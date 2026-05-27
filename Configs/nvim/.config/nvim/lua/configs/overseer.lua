@@ -131,4 +131,4 @@ require("overseer").setup({
   },
 })
 
-require("configs/overseer_tasks/latex")
+require("overseer_tasks.latex")

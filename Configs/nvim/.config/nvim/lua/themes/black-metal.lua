@@ -3,22 +3,53 @@ local M = {}
 function M.setup(style, variant, utils)
     vim.opt.background = "dark"
     vim.o.winborder = "rounded"
-    require("base16-colorscheme").with_config({
-        telescope = true, indentblankline = true, notify = true, ts_rainbow = true,
-        cmp = true, illuminate = true, dapui = true,
+    local bm = require("black-metal")
+
+    bm.setup({
+        theme = variant,
+        variant = "dark",
+        alt_bg = false,
+        colored_docstrings = true,
+        cursorline_gutter = true,
+        dark_gutter = false,
+        favor_treesitter_hl = true,
+        plain_float = false,
+        show_eob = true,
+        term_colors = true,
+        transparent = false,
+
+        diagnostics = {
+            darker = true,
+            undercurl = true,
+            background = true,
+        },
+        code_style = {
+            comments = "italic",
+            conditionals = "none",
+            functions = "none",
+            keywords = "none",
+            headings = "bold",
+            operators = "none",
+            keyword_return = "none",
+            strings = "none",
+            variables = "none",
+        },
+        plugin = {
+            cmp = { plain = false, reverse = false }, 
+        },
     })
 
-    vim.cmd.colorscheme("base16-black-metal" .. (variant == "default" and "" or "-" .. variant))
-    local c = require("base16-colorscheme").colors
-    -- c.base08 = "#bfbfbf"
-    c.base08 = utils.color_changer.lighten(c.base0C, 0.8)
-    require("base16-colorscheme").setup(c)
+    bm.load()
+    local c = require("black-metal.palette")[variant]
+
     vim.schedule(function()
-        c.bg = c.base00
-        c.fg = c.base0C
+        c.bg = utils.get_color("Normal", "bg")
+        c.fg = utils.get_color("Normal", "fg")
         c.string = utils.get_color("String", "fg")
+
         c.fg_unselected = utils.color_changer.darken(c.fg, 0.55)
-        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.09)
+        c.bg_lighter = utils.color_changer.lighten(c.bg, 0.03)
+        c.bg_unselected = utils.color_changer.lighten(c.bg, 0.07)
         c.fg_selected = c.fg
         c.bg_selected = c.bg_unselected
         c.bg_tabbar = c.bg_unselected
@@ -26,18 +57,18 @@ function M.setup(style, variant, utils)
         c.fg_border = c.bg_tabbar
 
         utils.hl_overwrite({
-            Normal = { bg = c.base00 },
-            NormalFloat = { bg = "none" },
+            Normal = { bg = c.bg },
+            NormalFloat = { link = "Normal" },
             SignColumn = { bg = "none" },
-            LineNr = { fg = c.base03, bg = "none" },
+            LineNr = { fg = c.fg_unselected, bg = "none" },
             CurosrLineNr = { link = "LineNr" },
             LineNrAbove = { link = "LineNr" },
             LineNrBelow = { link = "LineNr" },
-            EndOfBuffer = { bg = "none", fg = c.base0F },
+            EndOfBuffer = { bg = "none", fg = c.bg },
 
-            TabLine = { bg = "none", fg = c.base03 },
-            TabLineFill = { bg = "none", fg = "none" },
-            TabLineSel = { bg = c.base03, fg = c.fg },
+            TabLine = { bg = "none", fg = c.fg_unselected },
+            TabLineFill = { bg = c.bg_tabbar, fg = "none" },
+            TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
             SnacksImageMath = { bg = "none", fg = c.fg },
 
             TSFuncBuiltin = { italic = false },
@@ -46,22 +77,22 @@ function M.setup(style, variant, utils)
             StatusLine = { fg = "none", bg = c.bg_tabbar },
             StatusLineNC = { fg = "none", bg = c.bg_tabbar },
 
-            WhichKeyNormal = { bg = c.base01 },
-            WhichKeyValue = { fg = c.base0D },
+            WhichKeyNormal = { bg = c.bg },
+            WhichKeyValue = { fg = c.fg },
 
             SnacksPickerBorder = { fg = c.bg, bg = c.bg },
-            SnacksPickerInput = { fg = c.fg, bg = c.base01 },
+            SnacksPickerInput = { fg = c.fg, bg = c.bg_lighter },
             SnacksPickerMatch = { link = "Type" },
-            SnacksPickerInputBorder = { fg = c.base01, bg = c.base01 },
-            SnacksPickerBoxBorder = { fg = c.base01, bg = c.base01 },
-            SnacksPickerTitle = { fg = c.bg, bg = c.base08 },
-            SnacksPickerBoxTitle = { fg = c.base01, bg = c.base08 },
-            SnacksPickerList = { bg = c.base01 },
-            SnacksPickerPrompt = { fg = c.base03, bg = c.base01 },
-            SnacksPickerPreviewTitle = { fg = c.bg, bg = c.base01 },
+            SnacksPickerInputBorder = { fg = c.bg_lighter, bg = c.bg_lighter },
+            SnacksPickerBoxBorder = { fg = c.bg_lighter, bg = c.bg_lighter },
+            SnacksPickerTitle = { fg = c.bg, bg = c.bg_lighter },
+            SnacksPickerBoxTitle = { fg = c.bg_lighter, bg = c.bg },
+            SnacksPickerList = { bg = c.bg_lighter },
+            SnacksPickerPrompt = { bg = c.bg_lighter },
+            SnacksPickerPreviewTitle = { fg = c.bg, bg = c.bg_lighter },
             SnacksPickerPreview = { bg = c.bg },
-            SnacksPickerToggle = { bg = c.base08, fg = c.bg },
-            SnacksPickerDir = { fg = c.base0B },
+            SnacksPickerToggle = { bg = c.bg_lighter, fg = c.bg },
+            SnacksPickerDir = { fg = c.string },
             SnacksPickerSelected = { fg = c.fg },
             SnacksPickerListFooter = { bg = "none" },
             Directory = { bg = "none" },
@@ -74,17 +105,9 @@ function M.setup(style, variant, utils)
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
             WinSeparator = { fg = c.fg_unselected, bg = "none" },
 
-            GitSignsAdd = { link = "GitSignsStagedAdd" },
-            GitSignsDelete = { link = "GitSignsStagedDelete" },
-            GitSignsChange = { link = "GitSignsStagedChange" },
-            DiffAdd = { bg = utils.get_color("GitSignsStagedAdd", "fg"), fg = c.bg },
-            DiffDelete = { bg = utils.get_color("GitSignsStagedDelete", "fg"), fg = c.bg },
-            DiffText = { bg = utils.get_color("GitSignsStagedChange", "fg"), fg = c.bg, underline = false },
-            DiffChange = { bg = c.bg, fg = c.fg },
             TreesitterContext = { link="Normal" },
             TreesitterContextLineNumber = { link="LineNr" },
             TreesitterContextSeparator = { link="Comment" },
-            -- RenderMarkdownH1Bg = { bg = "none" },
             TabLineFill = { bg = c.bg_tabbar },
             TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },
             TabLine = { bg = c.bg_unselected, fg = c.fg_unselected },
@@ -96,11 +119,9 @@ function M.setup(style, variant, utils)
             FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
             FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-            StatusLineMain = { fg = c.base08, italic = false },
-            StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.05) },
+            StatusLineMain = { fg = c.fg, italic = false },
+            StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.35) },
         })
-
-        -- utils.hl_markdown_code(c.bg, c.base01)
     end)
 end
 
