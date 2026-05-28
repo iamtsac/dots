@@ -256,7 +256,39 @@ vim.keymap.set("n", "<leader>lE", function() Snacks.picker.diagnostics_buffer() 
 vim.keymap.set("n", "<C-K>", vim.diagnostic.open_float, { desc = "View Diagnostic" })
 
 -- Symbols
-local sym_opts = { keep_parents = true }
+local sym_opts = {
+    keep_parents = true,
+    filter = {
+        default = {
+            "File",
+            "Module",
+            "Namespace",
+            "Package",
+            "Class",
+            "Method",
+            "Property",
+            "Field",
+            "Constructor",
+            "Enum",
+            "Interface",
+            "Function",
+            "Variable",
+            "Constant",
+            "String",
+            "Number",
+            "Boolean",
+            "Array",
+            "Object",
+            "Key",
+            "Null",
+            "EnumMember",
+            "Struct",
+            "Event",
+            "Operator",
+            "TypeParameter",
+        },
+    },
+}
 vim.keymap.set("n", "<leader>ls", function() Snacks.picker.lsp_symbols(sym_opts) end, { desc = "LSP Symbols" })
 vim.keymap.set("n", "<leader>lS", function() Snacks.picker.lsp_workspace_symbols(sym_opts) end, { desc = "LSP Workspace Symbols" })
 

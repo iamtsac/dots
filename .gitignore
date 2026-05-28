@@ -11,3 +11,4 @@ Configs/.config/stylerc
 Configs/ghostty/.config/ghostty/themes/current_theme.lua
 Configs/ghostty/.config/ghostty/config
 Configs/kitty/.config/kitty/kitty.conf
+Configs/yazi/.config/yazi/theme.toml

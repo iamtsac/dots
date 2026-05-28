@@ -29,6 +29,8 @@ function M.apply()
         CodeDiffCharInsert = { undercurl = true, sp = utils.get_color("DiffAdd", "fg") },
         CodeDiffCharDelete = { undercurl = true, sp = utils.get_color("DiffDelete", "fg") },
         CodeDiffCharMove = { undercurl = true, sp = utils.get_color("CodeDiffCharMove", "fg") or utils.get_color("DiffChange", "fg") },
+
+        EndOfBuffer = { fg = utils.get_color("Normal", "bg") },
     })
 end
 

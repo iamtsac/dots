@@ -55,26 +55,6 @@ M.hl_overwrite = function(hls)
     end
 end
 
-M.hl_markdown_code = function(c1, c2)
-    local group = vim.api.nvim_create_augroup("MarkdownEvent", { clear = true })
-    M.hl_overwrite({ RenderMarkdownCode = { bg = c1 } })
-
-    vim.api.nvim_create_autocmd("BufEnter", {
-        group = group,
-        pattern = "markdown",
-        callback = function()
-            M.hl_overwrite({ RenderMarkdownCode = { bg = c2 } })
-        end,
-    })
-    vim.api.nvim_create_autocmd("BufLeave", {
-        group = group,
-        pattern = "markdown",
-        callback = function()
-            M.hl_overwrite({ RenderMarkdownCode = { bg = c1 } })
-        end,
-    })
-end
-
 M.read_args = function(path)
     local file = io.open(path, "r")
     if not file then
@@ -141,23 +121,23 @@ M.sync_system_theme = function()
 
         if not color or color == "" or color == "NONE" then
             local fallbacks = {
-                [0] = { "Normal", "bg" }, -- black (M.base.black)
-                [1] = { "Number", "fg" }, -- red (palette.number)
-                [2] = { "String", "fg" }, -- green (palette.string)
-                [3] = { "Constant", "fg" }, -- yellow (palette.constant)
-                [4] = { "Keyword", "fg" }, -- blue (palette.keyword)
-                [5] = { "Identifier", "fg" }, -- magenta (palette.property)
-                [6] = { "Type", "fg" }, -- cyan (palette.type)
-                [7] = { "Normal", "fg" }, -- white (palette.fg)
+                [0] = { "Normal", "bg" },
+                [1] = { "Number", "fg" },
+                [2] = { "String", "fg" },
+                [3] = { "Constant", "fg" },
+                [4] = { "Keyword", "fg" },
+                [5] = { "Identifier", "fg" },
+                [6] = { "Type", "fg" },
+                [7] = { "Normal", "fg" },
 
-                [8] = { "Comment", "fg" }, -- bright_black (palette.comment)
-                [9] = { "Number", "fg" }, -- bright_red
-                [10] = { "String", "fg" }, -- bright_green
-                [11] = { "Constant", "fg" }, -- bright_yellow
-                [12] = { "Function", "fg" }, -- bright_blue (palette.func)
-                [13] = { "Keyword", "fg" }, -- bright_magenta
-                [14] = { "Operator", "fg" }, -- bright_cyan (palette.operator)
-                [15] = { "Normal", "fg" }, -- bright_white
+                [8] = { "Comment", "fg" },
+                [9] = { "Number", "fg" },
+                [10] = { "String", "fg" },
+                [11] = { "Constant", "fg" },
+                [12] = { "Function", "fg" },
+                [13] = { "Keyword", "fg" },
+                [14] = { "Operator", "fg" },
+                [15] = { "Normal", "fg" },
             }
 
             local group = fallbacks[i][1]
@@ -168,44 +148,9 @@ M.sync_system_theme = function()
         c["color" .. i] = color
     end
 
-    -- Ghostty Sync
-    local ghostty_path = vim.fn.expand("~/.config/ghostty/themes/current_theme.lua")
-    local theme_lines = { "local M = {}", "", "M." .. style .. " = {}" }
-    for k, v in pairs(c) do
-        if v and v ~= "" and v ~= "NONE" then
-            table.insert(theme_lines, string.format('M.%s.%s = "%s"', style, k, v))
-        end
-    end
-    table.insert(theme_lines, "\nreturn M")
-
-    local f = io.open(ghostty_path, "w")
-    if f then
-        f:write(table.concat(theme_lines, "\n"))
-        f:close()
-    end
-
-    -- -- Fish Sync
-    -- local fish_path = vim.fn.expand("~/.config/fish/conf.d/theme.fish")
-    -- local fish_f = io.open(fish_path, "w")
-    -- if fish_f then
-    --     fish_f:write("# Auto-generated Fish colors\n")
-    --     local fish_map = {
-    --         fish_color_normal = c.foreground,
-    --         fish_color_command = c.color4,
-    --         fish_color_quote = c.color2,
-    --         fish_color_error = c.color1,
-    --         fish_color_param = c.foreground,
-    --         fish_color_comment = c.color8,
-    --         fish_color_selection = "--background=" .. (c.selection_background:gsub("#", "") or ""),
-    --     }
-    --     for var, val in pairs(fish_map) do
-    --         if val then
-    --             local clean_val = val:gsub("#", "")
-    --             fish_f:write(string.format("set -g %s %s\n", var, clean_val))
-    --         end
-    --     end
-    --     fish_f:close()
-    -- end
+    local sync_tools = require("utils.system_theme_sync")
+    sync_tools.sync_ghostty(style, c)
+    sync_tools.sync_yazi(c, M.get_color)
 
     -- Execute config script if it exists
     local config_script = vim.fn.expand("~/.config/ghostty/config.lua")
