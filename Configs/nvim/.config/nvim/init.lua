@@ -17,6 +17,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.hidden = true
 vim.o.clipboard = "unnamedplus"
+vim.o.undofile = true
 vim.o.showcmd = true
 vim.o.errorbells = false
 vim.o.visualbell = false
@@ -25,9 +26,9 @@ vim.o.backup = false
 vim.o.timeoutlen = 1500
 vim.o.ttimeoutlen = 0
 vim.o.writebackup = false
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
 vim.o.showcmd = true
-vim.o.showcmdloc = "statusline"
+vim.o.showcmdloc = "last"
 vim.o.showmode = false
 vim.o.laststatus = 3
 vim.o.tabstop = 8
@@ -90,6 +91,7 @@ require("configs.lsp")
 require("configs.overseer")
 require("utils.term")
 require("utils.direnv_hot_load")
+-- require("configs.ipynb")
 
 local theme_utils = require("utils.theme_utils")
 theme_utils.load_theme()
@@ -134,10 +136,10 @@ vim.api.nvim_create_autocmd("VimEnter", {
 -- }
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "tex", "plaintex", "markdown", "typst" },
-    callback = function()
+    pattern = { "tex", "plaintex", "md", "typst" },
+    callback = function(ev)
         vim.opt_local.textwidth = 120
-        vim.opt_local.formatoptions:append("t")
+        vim.opt_local.formatoptions = vim.opt_local.formatoptions + "t"
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
     end,

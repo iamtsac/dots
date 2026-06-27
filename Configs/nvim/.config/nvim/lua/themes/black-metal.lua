@@ -37,6 +37,11 @@ function M.setup(style, variant, utils)
         plugin = {
             cmp = { plain = false, reverse = false },
         },
+        colors = {
+            alt = "#67859E",
+            diag_red = "#67859E",
+            diag_yellow = "#67859E"
+        },
     })
 
     bm.load()
@@ -74,8 +79,6 @@ function M.setup(style, variant, utils)
             TSFuncBuiltin = { italic = false },
             TSVariableBuiltin = { italic = false },
             TSPunctDelimiter = { link = "TSType" },
-            StatusLine = { fg = "none", bg = c.bg_tabbar },
-            StatusLineNC = { fg = "none", bg = c.bg_tabbar },
 
             WhichKeyNormal = { bg = c.bg },
             WhichKeyValue = { fg = c.fg },
@@ -93,7 +96,7 @@ function M.setup(style, variant, utils)
             SnacksPickerPreview = { bg = c.bg },
             SnacksPickerToggle = { bg = c.bg_lighter, fg = c.bg },
             SnacksPickerDir = { fg = c.string },
-            SnacksPickerSelected = { fg = c.fg },
+            SnacksPickerSelected = { fg = "none" },
             SnacksPickerListFooter = { bg = "none" },
             Directory = { bg = "none" },
 
@@ -119,8 +122,6 @@ function M.setup(style, variant, utils)
             FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
             FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-            StatusLineMain = { fg = c.fg, italic = false },
-            StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.35) },
         })
     end)
 end

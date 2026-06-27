@@ -28,13 +28,35 @@ function M.apply()
 
         CodeDiffCharInsert = { undercurl = true, sp = utils.get_color("DiffAdd", "fg") },
         CodeDiffCharDelete = { undercurl = true, sp = utils.get_color("DiffDelete", "fg") },
-        CodeDiffCharMove = { undercurl = true, sp = utils.get_color("CodeDiffCharMove", "fg") or utils.get_color("DiffChange", "fg") },
+        CodeDiffCharMove = {
+            undercurl = true,
+            sp = utils.get_color("CodeDiffCharMove", "fg") or utils.get_color("DiffChange", "fg"),
+        },
 
         EndOfBuffer = { fg = utils.get_color("Normal", "bg") },
+        SnacksWinBar = { bg = utils.get_color("Normal", "bg") },
     })
+
+    bg = utils.get_color("Normal", "bg")
+    fg = utils.get_color("Normal", "fg")
+    if vim.o.background == "dark" then
+        utils.hl_overwrite({
+            StatusLine = { fg = "none", bg = utils.color_changer.lighten(bg, 0.015) },
+            StatusLineNC = { fg = bg, bg = bg },
+            StatusLineMain = { fg = fg, italic = false },
+            StatusLineSecondary = { fg = utils.color_changer.darken(fg, 0.35) },
+            SnacksTerminalBorder = { fg = utils.color_changer.darken(fg, 0.81), bg = "NONE" },
+        })
+    else
+        utils.hl_overwrite({
+            StatusLine = { fg = "none", bg = utils.color_changer.darken(bg, 0.05) },
+            StatusLineNC = { fg = "none", bg = bg },
+            StatusLineMain = { fg = fg, italic = false },
+            StatusLineSecondary = { fg = utils.color_changer.darken(fg, 0.35) },
+            SnacksTerminalBorder = { fg = utils.color_changer.lighten(fg, 0.73), bg = "NONE" },
+        })
+    end
 end
-
-
 
 local original_comment_hl = nil
 vim.api.nvim_create_autocmd("User", {

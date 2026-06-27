@@ -120,7 +120,14 @@ vim.keymap.set("n", "<leader>bp", "<cmd>bprev<CR>", { desc = "Prev Buffer" })
 vim.keymap.set("n", "<leader>bx", function() Snacks.bufdelete() end, { desc = "Kill Buffer" })
 
 -- Tabs
-vim.keymap.set("n", "<leader><Tab>c", "<cmd>tabnew<CR>", { desc = "New Tab" })
+vim.keymap.set("n", "<leader><Tab>c", function()
+    vim.cmd("tabnew")
+    vim.cmd("tcd ~")
+    vim.t.tabname = "Untitled"
+    vim.cmd("redrawtabline") 
+    _G.FloatingTabs.redraw()
+    Snacks.dashboard()
+end, { desc = "New Tab" })
 vim.keymap.set("n", "<leader><Tab>n", "<cmd>tabnext<CR>", { desc = "Next Tab" })
 vim.keymap.set("n", "<leader><Tab>p", "<cmd>tabprevious<CR>", { desc = "Prev Tab" })
 vim.keymap.set("n", "<leader><Tab>x", require("utils.tab_utils").safe_tab_close, { desc = "Close Tab" })
@@ -142,10 +149,22 @@ for i = 1, 9 do
   vim.keymap.set("n", "<leader><Tab>" .. i, i .. "gt", { desc = "which_key_ignore" })
 end
 
-vim.keymap.set("n", "<leader><Tab>P", "<cmd>-tabmove<CR>", { desc = "Move tab left" })
-vim.keymap.set("n", "<leader><Tab>N", "<cmd>+tabmove<CR>", { desc = "Move tab right" })
-vim.keymap.set("n", "<leader><Tab>$", "<cmd>$tabmove<CR>", { desc = "Move tab at the end" })
-vim.keymap.set("n", "<leader><Tab>0", "<cmd>0tabmove<CR>", { desc = "Move tab at the start" })
+vim.keymap.set("n", "<leader><Tab>P", function()
+    vim.cmd("-tabmove")
+    _G.FloatingTabs.redraw()
+end, { desc = "Move tab left" })
+vim.keymap.set("n", "<leader><Tab>N", function()
+    vim.cmd([[ +tabmove ]])
+    _G.FloatingTabs.redraw()
+end, { desc = "Move tab right" })
+vim.keymap.set("n", "<leader><Tab>$", function()
+    vim.cmd([[ $tabmove ]])
+    _G.FloatingTabs.redraw()
+end, { desc = "Move tab at the end" })
+vim.keymap.set("n", "<leader><Tab>0", function()
+    vim.cmd([[ 0tabmove ]])
+    _G.FloatingTabs.redraw()
+end, { desc = "Move tab at the start" })
 
 
 -- =============================================================================
@@ -377,6 +396,9 @@ local function handle_main_toggle()
 end
 
 vim.keymap.set({ "n", "t" }, "<C-/>", handle_main_toggle, { desc = "Toggle Active Terminal Workspace" })
+vim.keymap.set({ "n", "t" }, "<C-S-/>", function()
+    term.toggle_last_focused_global()
+end, { desc = "Toggle Global Last Used Terminal" })
 vim.keymap.set("n", "<leader>tl", term.terminal_picker, { desc = "Pick Terminal Workspace" })
 
 -- =============================================================================

@@ -158,6 +158,7 @@ end
 
 local function progress()
     local current_line = vim.fn.line(".")
+    local current_col = vim.fn.col(".")
     local total_lines = vim.fn.line("$")
     local first_visible = vim.fn.line("w0")
     local last_visible = vim.fn.line("w$")
@@ -175,7 +176,7 @@ local function progress()
     end
 
     local wrapping = vim.opt_local.wrap:get()
-    local text = "%#StatusLineMain# " .. pos_text .. "   L" .. current_line
+    local text = "%#StatusLineMain# " .. pos_text .. "   L" .. current_line .. ":%#StatusLineSecondary#" .. current_col
 
     if wrapping then
         text = text .. " %#StatusLineSecondary#[*W]"

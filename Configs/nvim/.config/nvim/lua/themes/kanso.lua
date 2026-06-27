@@ -55,8 +55,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.red, fg = c.bg },
                 SnacksPickerDir = { fg = c.green },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_dim },
-                StatusLineNC = { fg = "none", bg = c.bg_dim },
+                -- StatusLine = { fg = "none", bg = c.bg_dim },
+                -- StatusLineNC = { fg = "none", bg = c.bg_dim },
                 CursorLine = { bg = utils.color_changer.lighten(c.bg, 0.08) },
                 TreesitterContext = { link="Normal" },
                 TreesitterContextSeparator = { link="Comment" },
@@ -73,8 +73,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
             })
-            vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
-            vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.30) })
+            -- vim.api.nvim_set_hl(0, "StatusLineMain", { fg = c.fg, italic = false })
+            -- vim.api.nvim_set_hl(0, "StatusLineSecondary", { fg = utils.color_changer.darken(c.fg, 0.30) })
             -- utils.hl_markdown_code(c.bg, c.bg_dim)
         end
 

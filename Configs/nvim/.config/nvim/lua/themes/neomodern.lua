@@ -37,15 +37,15 @@ function M.setup(style, variant, utils)
             c.alt = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.015)
             c.line = utils.color_changer.lighten(utils.get_color("CursorLine", "bg"), 0.03)
             c.fg_unselected = utils.color_changer.darken(c.fg, 0.55)
-            c.bg_unselected = utils.color_changer.lighten(c.bg, 0.02)
+            c.bg_unselected = utils.color_changer.lighten(c.bg, 0.015)
             c.fg_selected = c.fg
             c.bg_selected = c.bg_unselected
             c.bg_tabbar = c.bg_unselected
             c.fg_indicator = c.string
             c.fg_border = c.bg_tabbar
             utils.hl_overwrite({
-                StatusLineMain = { fg = utils.get_color("Normal", "fg"), italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) },
+                -- StatusLineMain = { fg = utils.get_color("Normal", "fg"), italic = false },
+                -- StatusLineSecondary = { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) },
             })
         elseif style == "light" then
             c.alt = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.05)
@@ -58,8 +58,8 @@ function M.setup(style, variant, utils)
             c.fg_indicator = c.string
             c.fg_border = c.bg_tabbar
             utils.hl_overwrite({
-                StatusLineMain = { fg = utils.get_color("Normal", "fg"), italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) },
+                -- StatusLineMain = { fg = utils.get_color("Normal", "fg"), italic = false },
+                -- StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.40) },
             })
 
         end
@@ -81,8 +81,8 @@ function M.setup(style, variant, utils)
             SnacksPickerToggle = { bg = c.func, fg = c.bg },
             SnacksPickerDir = { fg = c.operator },
             SnacksPickerSelected = { link = "Type" },
-            StatusLine = { fg = "none", bg = c.bg_tabbar },
-            StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+            -- StatusLine = { fg = "none", bg = c.bg_tabbar },
+            -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
             WinSeparator = { fg = c.fg_unselected, bg = "none" },
             Directory = { bg = "none" },
             FloatBorder = { fg = c.fg, bg = "none" },
@@ -92,8 +92,7 @@ function M.setup(style, variant, utils)
             BlinkCmpSignatureHelpActiveParameter = { link = "Normal" },
             CursorLine = { bg = c.line },
             TreesitterContext = { link="Normal" },
-            TreesitterContextLineNumber = { link="LineNr" },
-            TreesitterContextSeparator = { link="Comment" },
+            TreesitterContextSeparator = { fg = utils.color_changer.lighten(c.bg, 0.07) },
 
             TabLineFill = { bg = c.bg_tabbar },
             TabLineSel = { bg = c.bg_selected, fg = c.fg_selected },

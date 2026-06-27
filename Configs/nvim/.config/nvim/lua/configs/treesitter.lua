@@ -56,12 +56,12 @@ require("nvim-treesitter").setup({
 
 require("treesitter-context").setup({
     enable = true,
-    max_lines = 2,
+    max_lines = 1,
     min_window_height = 0,
     line_numbers = true,
-    multiline_threshold = 2,
-    trim_scope = "inner",
+    multiline_threshold = 1,
+    trim_scope = "outer",
     mode = "topline",
-    separator = "𝪈",
+    separator = "—",
     zindex = 1,
 })

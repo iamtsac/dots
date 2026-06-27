@@ -1,7 +1,7 @@
 local blink = require("blink.cmp")
 local capabilities = blink.get_lsp_capabilities()
 capabilities.general = capabilities.general or {}
-capabilities.general.positionEncodings = { "utf-8" }
+capabilities.general.positionEncodings = { "utf-16" }
 vim.lsp.config("*", { capabilities = capabilities })
 
 local function get_python_path(root_dir)
@@ -148,7 +148,7 @@ require("blink.cmp").setup({
 
     completion = {
         keyword = { range = "full" },
-        menu = { auto_show = true },
+        menu = { auto_show = true, auto_show_delay_ms = 5 },
         ghost_text = { enabled = false },
         list = { selection = { preselect = false, auto_insert = true } },
     },
@@ -202,6 +202,7 @@ vim.api.nvim_create_autocmd("BufLeave", {
     group = "TextDiagnostics",
     pattern = { "*.md", "*.tex", "*.txt", "*.typ" },
     callback = function()
+        vim.diagnostic.enable(false)
         vim.diagnostic.config({
             underline = false,
             virtual_text = false,

@@ -69,9 +69,9 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.func, fg = c.bg },
                 SnacksPickerDir = { fg = c.parameter },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLine = { fg = "none", bg = c.bg_tabbar },
                 Directory = { bg = "none" },
-                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 CursorLine = { bg = c.line },
                 WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 NormalFloat = { bg = "none" },
@@ -95,8 +95,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-                StatusLineMain = { fg = c.fg, italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.5) },
+                -- StatusLineMain = { fg = c.fg, italic = false },
+                -- StatusLineSecondary = { fg = utils.color_changer.darken(c.fg, 0.5) },
             })
         end
     end)

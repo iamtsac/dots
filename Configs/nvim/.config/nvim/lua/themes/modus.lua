@@ -45,8 +45,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.red_cooler, fg = c.bg },
                 SnacksPickerDir = { fg = c.pink },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_tabbar },
-                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLine = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 Directory = { bg = "none" },
                 BlinkCmpMenu = { link = "Normal" },
@@ -69,8 +69,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-                StatusLineMain = { fg = c.fg_main, italic = false },
-                StatusLineSecondary = { fg = "#777777" },
+                -- StatusLineMain = { fg = c.fg_main, italic = false },
+                -- StatusLineSecondary = { fg = "#777777" },
             })
         end
 
@@ -103,8 +103,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.bg_green_intense, fg = c.bg },
                 SnacksPickerDir = { fg = c.bg_magenta_intense },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_tabbar },
-                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLine = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 BlinkCmpMenu = { link = "Normal" },
                 BlinkCmpMenuBorder = { link = "Normal" },
                 BlinkCmpLabelDetail = { link = "Type" },
@@ -131,8 +131,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-                StatusLineMain = { fg = c.fg_main, italic = false },
-                StatusLineSecondary = { fg = "#777777" },
+                -- StatusLineMain = { fg = c.fg_main, italic = false },
+                -- StatusLineSecondary = { fg = "#777777" },
             })
         end
         -- utils.hl_markdown_code(c.bg_main, c.bg_alt)

@@ -59,9 +59,55 @@ local function clear_prompt(picker)
     picker:filter():init({ pattern = "", search = "" })
 end
 
+local function create_confirm(picker, tcd)
+    local item = picker:current()
+    local pattern = vim.trim(picker:filter().pattern)
+    local current_cwd = picker:cwd()
+    local base_cwd = current_cwd == "/" and "/" or current_cwd .. "/"
+
+    if pattern ~= "" and pattern:match("/$") then
+        picker:close()
+        local clean_pattern = pattern:gsub("/$", "")
+        local target_path = base_cwd .. clean_pattern
+        vim.fn.mkdir(target_path, "p")
+        execute_jump(target_path, true, tcd)
+        return
+    end
+
+    if item then
+        if not item.dir then
+            picker:close()
+            execute_jump(item.file, false, false)
+            return
+        end
+
+        if item.dir then
+            local dirname = vim.fn.fnamemodify(item.file, ":t")
+            if pattern == "" or pattern:lower() == dirname:lower() then
+                picker:close()
+                execute_jump(item.file, true, tcd)
+                return
+            end
+        end
+    end
+
+    if pattern ~= "" then
+        picker:close()
+        local target_path = base_cwd .. pattern
+        local parent = vim.fn.fnamemodify(target_path, ":h")
+        if vim.fn.isdirectory(parent) == 0 then
+            vim.fn.mkdir(parent, "p")
+        end
+        execute_jump(target_path, false, false)
+        return
+    end
+
+    picker:close()
+end
+
 local base_opts = {
     title = "File Navigator",
-    layout = { layout = {height = 0.4 }},
+    layout = { layout = { height = 0.4 } },
     dirs_only = false,
     hidden = false,
     ignored = true,
@@ -157,49 +203,10 @@ local base_opts = {
         end,
 
         confirm_or_create = function(picker)
-            local item = picker:current()
-            local pattern = vim.trim(picker:filter().pattern)
-            local current_cwd = picker:cwd()
-            local base_cwd = current_cwd == "/" and "/" or current_cwd .. "/"
-
-            if pattern ~= "" and pattern:match("/$") then
-                picker:close()
-                local clean_pattern = pattern:gsub("/$", "")
-                local target_path = base_cwd .. clean_pattern
-                vim.fn.mkdir(target_path, "p")
-                execute_jump(target_path, true)
-                return
-            end
-
-            if item then
-                if not item.dir then
-                    picker:close()
-                    execute_jump(item.file, false)
-                    return
-                end
-
-                if item.dir then
-                    local dirname = vim.fn.fnamemodify(item.file, ":t")
-                    if pattern == "" or pattern:lower() == dirname:lower() then
-                        picker:close()
-                        execute_jump(item.file, true)
-                        return
-                    end
-                end
-            end
-
-            if pattern ~= "" then
-                picker:close()
-                local target_path = base_cwd .. pattern
-                local parent = vim.fn.fnamemodify(target_path, ":h")
-                if vim.fn.isdirectory(parent) == 0 then
-                    vim.fn.mkdir(parent, "p")
-                end
-                execute_jump(target_path, false)
-                return
-            end
-
-            picker:close()
+            create_confirm(picker, false)
+        end,
+        confirm_or_create_w_tcd = function(picker)
+            create_confirm(picker, true)
         end,
 
         dir_down = function(picker)
@@ -256,14 +263,65 @@ local base_opts = {
             picker:close()
             execute_jump(picker:cwd(), true)
         end,
+        complete = function(picker)
+            local item = picker:current()
+            if not item or not item.text then
+                return
+            end
+
+            local fname = item.text:gsub("/", "")
+
+            -- 1. Get the current cursor position and line content
+            local cursor = vim.api.nvim_win_get_cursor(0)
+            local line_num = cursor[1]
+            local col_num = cursor[2]
+            local line_text = vim.api.nvim_buf_get_lines(0, line_num - 1, line_num, false)[1] or ""
+
+            -- 2. Extract the text typed so far on this line up to the cursor
+            local typed_so_far = line_text:sub(1, col_num)
+
+            -- Extract the last word/part before the cursor
+            local prefix = typed_so_far:match("[%w_.-]+$") or ""
+
+            -- 3. Case-insensitive comparison
+            local insertion = fname
+            local should_delete_prefix = false
+
+            if prefix ~= "" then
+                local fname_start = fname:sub(1, #prefix)
+
+                if fname_start:lower() == prefix:lower() then
+                    -- Case matches insensitively!
+                    -- We will insert the ORIGINAL full fname, but we need to backspace the typed prefix first
+                    insertion = fname
+                    should_delete_prefix = true
+                end
+            end
+
+            -- 4. Feed the keys safely
+            if insertion ~= "" then
+                local keys = ""
+                if should_delete_prefix then
+                    -- Generate backspaces to erase the mistyped prefix
+                    local backspaces = string.rep("<BS>", #prefix)
+                    keys = vim.api.nvim_replace_termcodes(backspaces .. insertion, true, false, true)
+                else
+                    keys = vim.api.nvim_replace_termcodes(insertion, true, false, true)
+                end
+
+                vim.api.nvim_feedkeys(keys, "n", false)
+            end
+        end,
     },
 
     win = {
         input = {
             keys = {
                 ["<CR>"] = { "confirm_or_create", mode = { "n", "i" } },
-                ["<C-CR>"] = { "force_create_file", mode = { "i", "n" } },
+                ["<C-CR>"] = { "confirm_or_create_w_tcd", mode = { "i", "n" } },
+                ["<C-S-CR>"] = { "force_create_file", mode = { "i", "n" } },
                 ["<Tab>"] = { "accept", mode = { "i" } },
+                ["<S-Tab>"] = { "complete", mode = { "i" } },
                 ["/"] = { "dir_down", mode = { "i" } },
                 ["<BS>"] = { "dir_up_input_m", mode = { "i" } },
                 ["<C-o>"] = { "open_pwd_in_oil", mode = { "n", "i" } },
@@ -386,7 +444,7 @@ M.smart_dir_jump = function()
                     title = "Zoxide Folder Discovery",
                     cwd = vim.fn.expand("$HOME"),
                     hidden = false,
-                    tcd=true,
+                    tcd = true,
                 })
             end,
         },

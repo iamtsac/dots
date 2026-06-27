@@ -3,6 +3,9 @@ local M = {}
 M.active_workspaces = {} -- Tracks the active workspace ID per project
 M.last_focused_pane = {} -- Tracks the last focused pane per project+workspace
 
+M.terminal_history = {}       -- Chronological list of all active terminal IDs
+M.last_global_opened_id = nil -- Tracks if a terminal was opened via the global toggle
+
 M.resize_step = 5
 M.split_height = 0.3
 M.split_width = 0.4
@@ -31,7 +34,6 @@ end
 
 function M.get_context(t)
     local active_pid = M.get_project_id()
-    -- Pull the active workspace for THIS specific project (default to 1)
     local ws_id = M.active_workspaces[active_pid] or 1
 
     if t then
@@ -57,10 +59,8 @@ function M.update_and_get_workspace()
     local count = vim.v.count
 
     if count > 0 then
-        -- If a number is pressed, save it to THIS project's memory
         M.active_workspaces[pid] = count
     elseif not M.active_workspaces[pid] then
-        -- Initialize the project at Workspace 1 if no history exists
         M.active_workspaces[pid] = 1
     end
 
@@ -115,6 +115,17 @@ function M.get_next_split_id(ws_id)
     return nil
 end
 
+function M.record_terminal_focus(tid)
+    if not tid then return end
+    for i, id in ipairs(M.terminal_history) do
+        if id == tid then
+            table.remove(M.terminal_history, i)
+            break
+        end
+    end
+    table.insert(M.terminal_history, 1, tid)
+end
+
 function M.toggle_workspace_group(opts)
     local terms = Snacks.terminal.list()
     local group_terms = {}
@@ -126,7 +137,6 @@ function M.toggle_workspace_group(opts)
     local width = opts.width
     local height = opts.height
 
-    -- Unique memory key so focus states don't bleed across projects!
     local memory_key = pid .. "_" .. ws_id
 
     for _, t in ipairs(terms) do
@@ -152,10 +162,11 @@ function M.toggle_workspace_group(opts)
                 position = default_position,
                 width = default_position == "float" and width or target_width,
                 height = default_position == "float" and height or target_height,
-                border = "rounded",
+                border = "bold",
             },
         })
         M.last_focused_pane[memory_key] = first_id
+        M.record_terminal_focus(first_id)
         return
     end
 
@@ -194,6 +205,7 @@ function M.toggle_workspace_group(opts)
                         local wid = M.get_neovim_win(t)
                         if wid then
                             pcall(vim.api.nvim_set_current_win, wid)
+                            M.record_terminal_focus(target_id)
                         end
                         break
                     end
@@ -213,12 +225,99 @@ function M.focus_pane(current_t, pane_num)
             local wid = M.get_neovim_win(t)
             if wid then
                 vim.api.nvim_set_current_win(wid)
+                M.record_terminal_focus(target_id)
                 return
             end
         end
     end
 
     vim.notify("Pane " .. pane_num .. " not active in Workspace " .. ws_id, vim.log.levels.INFO)
+end
+
+function M.toggle_last_focused_global()
+    local current_win = vim.api.nvim_get_current_win()
+    local terms = Snacks.terminal.list()
+    
+    -- 1. Identify if cursor is currently inside a terminal window right now
+    local cur_tid = nil
+    for _, t in ipairs(terms) do
+        if M.get_neovim_win(t) == current_win then
+            cur_tid = M.get_term_id(t)
+            break
+        end
+    end
+    
+    -- 2. If looking at the globally opened terminal, hide it immediately
+    if cur_tid and cur_tid == M.last_global_opened_id then
+        local pid, ws_id, _ = M.parse_id(cur_tid)
+        for _, t in ipairs(terms) do
+            local t_pid, t_ws, _ = M.parse_id(M.get_term_id(t))
+            if t_pid == pid and t_ws == ws_id then
+                t:hide()
+            end
+        end
+        M.last_global_opened_id = nil
+        return
+    end
+    
+    -- 3. Calculate current scope context statically based on where the cursor is sitting
+    local cur_pid, cur_ws
+    if cur_tid then
+        cur_pid, cur_ws, _ = M.parse_id(cur_tid)
+    else
+        cur_pid = M.get_project_id()
+        cur_ws = M.active_workspaces[cur_pid] or 1
+    end
+    
+    -- 4. Scan history stack for the most recent out-of-scope terminal
+    local target_tid = nil
+    for _, tid in ipairs(M.terminal_history) do
+        local t_pid, t_ws, _ = M.parse_id(tid)
+        if t_pid ~= cur_pid or t_ws ~= cur_ws then
+            target_tid = tid
+            break
+        end
+    end
+    
+    if not target_tid then
+        vim.notify("No out-of-scope terminal found in history", vim.log.levels.INFO)
+        return
+    end
+    
+    -- 5. Locate and execute visibility change on target environment
+    local target_terminal = nil
+    for _, t in ipairs(terms) do
+        if M.get_term_id(t) == target_tid then
+            target_terminal = t
+            break
+        end
+    end
+    
+    if not target_terminal then
+        -- Clean up dead ID from history if it doesn't exist anymore
+        for i, id in ipairs(M.terminal_history) do
+            if id == target_tid then
+                table.remove(M.terminal_history, i)
+                break
+            end
+        end
+        return M.toggle_last_focused_global() -- Loop to find the next valid match
+    end
+    
+    local win_id = M.get_neovim_win(target_terminal)
+    if win_id then
+        pcall(vim.api.nvim_set_current_win, win_id)
+        M.last_global_opened_id = target_tid
+    else
+        target_terminal:show()
+        vim.schedule(function()
+            local new_win_id = M.get_neovim_win(target_terminal)
+            if new_win_id then
+                pcall(vim.api.nvim_set_current_win, new_win_id)
+                M.last_global_opened_id = target_tid
+            end
+        end)
+    end
 end
 
 function M.terminal_picker()
@@ -289,7 +388,6 @@ function M.terminal_picker()
                 picker:close()
                 if item then
                     local pid = M.get_project_id()
-                    -- Update THIS specific project's state to match your picker choice
                     M.active_workspaces[pid] = item.ws_id
                     M.toggle_workspace_group({
                         ws_id = item.ws_id,
@@ -302,10 +400,36 @@ function M.terminal_picker()
     })
 end
 
+-- AUTOMATION HOOKS
+vim.api.nvim_create_autocmd("WinEnter", {
+    pattern = "*",
+    callback = function()
+        if vim.bo.filetype == "snacks_terminal" then
+            local ok, data = pcall(function() return vim.b.snacks_terminal end)
+            if ok and data and data.id then
+                M.record_terminal_focus(tonumber(data.id))
+            end
+        end
+    end,
+})
+
 vim.api.nvim_create_autocmd("TermClose", {
     pattern = "*",
     callback = function(args)
         if vim.bo[args.buf].filetype == "snacks_terminal" then
+            local ok, data = pcall(function() return vim.b[args.buf].snacks_terminal end)
+            if ok and data then
+                local tid = tonumber(data.id)
+                -- Cleanup tracking values upon terminal exit
+                if tid == M.last_global_opened_id then M.last_global_opened_id = nil end
+                for i, id in ipairs(M.terminal_history) do
+                    if id == tid then
+                        table.remove(M.terminal_history, i)
+                        break
+                    end
+                end
+            end
+
             if vim.v.event.status == 0 then vim.cmd("silent! bdelete! " .. args.buf) end
             vim.schedule(function()
                 pcall(vim.cmd, "doautocmd WinEnter")

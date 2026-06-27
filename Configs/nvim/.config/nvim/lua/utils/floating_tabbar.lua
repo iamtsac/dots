@@ -75,7 +75,7 @@ vim.api.nvim_create_autocmd("TabClosed", {
 
 local function draw_floating_tabs()
     local total_tabs = vim.fn.tabpagenr("$")
-    if total_tabs <= 1 then
+    if total_tabs <= 0 then
         if float_win and vim.api.nvim_win_is_valid(float_win) then
             pcall(vim.api.nvim_win_close, float_win, true)
             float_win = nil

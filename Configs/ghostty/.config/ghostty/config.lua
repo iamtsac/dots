@@ -46,11 +46,11 @@ elseif uname == "Linux" then
     main_resolution = string.gsub(raw_res, "%s+", "")
 end
 
-local default_config = { size = 14, style = (args.style == "light") and "Bold" or "Regular" }
+local default_config = { size = 14, style = (args.style == "light") and "SemiBold" or "Regular" }
 
 local font_config_map = {
     ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Regular" },
-    ["2560x1440"] = { size = 16, style = (args.style == "light") and "SemiBold" or "Regular" },
+    ["2560x1440"] = { size = 15, style = (args.style == "light") and "SemiBold" or "Regular" },
     ["1920x1200"] = { size = 13.5, style = "Medium"},
     ["1920x1080"] = { size = 13.5, style = "Medium" },
 }
@@ -58,9 +58,9 @@ local font_config_map = {
 local selected_config = font_config_map[main_resolution] or default_config
 
 config.font_size = selected_config.size
-config.font_family = "Monaspace Neon Var"
+config.font_family = "Iosevka Term"
 config.font_style = selected_config.style
-config.font_feature = "+feat, -calt"
+config.font_feature = "+feat, +calt"
 config.font_shaping_break = "cursor"
 
 config.window_decoration = true
@@ -78,22 +78,28 @@ config.clipboard_write = "allow"
 config.clipboard_trim_trailing_spaces = true
 config.macos_option_as_alt = true
 config.window_new_tab_position = "end"
-config.resize_overlay = "never"
-config.gtk_tabs_location = "bottom"
+-- config.resize_overlay = "never"
+config.gtk_tabs_location = "top"
 config.palette_generate = true
 config.palette_harmonious = false
 config.split_preserve_zoom = true
 config.unfocused_split_opacity = 0.5
+config.window_inherit_working_directory = false
+config.tab_inherit_working_directory = false
+config.window_height = 40
+config.window_width = 200
+-- config.window_show_tab_bar = "always"
+
 
 local keybinds_global = {
     { "ctrl+shift+c", "copy_to_clipboard" },
     { "ctrl+shift+v", "paste_from_clipboard" },
-    { "super+t", "new_tab" },
-    { "super+w", "close_surface" },
-    { "ctrl+tab", "next_tab" },
-    { "ctrl+shift+tab", "previous_tab" },
-    { "ctrl+shift+right", "move_tab:1" },
-    { "ctrl+shift+left", "move_tab:-1" },
+    -- { "super+t", "new_tab" },
+    -- { "super+w", "close_surface" },
+    -- { "ctrl+tab", "next_tab" },
+    -- { "ctrl+shift+tab", "previous_tab" },
+    -- { "ctrl+shift+right", "move_tab:1" },
+    -- { "ctrl+shift+left", "move_tab:-1" },
     { "super+n", "new_window" },
     { "ctrl+shift+space", "toggle_command_palette" },
     { "ctrl+shift+equal", "increase_font_size:0.5" },
@@ -127,7 +133,7 @@ local keybinds_mux = {
     { "u", "undo" },
     { "ctrl+r", "redo" },
     { "r", "activate_key_table:resize" },
-    { "]", "activate_key_table:visual" },
+    { "[", "activate_key_table:visual" },
     { "escape", "deactivate_key_table" },
     { "ctrl+[", "deactivate_key_table" },
     { "ctrl+b", "text:\x02" },

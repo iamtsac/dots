@@ -47,8 +47,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerToggle = { bg = c.vscLightRed, fg = c.bg },
                 SnacksPickerDir = { fg = c.vscPink },
                 SnacksPickerSelected = { link = "Type" },
-                StatusLine = { fg = "none", bg = c.bg_tabbar },
-                StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLine = { fg = "none", bg = c.bg_tabbar },
+                -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
                 CursorLine = { bg = c.bg_dim },
                 WinSeparator = { fg = c.fg_unselected, bg = "none" },
                 TreesitterContext = { link="Normal" },
@@ -68,8 +68,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-                StatusLineMain = { fg = c.fg, italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) },
+                -- StatusLineMain = { fg = c.fg, italic = false },
+                -- StatusLineSecondary = { fg = utils.color_changer.lighten(utils.get_color("Normal", "bg"), 0.40) },
             })
             -- utils.hl_markdown_code(c.bg, c.bg_dim)
         end
@@ -107,8 +107,8 @@ function M.setup(style, variant, utils)
                 SnacksPickerTree = { bg = "none" },
                 SnacksPickerSelected = { link = "Number" },
                 Directory = { bg = "none" },
-                StatusLine = { fg = "none", bg = c.bg_dim },
-                StatusLineNC = { fg = "none", bg = c.bg_dim },
+                -- StatusLine = { fg = "none", bg = c.bg_dim },
+                -- StatusLineNC = { fg = "none", bg = c.bg_dim },
                 BlinkCmpMenu = { link = "Normal" },
                 BlinkCmpMenuBorder = { link = "Normal" },
                 BlinkCmpLabelDetail = { link = "Type" },
@@ -140,8 +140,8 @@ function M.setup(style, variant, utils)
                 FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
                 FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-                StatusLineMain = { fg = c.fg_main, italic = false },
-                StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.60) },
+                -- StatusLineMain = { fg = c.fg_main, italic = false },
+                -- StatusLineSecondary = { fg = utils.color_changer.darken(utils.get_color("Normal", "bg"), 0.60) },
             })
         end
     end)

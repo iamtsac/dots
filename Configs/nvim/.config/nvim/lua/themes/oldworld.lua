@@ -88,8 +88,8 @@ function M.setup(style, variant, utils)
             BlinkCmpKind = { bg = "none" },
             BlinkCmpSource = { bg = "none" },
             PmenuExtra = { bg = "none" },
-            StatusLine = { fg = "none", bg = c.bg_tabbar },
-            StatusLineNC = { fg = "none", bg = c.bg_tabbar },
+            -- StatusLine = { fg = "none", bg = c.bg_tabbar },
+            -- StatusLineNC = { fg = "none", bg = c.bg_tabbar },
             WinSeparator = { fg = c.fg_unselected, bg = "none" },
 
             TabLineFill = { bg = c.bg_tabbar },
@@ -103,8 +103,8 @@ function M.setup(style, variant, utils)
             FloatingTabsBorder = { fg = c.fg_border, bg = "NONE" },
             FloatingTabsSeparator = { fg = c.fg_indicator, bg = c.bg_tabbar },
 
-            StatusLineMain = { fg = c.fg, italic = false },
-            StatusLineSecondary = { fg = "#888888" },
+            -- StatusLineMain = { fg = c.fg, italic = false },
+            -- StatusLineSecondary = { fg = "#888888" },
         })
 
         -- utils.hl_markdown_code(c.bg, c.gray1)

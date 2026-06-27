@@ -4,7 +4,6 @@ require("neogit").setup({
     commit_editor = {
         kind = "tab",
         staged_diff_split_kind = "vsplit",
-
     },
     commit_select_view = {
         kind = "split",
@@ -38,4 +37,23 @@ require("neogit").setup({
     refs_view = {
         kind = "tab",
     },
+    mappings = {
+        status = {
+            -- Disable the default quit behavior
+            ["q"] = false,
+        },
+    },
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "NeogitStatus",
+  callback = function(args)
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(args.buf) then
+        vim.keymap.set("n", "q", function()
+          Snacks.bufdelete()
+        end, { buffer = args.buf, silent = true, nowait = true })
+      end
+    end)
+  end,
 })
