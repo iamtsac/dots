@@ -530,9 +530,9 @@ local function dashboard_sections()
         }
     else
         sections = {
-            { section = "header" }, -- pane omitted defaults to 1
-            { section = "keys", pane = 2, padding = { 0, 0 }, gap = 1, indent=12 },
-            { section = "startup", padding = { 0, 0 } },
+            { section = "header", pane = 1 },
+            { section = "keys", pane = 1, padding = { 0, 0 }, gap = 1, indent=0 },
+            { section = "startup", padding = { 0, 0 }},
         }
     end
     return sections
