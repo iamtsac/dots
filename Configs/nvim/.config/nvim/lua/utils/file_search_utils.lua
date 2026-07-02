@@ -206,7 +206,7 @@ local base_opts = {
             create_confirm(picker, false)
         end,
         confirm_or_create_w_tcd = function(picker)
-            create_confirm(picker, true)
+            create_confirm(picker, true, true)
         end,
 
         dir_down = function(picker)
@@ -319,7 +319,7 @@ local base_opts = {
             keys = {
                 ["<CR>"] = { "confirm_or_create", mode = { "n", "i" } },
                 ["<C-CR>"] = { "confirm_or_create_w_tcd", mode = { "i", "n" } },
-                ["<C-S-CR>"] = { "force_create_file", mode = { "i", "n" } },
+                ["<S-CR>"] = { "force_create_file", mode = { "i", "n" } },
                 ["<Tab>"] = { "accept", mode = { "i" } },
                 ["<S-Tab>"] = { "complete", mode = { "i" } },
                 ["/"] = { "dir_down", mode = { "i" } },

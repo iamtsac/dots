@@ -195,11 +195,10 @@ configure_env() {
 # --- Custom Environment ---
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.zvm/bin:$HOME/.zvm/self:$HOME/.pixi/bin:$PATH"
 
-# Auto-start Fish for interactive sessions
-if [[ $- == *i* ]] && command -v fish >/dev/null 2>&1; then
-    # Prevent hijacking shells spawned by zmx
-    PARENT_PROC=$(ps -o comm= -p $PPID 2>/dev/null)
-    if [[ "$PARENT_PROC" != "zmx" ]]; then
+# Launch fish automatically for SSH sessions
+if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+    # Check if fish is installed before trying to run it
+    if command -v fish >/dev/null 2>&1; then
         exec fish
     fi
 fi

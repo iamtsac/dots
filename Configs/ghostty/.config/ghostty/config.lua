@@ -51,8 +51,8 @@ local default_config = { size = 14, style = (args.style == "light") and "SemiBol
 local font_config_map = {
     ["3840x2160"] = { size = 18, style = (args.style == "light") and "SemiBold" or "Regular" },
     ["2560x1440"] = { size = 15, style = (args.style == "light") and "SemiBold" or "Regular" },
-    ["1920x1200"] = { size = 13.5, style = "Medium"},
-    ["1920x1080"] = { size = 13.5, style = "Medium" },
+    ["1920x1200"] = { size = 12.5, style = "Medium"},
+    ["1920x1080"] = { size = 12.5, style = "Medium" },
 }
 
 local selected_config = font_config_map[main_resolution] or default_config
