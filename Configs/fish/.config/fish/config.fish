@@ -10,7 +10,6 @@ fish_add_path $HOME/.cargo/bin \
     $HOME/.local/bin \
     $HOME/.conda/bin \
     $HOME/.zvm/bin \
-    $HOME/.opencode/bin \
     $ZVM_INSTALL \
     /opt/bin
 
